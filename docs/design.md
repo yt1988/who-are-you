@@ -235,6 +235,12 @@ What the others had that a page needed work for, and how who covers it now:
   it read — `RETEST`, the click handler, the busy arrow, the `re_btn` string in ten languages, `.ck-re`, the flash on
   the row when it finished — is deleted; a re-check is the whole page's now (`重新测试`, which runs everything again).
   `#113` stays fixed: the same stale Resource Timing entry came back on a second run of the whole test.
+- 2026-11-13: a `.pa-go` that is a button is a link in everything but the element. base.css gives a button the page's
+  font and colour and nothing else, so the browser drew its own control underneath: on a machine set to dark, a grey
+  block on the light page carrying the ink's green — 列出全部本地字体 in the fonts row was unreadable (the owner's
+  screenshot). `button.pa-go` drops the control's border, background and padding. Those rows also lay the link along
+  the value's first line (`align-items: baseline`): given the value's whole height to stretch into, the words hung in
+  the middle of a tall column.
 - 2026-11-13: on a phone the verdict goes under the name, across the icon's column too. Three columns beside the dot
   left the name 74 px at 390: UA 和真实系统 broke into three lines and the rows came out anywhere from 44 to 129 px
   tall, each a different shape. Name on the first line with the icon at its right, verdict on the next line

@@ -433,13 +433,18 @@ html.shared .todo, html[data-who-embed] .todo { display: none; }
 .pa { min-width: 0; overflow-wrap: anywhere; font: 12.5px/1.45 var(--f-num); } .pa .nw { white-space: normal; }
 .pa a { color: inherit; text-decoration: underline dotted color-mix(in srgb, var(--fg) 40%, transparent); text-underline-offset: 3px; }
 .pa a:hover { color: var(--ink); }
-/* a value with a link after it: the value gives way, the link stays */
-.pa:has(.pa-go), .focus-rows b:has(.pa-go) { display: flex; gap: 8px; }
+/* a value with a link after it: the value gives way, the link stays, and the link sits on the value's first line (a long
+   value makes the row tall; stretched, the link's words hung in the middle of that height) */
+.pa:has(.pa-go), .focus-rows b:has(.pa-go) { display: flex; align-items: baseline; gap: 8px; }
 .pa-t { min-width: 0; }
 /* the link never shrinks, but a long label (the local-fonts button in Russian) wraps inside the column instead of
    running past it on a phone */
 .pa .pa-go, .focus-rows .pa-go { flex: none; max-width: 100%; min-height: 24px; font: 500 12px var(--f-ui); color: var(--ink); text-decoration: none; }
 .pa .pa-go:hover { text-decoration: underline; }
+/* 测一测, 列出全部本地字体 and the other `.pa-go`s are buttons: a link in all but the element. base.css gives a button
+   the page's font and colour and nothing else, so the browser painted its own control — on a machine set to dark, a
+   grey block under the ink's green on a light page, unreadable (the owner's screenshot, 2026-11-13) */
+button.pa-go { border: 0; background: none; padding: 0; cursor: pointer; }
 .bl a { color: inherit; text-decoration: underline dotted color-mix(in srgb, var(--fg) 40%, transparent); text-underline-offset: 3px; }
 /* links to other tools: a few words, then the external-link icon at about the text's size; an address or AS
    number that is itself the link has no icon, only a dotted underline and a title */
