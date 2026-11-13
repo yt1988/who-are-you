@@ -161,6 +161,14 @@ What the others had that a page needed work for, and how who covers it now:
   (1ms-shell#108). The story's giveaway list (`giveaways`) counts the resolver only with the clock already off, so a
   lone resolver claims nothing and a clock plus a resolver still names both places. The check row and its hints now
   say 解析器 in Chinese, as the glossary asks for a public resolver.
+- 2026-11-13: the connection check names the carrier's and a company gateway's TCP proxy too. On a phone the OS
+  mismatch is often a carrier (or the Wi-Fi gateway at the office) terminating the connection, not a proxy or VPN
+  server of the visitor's own (`c_conn_os`, wording only; the level stays `warn`).
+- 2026-11-13: the clock read twice in the browser. `Date.getTimezoneOffset` and the offset `Date.toString` ends with
+  are compared with the zone Intl names; agreeing readings add nothing, and one that disagrees means a script rewrites
+  the clock, so the tz check says the browser contradicts itself (`c_tz_self`, `bad`) whatever the address's zone is.
+  That case gets its own fix tip (`tip_tz_self`): the system-settings one the other tz tips give cannot fix a
+  rewritten Date.
 
 ## Wording
 
