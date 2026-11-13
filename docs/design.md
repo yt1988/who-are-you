@@ -194,6 +194,10 @@ What the others had that a page needed work for, and how who covers it now:
   the card uses what the link does carry: the same screen and the same system with a different browser, worded as a
   possibility ("if these are your own two browsers…"). A friend's identical laptop matches the same way, which is why
   the sentence does not claim it.
+- 2026-11-13: the row-level 「Check this again」 now covers the protocol rows too: the post-quantum, ECH and WARP
+  verdicts re-read the edge's trace, so switching a proxy and re-checking shows the new answer without a reload. The
+  rows that rest on what the page read as it loaded (the request's headers, the environment's fingerprints, the
+  browser's own choice of HTTP/3) still need a reload, and offer no button.
 
 ## Wording
 

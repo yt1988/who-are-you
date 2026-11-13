@@ -2228,7 +2228,11 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
   // Checking one again: the readings a check rests on, taken again without reloading (a time zone, DNS or proxy change
   // shows at once). Checks that rest on what the page read as it loaded (a rewritten environment) need the whole test
   const RETEST = { tz: [locale], lang: [locale], syslang: [fonts, voices, keyboard], dns: [dnsResolver], split: [server, exits], webrtc: [webrtc],
-    rtt: [server, latency], dc: [server], conn: [probe] };
+    rtt: [server, latency], dc: [server], conn: [probe],
+    // (the protocol checks come from the TLS this page got and the browser's own choice of HTTP/3: the key exchange
+    // and ECH are read again from the edge's trace after a proxy or network change, and what the browser did needs
+    // the page reloaded)
+    pq: [trace], ech: [trace], warp: [trace] };
   $$(".ck-re").forEach(btn => {
     const id = btn.closest(".ckr").dataset.c;
     if (!RETEST[id]) return btn.remove();
