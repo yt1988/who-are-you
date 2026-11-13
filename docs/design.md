@@ -221,7 +221,7 @@ What the others had that a page needed work for, and how who covers it now:
   price is the one the earlier design paid the strip's height for: a row grows by that line when a verdict — and with
   it a fix — turns up at the end of a run.
 - 2026-11-13: 「重测」 and 「反馈」 are icons, not words. Spelled out they were on nearly every row — 重测 on the
-  fourteen a single check can be run again for, 反馈 on all eighteen — and the owner called the repetition out twice:
+  twelve a single check can be run again for, 反馈 on all eighteen — and the owner called the repetition out twice:
   too many of the same word, and the width it took ("if they stay like that it shows up again and again, and wastes
   the layout"). The two are the same sentence eighteen times, so they are the row's two small actions: a circular
   arrow and a speech bubble at the row's right end, 24 px, muted until the row is pointed at. The column is a fixed
