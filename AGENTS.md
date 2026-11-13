@@ -51,6 +51,7 @@ npm run dev          # wrangler dev on http://localhost:8795
 | Anything | `npm test`: public/ matches src/, the unit tests (test/), every key in every language |
 | The page, a sniffer, a string | `npm run smoke:quick`: every language page in headless Chrome, all rows, blanks and checks filled, sharing (about 20 s) |
 | Topic pages, the build, the share format | `npm run smoke`: the above plus every topic page |
+| A button, a link, a row's control | `npm run touch [<lang>]`: every tap target at 390 px, none under 24 by 24 CSS px (WCAG 2.5.8) |
 | The meaning of readings (`src/infer.mjs`, `src/models.mjs`) | add a case to `test/infer.test.mjs` or `test/models.test.mjs` |
 | `probe/` | `go vet ./... && go build` in `probe/`, then on a server (below) |
 

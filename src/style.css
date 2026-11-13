@@ -413,7 +413,7 @@ html.shared .todo, html[data-who-embed] .todo, html.shared .ck-re { display: non
 .pa-t { min-width: 0; }
 /* the link never shrinks, but a long label (the local-fonts button in Russian) wraps inside the column instead of
    running past it on a phone */
-.pa .pa-go, .focus-rows .pa-go { flex: none; max-width: 100%; font: 500 12px var(--f-ui); color: var(--ink); text-decoration: none; }
+.pa .pa-go, .focus-rows .pa-go { flex: none; max-width: 100%; min-height: 24px; font: 500 12px var(--f-ui); color: var(--ink); text-decoration: none; }
 .pa .pa-go:hover { text-decoration: underline; }
 .bl a { color: inherit; text-decoration: underline dotted color-mix(in srgb, var(--fg) 40%, transparent); text-underline-offset: 3px; }
 /* links to other tools: a few words, then the external-link icon at about the text's size; an address or AS

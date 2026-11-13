@@ -179,6 +179,10 @@ What the others had that a page needed work for, and how who covers it now:
   from resolvers in two countries the dns check says the route varies from request to request (`c_dns_rot`, `warn`)
   instead of naming one country — a proxy pool whose nodes resolve for themselves, or a DoH endpoint that moved. The
   same country twice changes nothing, and the row's hover shows the second answer when it differs at all.
+- 2026-11-13: `npm run touch` measures every control the visitor can tap at 390 px in every language, plus the topic
+  pages in Chinese, against WCAG 2.2's minimum of 24 by 24 CSS px; a text run set to display: inline is exempt, as
+  the rule exempts a link in a sentence. It found the local-fonts button one pixel short (`pa-go`, 23 px tall), which
+  now has a 24 px minimum height.
 
 ## Wording
 

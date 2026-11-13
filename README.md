@@ -89,6 +89,7 @@ npm ci
 npm run dev          # wrangler dev on http://localhost:8795 (geolocation comes from Cloudflare even locally)
 npm test             # public/ is up to date, and the unit tests
 npm run smoke        # every language page in headless Chrome or Edge: all rows, blanks and checks filled, sharing works
+npm run touch        # at phone width: every tap target is at least 24 by 24 CSS px (WCAG 2.5.8)
 npm run og           # re-render the link-preview images (public/og/)
 npx wrangler deploy  # deploy the Worker "who"; then add a custom domain in the dashboard
 ```

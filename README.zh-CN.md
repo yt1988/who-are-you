@@ -79,6 +79,7 @@ npm ci
 npm run dev          # wrangler dev，http://localhost:8795（本地也会拿到 Cloudflare 的地理位置）
 npm test             # 检查 public/ 是否最新，并跑单元测试
 npm run smoke        # 用无头 Chrome 或 Edge 打开每种语言的页面：所有行、空格和检测都填上了，分享能用
+npm run touch        # 手机宽度下，每个能点的地方都不小于 24×24 CSS 像素（WCAG 2.5.8）
 npm run og           # 重新生成链接预览图（public/og/）
 npx wrangler deploy  # 部署名为 who 的 Worker，再到控制台绑定自定义域名
 ```
