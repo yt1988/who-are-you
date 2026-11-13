@@ -2479,10 +2479,14 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
   // connection, from the moment it was sent to the first byte back
   async function latency() {
     const t = [];
+    // every run asks for URLs of its own: Resource Timing keeps the entries of the first run too, and with the same
+    // URLs getEntriesByName(u)[0] answered with the first run's timing for ever after — 「重测这一项」 on this row
+    // repeated the old numbers (1ms-shell #113). The stamp makes the entry of this run the only one for its URL
+    const run = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
     for (let i = 0; i < 5; i++) {
-      const u = new URL("/cdn-cgi/trace?rtt=" + i, location.href).href;
+      const u = new URL("/cdn-cgi/trace?rtt=" + i + "&n=" + run, location.href).href;
       if (!(await getT(u).then(() => true, () => false))) continue;
-      const e = performance.getEntriesByName(u)[0];
+      const e = performance.getEntriesByName(u).pop();
       if (e && e.responseStart > e.requestStart && e.requestStart > 0) t.push(e.responseStart - e.requestStart);
     }
     R.rttB = t.length >= 3 ? Math.min(...t) : null;
