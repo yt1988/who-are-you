@@ -63,9 +63,11 @@ export function storyHtml(s, lang) {
   // each blank waits as filler about as long as its answer (CJK: one character per em; others: "xxxx " per 2.6 em, as the blank's bold font draws it),
   // transparent on a skeleton background, so it wraps like the words that will replace it
   const cjk = /^(zh|ja|ko)/.test(lang), w = BLANK_W[lang] || {};
-  // (a fifth longer than measured: a longer answer would add a line and push the page below down, a shorter one
-  // only leaves the paragraph a little room at its end)
-  const filler = b => { const n = Math.round(((w && w[b]) || 7) * 1.2);
+  // (as long as measured: while the paragraph kept a height of its own, a fifth longer was free — the paragraph had
+  // room to spare, and a longer answer could not push the page down. With the paragraph never held taller than its
+  // words (2026-11-13), a fifth longer is a line of the paragraph's height given back at every fill, so the filler
+  // aims at the answer's own width and leaves the paragraph its own height from the first paint)
+  const filler = b => { const n = Math.round((w && w[b]) || 7);
     return cjk ? "口".repeat(n) : "xxxx ".repeat(Math.max(1, Math.round(n / 2.6))).trim(); };
   const line = l => l.split(/(\{\w+\})/).map(p => /^\{\w+\}$/.test(p) ? `<span class="bl wait" data-b="${p.slice(1, -1)}"><i class="skt">${filler(p.slice(1, -1))}</i></span>` : esc(p)).join("");
   return s.split("\n").map(l => `<p>${line(l)}</p>`).join("");
@@ -147,10 +149,13 @@ export async function build({ check = false } = {}) {
 
       // the checks and every sniffer have their rows from the start; readings fill them in place
       // (the connection's protocols follow under their own heading, in the same rows)
-      const ckRows = (id, list) => `<ul class="ck" id="${id}">` + list.map(c => `<li class="ckr" data-c="${c}"><i class="st"></i><span class="ck-l">${esc(T("c_" + c))}` +
+      // The row's controls sit in one strip of their own under the name and the verdict, across the row's whole width:
+      // in the name's narrow column they wrapped onto a second line, and a row waiting for a verdict held both lines
+      // from the first paint, so every row without a fix showed an empty one
+      const ckRows = (id, list) => `<ul class="ck" id="${id}">` + list.map(c => `<li class="ckr" data-c="${c}"><i class="st"></i><span class="ck-l">${esc(T("c_" + c))}</span><span class="ck-v"><i class="skl"></i></span>` +
         `<span class="ck-acts"><button class="ck-fix" type="button" aria-expanded="false" hidden>${esc(T("fix"))}</button>` +
-        (GO[c] ? `<a class="ck-go" target="_blank" rel="noopener" hidden>${esc(T("go_" + GO[c]))}${EXT}</a>` : "") + `<button class="ck-rp" type="button" hidden>${esc(T("rp_btn"))}</button><button class="ck-re" type="button" hidden>${esc(T("re_btn"))}</button>` +
-        `</span></span><span class="ck-v"><i class="skl"></i></span>` +
+        (GO[c] ? `<a class="ck-go" target="_blank" rel="noopener" hidden>${esc(T("go_" + GO[c]))}${EXT}</a>` : "") + `<button class="ck-re" type="button" hidden>${esc(T("re_btn"))}</button><button class="ck-rp" type="button" hidden>${esc(T("rp_btn"))}</button>` +
+        `</span>` +
         `<ul class="ck-tip" hidden>${T("tip_" + c).split("\n").map(l => `<li>${esc(l)}</li>`).join("")}</ul></li>`).join("") + "</ul>";
       const checks = ckRows("checks", CHECKS) + `<div class="proto" id="protoBox"><div class="sec-h"><span>${esc(T("h_proto"))}</span></div>${ckRows("proto", PROTO)}</div>`;
       const G = Object.fromEntries(GROUPS);

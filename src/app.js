@@ -2145,6 +2145,10 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     box.querySelector("ul").innerHTML = CK[id].querySelector(".ck-tip").innerHTML;
     box.hidden = R.ck[id][0] !== "bad" && R.ck[id][0] !== "warn";
   }
+  // The strip under a check holds 怎么改, the check's own test, 重测这一项 and 反馈. A row with none of them keeps no
+  // strip (its height goes to zero): the empty line under every fine row was what read as a broken layout. 反馈 alone
+  // does not count: on a screen with a pointer it waits at the row's right end, off the strip (see style.css).
+  const actsVoid = r => { const a = r.querySelector(".ck-acts"); if (a) a.classList.toggle("void", [...a.children].every(x => x.hidden || x.classList.contains("ck-rp"))); };
   function paintChecks(res, ipc, final) {
     let bad = 0, warn = 0;
     for (const id of [...CHECKS, ...PROTO]) {
@@ -2172,6 +2176,7 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
         const href = id === "dns" ? DNSTEST && inLang(DNSTEST) : id === "dc" ? ipqsOf(R && R.srv && R.srv.ip) : EGRESS && inLang(EGRESS);
         go.hidden = !href || (lv !== "bad" && lv !== "warn"); if (href) go.href = href;
       }
+      actsVoid(r);
     }
     if (!final) return;
     // a portrait shared before the protocols were judged has none: their rows step aside
@@ -2262,8 +2267,6 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     g.querySelector("h3").onclick = e => { if (!e.target.closest("a")) g.classList.toggle("fold"); };
   });
   phone(); paintScene();
-  // a resized window lays the paragraph out anew: the heights kept for its filling no longer apply
-  addEventListener("resize", () => $$("#story p").forEach(p => { p.style.minHeight = ""; }));
   if (PHONE.addEventListener) PHONE.addEventListener("change", phone); else PHONE.addListener(phone);
   // How common the visitor is. After a check the page sends its trait values and results to /api/seen, which counts
   // them (once a day per browser and fingerprint) and answers how many checks had each value. Not counted: an embedded
@@ -2629,24 +2632,6 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
   }
   const sharedCode = (parsePath(location.pathname) || {}).code || (/^#p=/.test(location.hash) ? location.hash.slice(3) : null);
 
-  // The paragraph is held at the height it had while its blanks waited, so filling them moves nothing under it. That
-  // height is a line or so taller than the filled text, and left in place it is blank space under every paragraph —
-  // until a resize cleared it, which is how it read as "the paragraph spacing is wrong" (the owner, 2026-11-13).
-  // Once the words are in, each paragraph settles to the height its own words need; the stylesheet eases that change
-  // (.settle) so what follows slides up instead of jumping.
-  function settleStory() {
-    if (PHONE.matches) return;   // on a phone the first paragraph's height comes from the stylesheet, for the folded card
-    const ps = $$("#story p").filter(p => p.style.minHeight);
-    if (!ps.length) return;
-    $("#story").classList.add("settle");
-    for (const p of ps) {
-      p.style.minHeight = "";   // measure without it, in the same frame: nothing is painted in between
-      const h = p.getBoundingClientRect().height;
-      if (h > 0) p.style.minHeight = h + "px";
-    }
-    setTimeout(() => $("#story").classList.remove("settle"), 400);
-  }
-
   /* ---------- a run ---------- */
   async function run() {
     const g = ++gen;
@@ -2667,6 +2652,8 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
       r.className = "ckr"; delete r.dataset.why; r.querySelector(".ck-v").innerHTML = '<i class="skl"></i>'; r.querySelector(".st").textContent = "";
       r.querySelector(".ck-fix").hidden = true; r.querySelector(".ck-tip").hidden = true;
       const go = r.querySelector(".ck-go"); if (go) go.hidden = true;
+      const re = r.querySelector(".ck-re"); if (re) re.hidden = true;
+      actsVoid(r);
     }
     $("#todo").hidden = false; $("#todoL").innerHTML = TODO_SK;
     $("#vHead").textContent = t("checking"); $("#vHead").className = "v-h";
@@ -2675,9 +2662,8 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     $("#rerun").disabled = true; $("#share").disabled = true; $("#copyTxt").disabled = true; $("#dlJson").disabled = true; $("#printPg").disabled = true; progress();
     $("#stabD").hidden = true; adProfile();
 
-    // on a wide screen each paragraph keeps the height it first had: its blanks wait a little long, so filling them
-    // only shortens lines, and the page below doesn't move (on a phone the first paragraph has its own, from the stylesheet)
-    if (!PHONE.matches) $$("#story p").forEach(p => { p.style.minHeight = ""; p.style.minHeight = p.getBoundingClientRect().height + "px"; });
+    // (a paragraph is never held taller than its words: the height it had while its blanks waited is a line or so more
+    // than the filled text, and kept it read as blank space under every paragraph — see docs/design.md, 2026-11-13)
     if (on("referrer")) referrer();
     locale(); prefs(); engine();
     const glInfo = on("gpu") ? gpu() : null;
@@ -2743,9 +2729,6 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     // a topic page ends at its verdict: no portrait, no comparison with the last visit, nothing counted
     if (NEED) { focusFix(); R.end = true; $("#rerun").disabled = false; return; }
     readings(portrait(), R.ck);
-    // (the words are in: give back the height the placeholders borrowed — easing it, so the labels, the ID card and
-    // everything beside them glide up by the line it was rather than jumping when the run ends)
-    settleStory();
     paintTarget(); osTips(); todo(); focusFix();
     R.end = true;
     syncReportEntries(); syncCheckReports();

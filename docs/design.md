@@ -140,12 +140,14 @@ What the others had that a page needed work for, and how who covers it now:
   start and filled in place). The fonts load `font-display: optional`, and the three faces the first screen draws
   with are preloaded, so a font that lands late is never swapped in (0.15 of the live page's shift; the Cyrillic face
   alone took 1.2 s here). A paragraph keeps the height it had while it waited — releasing it at the end of the run
-  moved the labels, the ID card and everything below them by a paragraph's worth (126 px). A paragraph now fills in
+  moved the labels, the ID card and everything below them by a paragraph's worth (126 px). (Dropped on 2026-11-13: the
+  waiting paragraph is now measured at the answer's width instead, so it mostly keeps its own height; see that entry.)
+  A paragraph now fills in
   one frame, when its last reading lands, instead of at every answer: each rewrap moved the words after it, and
   filling a line at a time took the story's share of the shift from about 0.2 to under 0.1. The checks' action strip
-  (32 px), the verdict's two lines, the headline's two-line row and the anti-detect card (drawn when the run starts,
-  not when it ends: it pushed the tally down 60 px) keep their space from the first paint, so the right column does
-  not move when the verdicts land. Measured at 1280×900 against a mocked Worker: en 0.11, zh 0.08, ru 0.07 CLS
+  (32 px — one line since 2026-11-13, and only on a row with something to do), the verdict's two lines, the headline's
+  two-line row and the anti-detect card (drawn when the run starts, not when it ends: it pushed the tally down 60 px)
+  keep their space from the first paint, so the right column does not move when the verdicts land. Measured at 1280×900 against a mocked Worker: en 0.11, zh 0.08, ru 0.07 CLS
   (0.24/0.24/0.16 with the story filling a blank at a time; 0.4–1.0 before any of this).
 - 2026-11-12: the system-language check lets two sources confirm each other only when they name the same country.
   `sysLangs` now returns each row's own countries (`parts`), and `checks` warns only when the rows share one; rows
@@ -198,19 +200,32 @@ What the others had that a page needed work for, and how who covers it now:
   verdicts re-read the edge's trace, so switching a proxy and re-checking shows the new answer without a reload. The
   rows that rest on what the page read as it loaded (the request's headers, the environment's fingerprints, the
   browser's own choice of HTTP/3) still need a reload, and offer no button.
-- 2026-11-13: a paragraph gives its reserved height back once its words are in. Each paragraph was held at the height
-  it had while its blanks waited — a line or so taller than the filled text — so that filling them moved nothing under
-  it, and the height was left in place after the run. On a wide screen that leftover is blank space under every
-  paragraph, and it stayed until a resize cleared it; the owner reported it as broken paragraph spacing (2026-11-13,
-  screenshot). `settleStory()` measures each paragraph without the pin once the last blank is filled and eases it back
-  to its own words (`.settle`, 0.3 s, none under reduced motion), so what follows glides up by the line it was instead
-  of jumping when a run ends. The earlier choice was the gap, because the abrupt jump moved the labels and the ID card
-  "a whole paragraph's worth" (the note it replaced); the glide is the compromise between the two.
-- 2026-11-13: the per-row report link (「反馈」) waits for a hover. A verdict is on 18 rows, and the word spelled out
-  on all of them read as a column of its own (the owner). It now sits at opacity 0 with its space kept, so nothing
-  moves, and comes in when the row is pointed at or focused — `:focus-within`, so the keyboard reaches it; opacity
-  rather than visibility, which would take it out of the tab order. A touch screen has no hover, so there the link
-  stays out as it did.
+- 2026-11-13: a paragraph is never held taller than its words. Each paragraph used to be pinned at the height it had
+  while its blanks waited — a line or so more than the filled text — so filling moved nothing under it, and the pin
+  stayed after the run: on a wide screen that leftover was blank space under every paragraph, until a resize cleared
+  it (the owner's report, with a screenshot). Giving the height back at the end (a 0.3 s settle) only moved the blank
+  to the loading state, which the owner rejected too. The pin is gone, and the placeholder is the right size instead:
+  the filler was built "a fifth longer than measured", because a longer answer must not push the page down while the
+  paragraph had room to spare — with no pin, that fifth is a line of the paragraph's own height given back at every
+  fill. `scripts/build.mjs` now measures the filler at the answer's own width, so the waiting paragraph has the filled
+  paragraph's height. Measured on zh-CN at 1100 px: the story is 563 px from the first paint to the last, and nothing
+  moves at all; ru, de, fr and ja still move by a line or two, an answer being not exactly its measured width. CLS
+  measured 2026-11-13 at 1280×900 against a mocked Worker: en 0.19, zh-CN 0.05, ru 0.12 (0.11/0.08/0.07 with the pins):
+  the pins did hold the story still, and what they cost in blank lines is what the owner saw. zh-CN, which is what the
+  placeholders are measured from most often, came out better than before.
+- 2026-11-13: the checks' controls moved out of the name's column into one strip across the row, and a row with
+  nothing to do keeps no strip. In the name's narrow column (129 px at 1180) the controls wrapped onto a second line,
+  and each row held both lines from the first paint so it would not grow when a fix appeared — which left every fine
+  row showing an empty line, the "broken layout" the owner reported (screenshots of rows with a void under the name).
+  The strip is one line (怎么改 · the check's own test · 重测这一项 · 反馈) and its height goes to zero when only 反馈
+  would be in it. The price is the one the earlier design paid the strip's height for: a row grows by that line when a
+  verdict — and with it a fix — turns up at the end of a run.
+- 2026-11-13: the per-row report link (「反馈」) is no longer spelled out on all 18 rows (the owner: too many, the
+  same word again and again). On a screen with a pointer it sits at the row's right end, out of the row's flow, so it
+  takes no space and moves nothing; it comes in when the row is pointed at or focused (`:focus-within`, so the keyboard
+  reaches it — opacity rather than visibility, which would take it out of the tab order). A touch screen has no hover
+  and no side to put it on, so there it stays in the strip, always out. It can cover the tail of a long verdict while
+  the row is pointed at; the row's own hover text still carries the whole sentence.
 
 ## Wording
 
@@ -254,8 +269,10 @@ Fixed on 2026-11-12: the Cyrillic font swapping in on ru (optional + preload), t
 one frame a paragraph), and the blocks that appeared when a run ended (the checks' buttons, the verdict, the
 anti-detect card). Smoke at 1280×900: en 0.11, zh 0.08, ru 0.07.
 
-Changed on 2026-11-13: those kept heights are given back when the run ends (the gap they left was worse than the
-move), eased over 0.3 s — one line per paragraph that over-reserved, which is a shift the smoke numbers will show.
+Changed on 2026-11-13: the kept heights are gone (the gap they left was worse than the move they saved), and the
+placeholder is measured at the answer's width instead, so most paragraphs hold their height from the first paint
+(zh-CN measured: no movement). The checks' rows now grow by one line when a verdict and its fix turn up — the strip
+they used to reserve for that was the empty line the owner reported.
 
 What is left is text filling inside boxes that already have their size: a paragraph's own words rewrapping as it
 fills, the checks' verdicts, the values in the readings list. Removing that would mean not filling after the first
