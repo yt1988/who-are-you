@@ -315,6 +315,13 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     txt("langs", langs.join(", ") || "–");
     const ro = Intl.DateTimeFormat().resolvedOptions();
     R.tz = ro.timeZone; R.tzOff = tzOffset(ro.timeZone);
+    // The same clock read the two ways Date offers (anti-detect browsers rewrite each API on its own): getTimezoneOffset's
+    // minutes, and the offset Date's own string ends with. When they agree with Intl — every browser nobody has touched
+    // — there is nothing to report; when one doesn't, the tz check says the browser contradicts itself
+    let dOff = null, sOff = null;
+    try { const n = -new Date().getTimezoneOffset(); if (Number.isInteger(n)) dOff = n; } catch (e) {}
+    try { const m = /GMT([+−-])(\d{1,2})(\d{2})?/.exec(new Date().toString()); if (m) sOff = (m[1] === "+" ? 1 : -1) * (+m[2] * 60 + +(m[3] || 0)); } catch (e) {}
+    R.tzAlt = R.tzOff == null ? null : [dOff, sOff].find(o => o != null && o !== R.tzOff) ?? null;
     txt("locale", [ro.locale, ro.calendar, ro.numberingSystem].filter(Boolean).join(" · "));
     let tzName = "";
     try { tzName = new Intl.DateTimeFormat(LANG, { timeZone: R.tz, timeZoneName: "longGeneric" }).formatToParts(new Date()).find(x => x.type === "timeZoneName").value; } catch (e) {}
@@ -2033,6 +2040,8 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     const bn = (R.br && R.br.name) || "", brw = bn === "Firefox" ? "ff" : bn === "Safari" ? "sf" : /^(Chrome|Edge|Opera|Brave|Vivaldi|Yandex)$/.test(bn) ? "cr" : "";
     const keys = { tz: plat ? "tip_tz_" + plat : "", lang: plat === "ios" || plat === "and" ? "tip_lang_" + plat : brw ? "tip_lang_" + brw : "",
       dns: plat && plat !== "linux" ? "tip_dns_" + plat : "", webrtc: plat === "ios" ? "tip_webrtc_ios" : plat === "and" ? "tip_webrtc_and" : plat ? "tip_webrtc_desk" : "", fp: plat === "ios" ? "tip_fp_ios" : "" };
+    // (a clock a script rewrote is not fixed in the system settings the tz tips name, so that case brings its own)
+    if (R.ck && R.ck.tz && R.ck.tz[1] === "c_tz_self") keys.tz = "tip_tz_self";
     for (const [id, k] of Object.entries(keys)) if (k && L[k]) CK[id].querySelector(".ck-tip").innerHTML = t(k).split("\n").map(l => `<li>${esc(l)}</li>`).join("");
   }
 
@@ -2438,7 +2447,7 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
   function judge(final) {
     const c = (R.srv && R.srv.cf) || {};
     const res = checks({
-      tz: R.tz, rfp: rfp(), tzOff: R.tzOff == null ? null : offTxt(R.tzOff), ipTzOff: c.timezone ? offTxt(tzOffset(c.timezone)) : null, ipTz: c.timezone || null, ipcc: c.country,
+      tz: R.tz, rfp: rfp(), tzOff: R.tzOff == null ? null : offTxt(R.tzOff), tzAlt: R.tzAlt == null ? null : offTxt(R.tzAlt), ipTzOff: c.timezone ? offTxt(tzOffset(c.timezone)) : null, ipTz: c.timezone || null, ipcc: c.country,
       langs: R.langs, dnsCC: R.dnsCC, exits: allExits(), rtc: R.rtc, ip: R.srv && R.srv.ip, asn: c.asn, org: orgName(c.asOrganization, c.asn),
       uaOS: R.dev && R.dev.os, real: !!R.dev, hintOS: R.hi && R.hi.platform, gpuOS: gpuOS(R.gpuRaw), rand: R.rand, noise: R.noise, webdriver: R.webdriver, agent: ACT.state, auto: R.auto,
       rttB: R.latDone ? R.rttB : null, coarse: R.latDone ? !!R.coarse : false, rttCf: c.clientTcpRtt || null, sys: final || R.voices ? sysOf() : undefined, tamper: R.dev && R.srv ? tampered() : null, fpb: fpbTraces(),

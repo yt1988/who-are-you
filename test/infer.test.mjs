@@ -269,6 +269,10 @@ test("disguise checks", () => {
   // New York's clock behind an address in Japan is a contradiction; the same offset in another country is not
   assert.equal(checks({ ...us, ipTz: "Asia/Tokyo", ipTzOff: "+09:00", ipcc: "JP" }).tz[0], "bad");
   assert.equal(checks({ ...base, ipTz: "Asia/Singapore", ipcc: "SG" }).tz[0], "ok");
+  // the browser contradicting itself: Date reports another offset than the zone Intl names, so the clock is a script's
+  // story whatever the address's zone says (and it outranks a match with the IP)
+  assert.deepEqual(checks({ ...base, ipTz: "Asia/Singapore", ipcc: "SG", tzAlt: "+07:00" }).tz, ["bad", "c_tz_self", { a: "+08:00", b: "+07:00" }]);
+  assert.deepEqual(checks({ ...base, tzAlt: null }).tz, ["ok", "c_tz_ok", { a: "+08:00" }]);
   // an IPv6 address next to an IPv4 page request is only a warning
   assert.equal(checks({ ...base, rtc: ["2001:db8::1", "1.2.3.4"] }).webrtc[0], "warn");
   // an IPv6 address this site sees too is no leak; one that differs from it is

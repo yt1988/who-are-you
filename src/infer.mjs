@@ -262,6 +262,9 @@ export function checks(x) {
   // the system time zone against the address's: another zone of the same country (the US has six) only hints, since
   // an address is often placed in the right country but the wrong city; another country's is a contradiction
   if (x.tz == null || !x.ipcc) out.tz = null;
+  // (the browser's own reads disagree — Intl names a zone whose offset is not what Date reports: a script rewrote one
+  // of them, so the clock says nothing reliable about where the device is, whatever the address's zone is)
+  else if (x.tzOff != null && x.tzAlt) out.tz = ["bad", "c_tz_self", { a: x.tzOff, b: x.tzAlt }];
   else if (x.tzOff === x.ipTzOff) out.tz = ["ok", "c_tz_ok", { a: x.tzOff }];
   // (Firefox's resistFingerprinting gives every site the same stand-in clock: it hides the zone, and shows the setting)
   else if (x.rfp) out.tz = ["warn", "c_tz_rfp", { a: x.ipTzOff }];
