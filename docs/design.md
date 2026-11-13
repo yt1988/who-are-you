@@ -183,6 +183,12 @@ What the others had that a page needed work for, and how who covers it now:
   pages in Chinese, against WCAG 2.2's minimum of 24 by 24 CSS px; a text run set to display: inline is exempt, as
   the rule exempts a link in a sentence. It found the local-fonts button one pixel short (`pa-go`, 23 px tall), which
   now has a 24 px minimum height.
+- 2026-11-13: the public resolver's name follows the shared glossary in every language: en said "DNS server" in
+  the story, Chinese said 服务器/伺服器 in the row label, the story and the country checklist while its checks said
+  解析器, and ja, ko, es, fr, de, pt and ru said their DNS-server word everywhere. The reading, the checks, the story
+  sentence, the checklist and the dns-leak page's visible copy now use the glossary's word (DNS resolver ·
+  解析器 · DNS リゾルバー · DNS 리졸버 · resolvedor DNS · résolveur DNS · DNS-Resolver · DNS-резолвер). The page's
+  `seo_*` fields keep the word people search for, and a name server (ip-api's own) stays a サーバー / server.
 
 ## Wording
 

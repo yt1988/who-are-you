@@ -8,7 +8,7 @@ export default {
   og_sub: "What any website learns about you, without asking",
   h1: "Who websites think you are",
   // the portrait: each {blank} is filled from the sniffers, each one exactly once
-  story: "{nat}, and right now you're in {city}. You speak {lang}, and your clock is set to {tz}, in {clock} format.\n{wow}\nYou're on {device}, using {browser}, with a {screen} screen and {gpu} graphics: {rig}.\nYou get online through {isp}, {nettype}, {conn}; the DNS server that looks up sites for you is in {dns}. {read}.\nYou prefer {theme}, and {adblock}; {shield}. {track}. Your fonts drop a hint: {job}. As for your age, {age}.\nTo a site, this is {tier}. {fresh}. You opened this page {when}, {power}, {prefs}.\nIn a crowd, {stand}.",
+  story: "{nat}, and right now you're in {city}. You speak {lang}, and your clock is set to {tz}, in {clock} format.\n{wow}\nYou're on {device}, using {browser}, with a {screen} screen and {gpu} graphics: {rig}.\nYou get online through {isp}, {nettype}, {conn}; the DNS resolver that looks up sites for you is in {dns}. {read}.\nYou prefer {theme}, and {adblock}; {shield}. {track}. Your fonts drop a hint: {job}. As for your age, {age}.\nTo a site, this is {tier}. {fresh}. You opened this page {when}, {power}, {prefs}.\nIn a crowd, {stand}.",
 
   lang_label: "Language", faq_h: "Help", th_system: "Theme: system", th_light: "Theme: light", th_dark: "Theme: dark",
   a_theme: "Theme", a_close: "Close", a_prev: "Previous", a_next: "Next",
