@@ -2402,6 +2402,18 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     const hl = ((R.srv && R.srv.h && R.srv.h["accept-language"]) || "").split(",")[0].split(";")[0].trim().toLowerCase();
     if (hl && R.langs && R.langs[0] && hl !== R.langs[0].toLowerCase()) out.push("tp_hdr");
     if (R.tzOff != null && -new Date().getTimezoneOffset() !== R.tzOff) out.push("tp_tz");
+    // (navigator.connection: an anti-detect browser describes a phone's network on a machine that doesn't have one. Its
+    // getters must be the browser's own like the rest of navigator, and the values must be ones the API can produce:
+    // type and effectiveType only from the spec's lists, and in Chromium rtt comes in 25 ms steps)
+    const nc = navigator.connection;
+    if (nc) {
+      if (desc(navigator, "connection")[0] === navigator || ["type", "effectiveType", "rtt", "downlink", "saveData"].some(k => {
+        const [p, d] = desc(nc, k); return p === nc || (d && d.get && !own(d.get));
+      })) out.push("tp_props");
+      const TY = ["bluetooth", "cellular", "ethernet", "none", "wifi", "wimax", "other", "unknown"], ET = ["slow-2g", "2g", "3g", "4g"];
+      if ((nc.type != null && !TY.includes(nc.type)) || (nc.effectiveType != null && !ET.includes(nc.effectiveType)) ||
+        (R.engine === "V8" && typeof nc.rtt === "number" && nc.rtt !== 0 && nc.rtt % 25 !== 0)) out.push("tp_conn");
+    }
     if (R.osClaim) out.push("tp_os");
     // (noise in what canvas or audio read back, where the browser adds none of its own: an extension put it there)
     if (want === "V8" && name !== "Brave" && !navigator.brave && (R.pxNoise || R.auNoise)) out.push("tp_noise");

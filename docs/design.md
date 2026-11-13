@@ -169,6 +169,12 @@ What the others had that a page needed work for, and how who covers it now:
   the clock, so the tz check says the browser contradicts itself (`c_tz_self`, `bad`) whatever the address's zone is.
   That case gets its own fix tip (`tip_tz_self`): the system-settings one the other tz tips give cannot fix a
   rewritten Date.
+- 2026-11-13: `navigator.connection` is read like the rest of navigator. An anti-detect browser describes a phone's
+  network on a machine that has none, so the tamper check now asks whether `connection` and its getters are the
+  browser's own, and whether the values are ones the API can produce: `type` and `effectiveType` only from the spec's
+  lists, and in Chromium `rtt` in its 25 ms steps (`tp_conn`). Not judged from the values themselves: the browser's
+  own `rtt` is an estimate with a deliberately conservative bias, so it can sit far above the measured round trip
+  without anyone rewriting it, and a claim built on it would be wrong often.
 
 ## Wording
 
