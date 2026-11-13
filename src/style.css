@@ -323,7 +323,9 @@ html.shared #share, html[data-who-embed] #share { display: none; }
 .ck-btns { display: flex; justify-content: flex-end; gap: 2px; }
 .ck-btns button { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; padding: 0;
   border: 0; border-radius: 7px; background: none; color: var(--muted); cursor: pointer; transition: color .12s, background-color .12s; }
-.ck-btns button svg { width: 15px; height: 15px; }
+/* 1.5 is what the shell draws its own icons with (the flag of every page's 「报告问题」 among them): the same weight,
+   so the row's flag reads as the same button the visitor has met in the bar and the foot */
+.ck-btns button svg { width: 15px; height: 15px; stroke-width: 1.5; }
 .ck-btns button:hover, .ck-btns button:focus-visible { color: var(--ink); background: var(--soft); }
 .ck-btns button:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
 .ck-btns button:disabled { cursor: progress; }

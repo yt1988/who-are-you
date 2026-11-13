@@ -153,9 +153,11 @@ export async function build({ check = false } = {}) {
       // verdict, so they are drawn as icons at the row's right end rather than as the same two words eighteen times
       // (the owner, 2026-11-13). 怎么改 and the check's own test stay words, in a strip under the name, because they
       // say something: the strip keeps no height on a row that has neither
+      // (the flag is the shell's own, every 1ms.dog page's 「报告问题」: src/fragments.js FLAG in the shell repo — a
+      // visitor has already seen this mark mean "report", and a speech bubble of our own would be a second one)
       const ICON = {
         re: `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.4 8a5.4 5.4 0 1 1-1.6-3.8"/><path d="M13.6 2.6v3.2h-3.2"/></svg>`,
-        rp: `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3.1c3 0 5.4 1.9 5.4 4.4S11 11.9 8 11.9c-.8 0-1.5-.1-2.2-.4l-3.2 1.1 1-2.6c-.7-.7-1-1.5-1-2.5 0-2.5 2.4-4.4 5.4-4.4z"/></svg>`,
+        rp: `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 14.5V2.5M3.5 3h8.5l-1.8 3 1.8 3H3.5"/></svg>`,
       };
       const ckRows = (id, list) => `<ul class="ck" id="${id}">` + list.map(c => `<li class="ckr" data-c="${c}"><i class="st"></i><span class="ck-l">${esc(T("c_" + c))}</span><span class="ck-v"><i class="skl"></i></span>` +
         `<span class="ck-btns"><button class="ck-re" type="button" hidden aria-label="${esc(T("re_btn"))}" title="${esc(T("re_btn"))}">${ICON.re}</button>` +

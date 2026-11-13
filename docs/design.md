@@ -224,7 +224,9 @@ What the others had that a page needed work for, and how who covers it now:
   twelve a single check can be run again for, 反馈 on all eighteen — and the owner called the repetition out twice:
   too many of the same word, and the width it took ("if they stay like that it shows up again and again, and wastes
   the layout"). The two are the same sentence eighteen times, so they are the row's two small actions: a circular
-  arrow and a speech bubble at the row's right end, 24 px, muted until the row is pointed at. The column is a fixed
+  arrow and the shell's own flag — the mark every page's 「报告问题」 carries (`src/fragments.js` FLAG in the shell
+  repo; the owner asked for it, 2026-11-13, and a speech bubble of our own would be a second mark for one action),
+  drawn at the shell's 1.5 stroke, 24 px, muted until the row is pointed at. The column is a fixed
   50 px and not one that fits each row's icons, or the names and verdicts from row to row would each start at their
   own x — the same misalignment in a different place. 重测 shows on every row it can run on, whatever the check found
   (it says nothing about the verdict, and a fine row is exactly where a visitor wants to check again after changing
