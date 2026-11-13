@@ -300,7 +300,7 @@ html.shared #share, html[data-who-embed] #share { display: none; }
 .ck { list-style: none; margin: 0; padding: 0; }
 /* the row's four columns are the same in every row (a fixed width for the icons, not one that fits each row's two or
    one or no icons), so names, verdicts and icons line up down the list instead of each row finding its own widths */
-.ckr { position: relative; display: grid; grid-template-columns: 18px minmax(0, 9fr) minmax(0, 13fr) 50px; gap: 0 10px; align-items: center; min-height: 44px; padding: 4px 0; border-top: 1px solid var(--line); font-size: 13px; }
+.ckr { position: relative; display: grid; grid-template-columns: 18px minmax(0, 9fr) minmax(0, 13fr) 24px; gap: 0 10px; align-items: center; min-height: 44px; padding: 4px 0; border-top: 1px solid var(--line); font-size: 13px; }
 .ck-l { font-weight: 600; }
 /* "how to fix" under a check that gives you away, and the tip it opens across the whole row */
 /* the row's controls: one strip across the whole row, under the name and the verdict. In the name's column they wrapped
@@ -316,11 +316,10 @@ html.shared #share, html[data-who-embed] #share { display: none; }
 .ck-fix::after { content: " ▾"; font-size: 9px; }
 .ck-fix[aria-expanded="true"]::after { content: " ▴"; }
 .ck-fix:hover { text-decoration: underline; }
-/* 重测 and 反馈: the two things asked of nearly every row. Spelled out on every line they read as a column of their own
-   and took the width a verdict needs, so they are drawn as two small icons at the row's right end instead — 重测 on
-   every row it can run, 反馈 on every row that has a verdict. Quiet until the row is pointed at, and the label of each
-   is its accessible name and its tooltip */
-.ck-btns { display: flex; justify-content: flex-end; gap: 2px; }
+/* 反馈 is on every row that has a verdict. Spelled out on every line it read as a column of its own and took the width
+   a verdict needs, so it is drawn as a small icon at the row's right end instead, quiet until the row is pointed at;
+   its label is its accessible name and its tooltip */
+.ck-btns { display: flex; justify-content: flex-end; }
 .ck-btns button { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; padding: 0;
   border: 0; border-radius: 7px; background: none; color: var(--muted); cursor: pointer; transition: color .12s, background-color .12s; }
 /* 1.5 is what the shell draws its own icons with (the flag of every page's 「报告问题」 among them): the same weight,
@@ -328,12 +327,6 @@ html.shared #share, html[data-who-embed] #share { display: none; }
 .ck-btns button svg { width: 15px; height: 15px; stroke-width: 1.5; }
 .ck-btns button:hover, .ck-btns button:focus-visible { color: var(--ink); background: var(--soft); }
 .ck-btns button:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
-.ck-btns button:disabled { cursor: progress; }
-/* a check running again: its icon turns while it runs, so the row itself says what it is waiting for */
-.ck-btns button.busy svg { animation: spinturn .9s linear infinite; }
-.ck-btns button.busy { color: var(--ink); }
-@keyframes spinturn { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { .ck-btns button.busy svg { animation: none; opacity: .6; } }
 /* on a screen with a pointer, 反馈 waits for the row to be pointed at (or the keyboard to reach the row): opacity, not
    visibility, so Tab still finds it and it shows itself when it does. A touch screen has no hover, so there it is out */
 @media (hover: hover) and (pointer: fine) {
@@ -348,8 +341,6 @@ html.shared #share, html[data-who-embed] #share { display: none; }
 /* what a bid request would carry, built from the readings and sent nowhere */
 .adp-j { margin: 8px 0 0; padding: 10px 12px; max-height: 340px; overflow: auto; border: 1px solid var(--line); border-radius: 8px;
   background: var(--soft); font: 11px/1.55 var(--f-num); white-space: pre; tab-size: 2; }
-.ckr.re-done { animation: reDone 1.2s ease-out; }
-@keyframes reDone { from { background: var(--ink-soft); } to { background: transparent; } }
 /* the scene: pass as someone elsewhere (every check) or only privacy; the checks it leaves out are dimmed */
 .scene { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; font-size: 12.5px; }
 .scene-l { color: var(--muted); margin-right: 2px; }
@@ -380,7 +371,7 @@ html.shared .scene, html[data-who-embed] .scene { display: none; }
   .todo b { white-space: normal; }
   .todo span { white-space: normal; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
 }
-html.shared .todo, html[data-who-embed] .todo, html.shared .ck-re { display: none; }
+html.shared .todo, html[data-who-embed] .todo { display: none; }
 .ck-tip { grid-column: 1 / -1; margin: 6px 0 4px 28px; padding: 8px 12px 8px 26px; border-radius: 10px; background: var(--panel); border: 1px solid var(--line); font-size: 12.5px; line-height: 1.6; color: var(--fg); }
 .ck-tip li::marker { color: var(--ink); }
 /* two lines at most, so a long network name doesn't make the row taller; the whole text is on hover */
@@ -557,7 +548,7 @@ html.shared .todo, html[data-who-embed] .todo, html.shared .ck-re { display: non
 }
 /* a tablet has the two icons out at all times on every row, so the column is wide enough for both at a finger's size;
    (a phone stacks the verdict under the name instead — see the narrow-screen rule above) */
-@media (pointer: coarse) and (min-width: 721px) { .ckr { grid-template-columns: 18px minmax(0, 9fr) minmax(0, 13fr) 66px; } }
+@media (pointer: coarse) and (min-width: 721px) { .ckr { grid-template-columns: 18px minmax(0, 9fr) minmax(0, 13fr) 32px; } }
 @media (max-width: 420px) {
   .bar .btn span { display: none; }
   .bar .btn { padding: 0 10px; }

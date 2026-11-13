@@ -2145,10 +2145,22 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     box.querySelector("ul").innerHTML = CK[id].querySelector(".ck-tip").innerHTML;
     box.hidden = R.ck[id][0] !== "bad" && R.ck[id][0] !== "warn";
   }
-  // The strip under a check holds 怎么改 and the check's own test; 重测 and 反馈 are icons at the row's right end, off the
-  // strip. A row with neither of the strip's two keeps no strip (its height goes to zero): the empty line under every
-  // fine row was what read as a broken layout (see style.css).
+  // The strip under a check holds 怎么改 and the check's own test; 反馈 is an icon at the row's right end, off the strip.
+  // A row with neither of the strip's two keeps no strip (its height goes to zero): the empty line under every fine row
+  // was what read as a broken layout (see style.css).
   const actsVoid = r => { const a = r.querySelector(".ck-acts"); if (a) a.classList.toggle("void", [...a.children].every(x => x.hidden)); };
+  // A row with nothing to say yet: no verdict (the ruler that held its place on the last run), no mark, no 怎么改, no
+  // tip, no 反馈 — and its strip gone with them, so a run never shows the numbers it is about to replace.
+  const clearRow = r => {
+    const off = r.classList.contains("off");
+    r.className = "ckr"; if (off) r.classList.add("off");
+    delete r.dataset.why;
+    r.querySelector(".ck-v").innerHTML = '<i class="skl"></i>'; r.querySelector(".st").textContent = "";
+    r.querySelector(".ck-fix").hidden = true; r.querySelector(".ck-tip").hidden = true;
+    const go = r.querySelector(".ck-go"); if (go) go.hidden = true;
+    const rp = r.querySelector(".ck-rp"); if (rp) { rp.hidden = true; rp.removeAttribute("data-ms-report"); }
+    actsVoid(r);
+  };
   function paintChecks(res, ipc, final) {
     let bad = 0, warn = 0;
     for (const id of [...CHECKS, ...PROTO]) {
@@ -2169,9 +2181,6 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
       }
       // a check that gives you away says how to fix it
       r.querySelector(".ck-fix").hidden = lv !== "bad" && lv !== "warn";
-      // 重测 says nothing about the verdict: it is one of the two things every row is asked for (重测, 反馈), and a row
-      // it can be run on shows it as soon as the run is over, whatever the check found
-      const re = r.querySelector(".ck-re"); if (re) re.hidden = !final;
       const go = r.querySelector(".ck-go");
       if (go) {
         // only when the check gives you away
@@ -2232,35 +2241,6 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     tip.hidden = false; fix.setAttribute("aria-expanded", "true");
     r.scrollIntoView({ block: "center", behavior: "smooth" });
   };
-  // Checking one again: the readings a check rests on, taken again without reloading (a time zone, DNS or proxy change
-  // shows at once). Checks that rest on what the page read as it loaded (a rewritten environment) need the whole test
-  const RETEST = { tz: [locale], lang: [locale], syslang: [fonts, voices, keyboard], dns: [dnsResolver], split: [server, exits], webrtc: [webrtc],
-    rtt: [server, latency], dc: [server], conn: [probe],
-    // (the protocol checks come from the TLS this page got and the browser's own choice of HTTP/3: the key exchange
-    // and ECH are read again from the edge's trace after a proxy or network change, and what the browser did needs
-    // the page reloaded)
-    pq: [trace], ech: [trace], warp: [trace] };
-  $$(".ck-re").forEach(btn => {
-    const id = btn.closest(".ckr").dataset.c;
-    if (!RETEST[id]) return btn.remove();
-    // an icon has room for no words, so while the check runs its arrow turns and the two labels say 正在重测 for a
-    // screen reader and on hover; a second click while it runs is ignored, not queued
-    const on = () => { btn.setAttribute("aria-label", t("re_btn")); btn.title = t("re_btn"); };
-    btn.onclick = async e => {
-      e.stopPropagation();
-      if (btn.disabled) return;
-      btn.disabled = true; btn.classList.add("busy");
-      btn.setAttribute("aria-label", t("re_wait")); btn.title = t("re_wait");
-      try {
-        for (const f of RETEST[id]) { try { await f(); } catch (x) {} }
-        if (id === "rtt") R.latDone = true;
-        judge(true); readings(portrait(), R.ck); paintTarget(); osTips(); todo();
-      } finally {
-        btn.disabled = false; btn.classList.remove("busy"); on();
-      }
-      const r = CK[id]; r.classList.remove("re-done"); void r.offsetWidth; r.classList.add("re-done");
-    };
-  });
   // Phones: the verdict (count, grade, share) right under the title, the portrait from its first paragraph, the
   // sniffer groups folded to their headings but the first; a wider window puts everything back
   const PHONE = matchMedia("(max-width: 720px)"), meter = $(".meter"), meterHome = meter.parentNode, meterNext = meter.nextElementSibling;
@@ -2479,9 +2459,9 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
   // connection, from the moment it was sent to the first byte back
   async function latency() {
     const t = [];
-    // every run asks for URLs of its own: Resource Timing keeps the entries of the first run too, and with the same
-    // URLs getEntriesByName(u)[0] answered with the first run's timing for ever after — 「重测这一项」 on this row
-    // repeated the old numbers (1ms-shell #113). The stamp makes the entry of this run the only one for its URL
+    // every run asks for URLs of its own: Resource Timing keeps the entries of the run before too, and with the same
+    // URLs getEntriesByName(u)[0] answered with the first run's timing for ever after — a second run of the whole test
+    // repeated the old round trip (1ms-shell #113). The stamp makes this run's entry the only one for its URL
     const run = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
     for (let i = 0; i < 5; i++) {
       const u = new URL("/cdn-cgi/trace?rtt=" + i + "&n=" + run, location.href).href;
@@ -2662,13 +2642,7 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     // the paragraph shows at once, its blanks as placeholders that fill in place
     $("#story").classList.add("wait"); $("#storySk").hidden = false;
     for (const b of Object.values(BL)) { b.classList.add("wait"); b.innerHTML = BL0[b.dataset.b]; delete b.dataset.why; b.removeAttribute("tabindex"); }
-    for (const r of Object.values(CK)) {
-      r.className = "ckr"; delete r.dataset.why; r.querySelector(".ck-v").innerHTML = '<i class="skl"></i>'; r.querySelector(".st").textContent = "";
-      r.querySelector(".ck-fix").hidden = true; r.querySelector(".ck-tip").hidden = true;
-      const go = r.querySelector(".ck-go"); if (go) go.hidden = true;
-      const re = r.querySelector(".ck-re"); if (re) re.hidden = true;
-      actsVoid(r);
-    }
+    for (const r of Object.values(CK)) clearRow(r);
     $("#todo").hidden = false; $("#todoL").innerHTML = TODO_SK;
     $("#vHead").textContent = t("checking"); $("#vHead").className = "v-h";
     $("#mNum").textContent = "–"; $("#mNum").className = "m-num"; $$("#segs i").forEach(i => { i.className = ""; });

@@ -79,7 +79,7 @@ for (const [lang, slug] of langs) {
     await page.goto(`${base}/${slug ? slug + "/" : ""}${path}`);
     await page.waitForFunction(() => !document.querySelector("#rerun") || !document.querySelector("#rerun").disabled, { timeout: 30000 }).catch(() => {});
     // the topic pages hold a focus panel with its own "check again"; the main page's rows open their fix with a tap
-    await page.evaluate(() => { for (const b of document.querySelectorAll(".ck-fix, .ck-re")) b.hidden = false; });
+    await page.evaluate(() => { for (const b of document.querySelectorAll(".ck-fix, .ck-rp")) b.hidden = false; });
     await new Promise(r => setTimeout(r, 150));
     const small = await page.evaluate(scan);
     for (const e of errors) { console.log(`  ✖ ${lang}/${slug || "(main)"}/ ${what}: script error ${e}`); bad++; }

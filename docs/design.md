@@ -199,7 +199,8 @@ What the others had that a page needed work for, and how who covers it now:
 - 2026-11-13: the row-level 「Check this again」 now covers the protocol rows too: the post-quantum, ECH and WARP
   verdicts re-read the edge's trace, so switching a proxy and re-checking shows the new answer without a reload. The
   rows that rest on what the page read as it loaded (the request's headers, the environment's fingerprints, the
-  browser's own choice of HTTP/3) still need a reload, and offer no button.
+  browser's own choice of HTTP/3) needed a reload, and offered no button. (The row-level button was dropped the same
+  day — the owner: not worth a control; see the entry below.)
 - 2026-11-13: a paragraph is never held taller than its words. Each paragraph used to be pinned at the height it had
   while its blanks waited — a line or so more than the filled text — so filling moved nothing under it, and the pin
   stayed after the run: on a wide screen that leftover was blank space under every paragraph, until a resize cleared
@@ -220,23 +221,23 @@ What the others had that a page needed work for, and how who covers it now:
   The strip is one line (怎么改 · the check's own test) and its height goes to zero on a row that has neither. The
   price is the one the earlier design paid the strip's height for: a row grows by that line when a verdict — and with
   it a fix — turns up at the end of a run.
-- 2026-11-13: 「重测」 and 「反馈」 are icons, not words. Spelled out they were on nearly every row — 重测 on the
-  twelve a single check can be run again for, 反馈 on all eighteen — and the owner called the repetition out twice:
-  too many of the same word, and the width it took ("if they stay like that it shows up again and again, and wastes
-  the layout"). The two are the same sentence eighteen times, so they are the row's two small actions: a circular
-  arrow and the shell's own flag — the mark every page's 「报告问题」 carries (`src/fragments.js` FLAG in the shell
-  repo; the owner asked for it, 2026-11-13, and a speech bubble of our own would be a second mark for one action),
-  drawn at the shell's 1.5 stroke, 24 px, muted until the row is pointed at. The column is a fixed
-  50 px and not one that fits each row's icons, or the names and verdicts from row to row would each start at their
-  own x — the same misalignment in a different place. 重测 shows on every row it can run on, whatever the check found
-  (it says nothing about the verdict, and a fine row is exactly where a visitor wants to check again after changing
-  something). While it runs, its arrow turns and its label becomes 正在重测…, for the screen reader and the tooltip;
-  there is no room for words inside the icon. 反馈 still waits for the row to be pointed at or focused
-  (`:focus-within`, so the keyboard reaches it — opacity rather than visibility, which would take it out of the tab
-  order).
-- 2026-11-13: on a phone the verdict goes under the name, across the icons' column too. Three columns beside the dot
+- 2026-11-13: 「反馈」 is an icon, not a word. Spelled out it was on all eighteen rows — the owner called the
+  repetition out twice: too many of the same word, and the width it took ("if they stay like that it shows up again
+  and again, and wastes the layout"). It is the shell's own flag now, the mark every page's 「报告问题」 carries
+  (`src/fragments.js` FLAG in the shell repo; the owner asked for it, 2026-11-13 — a speech bubble of our own would
+  be a second mark for one action), drawn at the shell's 1.5 stroke in a 24 px button at the row's right end, muted
+  until the row is pointed at. The column is a fixed 24 px and not one that fits each row, or the names and verdicts
+  would each start at their own x from row to row — the same misalignment in a different place. It waits for the row
+  to be pointed at or focused (`:focus-within`, so the keyboard reaches it — opacity rather than visibility, which
+  would take it out of the tab order).
+- 2026-11-13: the per-row 「重测」 is gone, and with it its code. The owner, having seen it as an icon, decided the
+  re-check of one row is not worth a control ("this feature means little") and asked for it removed completely. What
+  it read — `RETEST`, the click handler, the busy arrow, the `re_btn` string in ten languages, `.ck-re`, the flash on
+  the row when it finished — is deleted; a re-check is the whole page's now (`重新测试`, which runs everything again).
+  `#113` stays fixed: the same stale Resource Timing entry came back on a second run of the whole test.
+- 2026-11-13: on a phone the verdict goes under the name, across the icon's column too. Three columns beside the dot
   left the name 74 px at 390: UA 和真实系统 broke into three lines and the rows came out anywhere from 44 to 129 px
-  tall, each a different shape. Name on the first line with the two icons at its right, verdict on the next line
+  tall, each a different shape. Name on the first line with the icon at its right, verdict on the next line
   across the rest of the width: two heights only, 65 px for a fine row and 82 or more for one with a fix. The verdict
   gives up the height it keeps for a second line on a phone (`min-height: 0`, it is not clamped there anyway): that
   line was blank under every short verdict. Nothing above moves when a row below the fold grows — the checks are

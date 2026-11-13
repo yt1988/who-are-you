@@ -149,19 +149,16 @@ export async function build({ check = false } = {}) {
 
       // the checks and every sniffer have their rows from the start; readings fill them in place
       // (the connection's protocols follow under their own heading, in the same rows)
-      // The row's two small actions — check this one again, and report it as wrong — are on every row that has a
-      // verdict, so they are drawn as icons at the row's right end rather than as the same two words eighteen times
-      // (the owner, 2026-11-13). 怎么改 and the check's own test stay words, in a strip under the name, because they
-      // say something: the strip keeps no height on a row that has neither
+      // 「反馈」 is on every row that has a verdict, so it is drawn as an icon at the row's right end rather than as the
+      // same words eighteen times (the owner, 2026-11-13). 怎么改 and the check's own test stay words, in a strip under
+      // the name, because they say something: the strip keeps no height on a row that has neither
       // (the flag is the shell's own, every 1ms.dog page's 「报告问题」: src/fragments.js FLAG in the shell repo — a
       // visitor has already seen this mark mean "report", and a speech bubble of our own would be a second one)
       const ICON = {
-        re: `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.4 8a5.4 5.4 0 1 1-1.6-3.8"/><path d="M13.6 2.6v3.2h-3.2"/></svg>`,
         rp: `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 14.5V2.5M3.5 3h8.5l-1.8 3 1.8 3H3.5"/></svg>`,
       };
       const ckRows = (id, list) => `<ul class="ck" id="${id}">` + list.map(c => `<li class="ckr" data-c="${c}"><i class="st"></i><span class="ck-l">${esc(T("c_" + c))}</span><span class="ck-v"><i class="skl"></i></span>` +
-        `<span class="ck-btns"><button class="ck-re" type="button" hidden aria-label="${esc(T("re_btn"))}" title="${esc(T("re_btn"))}">${ICON.re}</button>` +
-        `<button class="ck-rp" type="button" hidden aria-label="${esc(T("rp_btn"))}" title="${esc(T("rp_btn"))}">${ICON.rp}</button></span>` +
+        `<span class="ck-btns"><button class="ck-rp" type="button" hidden aria-label="${esc(T("rp_btn"))}" title="${esc(T("rp_btn"))}">${ICON.rp}</button></span>` +
         `<span class="ck-acts"><button class="ck-fix" type="button" aria-expanded="false" hidden>${esc(T("fix"))}</button>` +
         (GO[c] ? `<a class="ck-go" target="_blank" rel="noopener" hidden>${esc(T("go_" + GO[c]))}${EXT}</a>` : "") +
         `</span>` +
