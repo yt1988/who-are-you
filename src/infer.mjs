@@ -150,6 +150,21 @@ export function gpuOS(r) {
   if (/Adreno|Mali|PowerVR|Xclipse|Maleoon/.test(r)) return "Android";
   return null;
 }
+// A machine that is ARM by its system or by its graphics card, whose browser still says x86 or Win32. HarmonyOS and
+// Android tablets are ARM, and ArkWeb / Android browsers copy the user agent's Windows compatibility segment
+// ("Windows NT 10.0; Win64; x64") into navigator.platform — and some builds repeat it in the client hints'
+// architecture — so the browser answers for the machine it pretends to be, not the one it runs on
+// (1ms-shell #114: a Huawei tablet's CPU architecture read as x86). Mali, Maleoon, Adreno, Immortalis,
+// Xclipse and PowerVR are ARM-based GPU families
+const ARM_OS = /^(HarmonyOS|OpenHarmony|Android|iOS|iPadOS)/i;
+const ARM_GPU = /Maleoon|Mali|Adreno|Immortalis|Xclipse|PowerVR|Bifrost|Midgard/i;
+const X86_SAY = /^(x86|x64|ia32|amd64|Win32|Win64|WOW64)$/i;
+export const armGpu = gpu => ARM_GPU.test(gpu || "");
+export function armSay({ arch, platform, gpu, os }) {
+  if (!ARM_OS.test(os || "") && !armGpu(gpu)) return null;
+  const said = [arch, platform].map(v => String(v == null ? "" : v).trim()).find(v => X86_SAY.test(v));
+  return said ? { said } : null;
+}
 
 // keyboard layout from navigator.keyboard.getLayoutMap(): a Map of key codes to the characters they type
 export function kbdLayout(map) {
@@ -576,6 +591,8 @@ export function engineRange(has) {
 // a Chromium user agent's version against that range (a feature missing below one present is itself a sign)
 export const engineOff = (claimed, r) => !!(claimed && r && (claimed < r.lo || (r.hi != null && (claimed > r.hi || r.hi < r.lo))));
 // navigator.platform against the system the user agent names
+// (HarmonyOS is left out on purpose: its browsers report Win32 on every device, so that alone would mark a whole system
+// as tampered — what the row says instead is armSay's job, #114)
 export function platformOff(platform, os) {
   if (!platform || !os || /Harmony/i.test(os)) return false;
   const want = /^Windows/.test(os) ? /^Win/ : /^macOS/.test(os) ? /^Mac/ : /^(iOS|iPadOS)/.test(os) ? /^(iPhone|iPad|iPod|MacIntel)/ : /^(Android|Linux|Chrome ?OS)/i.test(os) ? /Linux|Android|arm|aarch|X11|CrOS/i : null;

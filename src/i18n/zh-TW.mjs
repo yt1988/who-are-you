@@ -208,7 +208,7 @@ export default {
   s_ch: "Client Hints", s_form: "裝置形態", s_gamepad: "遊戲手把", s_xr: "VR / AR", s_auto: "自動化痕跡", s_idstr: "身分字串",
   tp_id: "瀏覽器自稱的身分和 vendor / productSub 對不上", tp_ch: "請求裡的 Client Hints 和頁面裡讀到的不一致",
   c_bot_headless: "有無頭瀏覽器的痕跡：這個瀏覽器像是腳本或 AI 在驅動", c_bot_cdp: "頁面裡有瀏覽器驅動注入的變數：這個瀏覽器像是腳本或 AI 在驅動",
-  arch_32: "32 位元瀏覽器", aud_lat: "延遲 {l} ms", a11y_slow: "慢速更新（電子墨水）", dm_folded: "折疊狀態", gamut_hdrv: "HDR 影片",
+  arch_32: "32 位元瀏覽器", arch_off: "{a}（瀏覽器報的是 {said}，與這台裝置不符）", aud_lat: "延遲 {l} ms", a11y_slow: "慢速更新（電子墨水）", dm_folded: "折疊狀態", gamut_hdrv: "HDR 影片",
   touch_hybrid: "觸控螢幕 + 滑鼠", ptr_pen: "觸控筆",
   xr_none: "沒有 VR 或 AR 裝置", xr_why: "網站可以問瀏覽器能不能顯示 VR 或 AR。不用授權、也不會啟動頭戴裝置：只告訴你這裡有沒有可用的裝置。",
   gp_btn: "按一下手把上的按鍵", gp_wait: "按一下手把上的按鍵…", gp_none: "沒有手把回應", gp_v: "{id} · {b} 個按鍵 · {a} 個搖桿",

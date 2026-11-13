@@ -209,7 +209,7 @@ export default {
   tp_id: "브라우저가 밝히는 종류와 vendor / productSub가 맞지 않아요", tp_ch: "요청의 Client Hints와 페이지의 값이 다르게 읽혔어요",
   c_bot_headless: "헤드리스 브라우저의 흔적이 있어요. 스크립트나 AI가 조작하는 브라우저일 수 있어요",
   c_bot_cdp: "브라우저 자동화 도구가 넣은 변수가 페이지에 있어요. 스크립트나 AI가 조작하는 브라우저일 수 있어요",
-  arch_32: "32비트 브라우저", aud_lat: "지연 {l} ms", a11y_slow: "느린 화면 갱신(전자 잉크)", dm_folded: "접힌 상태", gamut_hdrv: "HDR 영상",
+  arch_32: "32비트 브라우저", arch_off: "{a}（브라우저가 보고한 값은 {said}, 이 기기와 맞지 않음）", aud_lat: "지연 {l} ms", a11y_slow: "느린 화면 갱신(전자 잉크)", dm_folded: "접힌 상태", gamut_hdrv: "HDR 영상",
   touch_hybrid: "터치스크린과 마우스", ptr_pen: "펜",
   xr_none: "VR이나 AR 기기가 없어요", xr_why: "사이트는 이 브라우저가 VR이나 AR을 표시할 수 있는지 물어볼 수 있어요. 권한은 필요 없고 헤드셋도 켜지 않아요. 여기에서 쓸 수 있는 기기가 있는지만 알려 줍니다.",
   gp_btn: "컨트롤러의 버튼을 누르세요", gp_wait: "컨트롤러의 버튼을 눌러 주세요…", gp_none: "컨트롤러가 응답하지 않아요", gp_v: "{id} · 버튼 {b}개 · 스틱 {a}개",

@@ -7,7 +7,7 @@ import { GROUPS, SNIFFERS, BLANKS, CHECKS, PROTO, COUNTED, TODO_SK } from "./sni
 import { TRAITS, rarity, MIN_TOTAL, durOf, STUCK_MS } from "./traits.mjs";
 import { TW, flagCode } from "./regions.mjs";
 import { encode, decode, linkPath, parsePath } from "./share.mjs";
-import { nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, tzCC, langCC, sysLangs, SYS_FONT_LIST, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, isIntegratedGpu, discreteGpu, isRelayIp, rfpClock, idLies, FEATURES, engineRange, engineOff, platformOff, glVendorOff, tunnelOf, macOf, v6Type } from "./infer.mjs";
+import { nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, tzCC, langCC, sysLangs, SYS_FONT_LIST, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, isIntegratedGpu, discreteGpu, isRelayIp, rfpClock, idLies, FEATURES, engineRange, engineOff, platformOff, glVendorOff, armSay, armGpu, tunnelOf, macOf, v6Type } from "./infer.mjs";
 import { wasmProbe, WASM_FEATURES } from "./wasm.mjs";
 import { TZ_CC } from "./tz.mjs";
 import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
@@ -394,7 +394,13 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     R.br = b;
     R.browser = [b.name, b.v].filter(Boolean).join(" ");
     txt("browser", R.browser || "–");
-    if (hi.architecture) txt("arch", t("arch_v", { a: hi.architecture, b: hi.bitness || "?" }) + (dv.model ? " · " + dv.model : "") + (hi.wow64 ? " · " + t("arch_32") : ""));
+    // The architecture the browser names, against the machine it runs on. An ArkWeb or Android browser answers from
+    // the user agent's Windows compatibility segment ("Win32", and "x86" in the hints) on an ARM tablet, which says
+    // nothing about the CPU (1ms-shell #114). The graphics card settles it when it can — Mali, Maleoon and
+    // Adreno are ARM — so the row says ARM when the card is one, and 未知 beside what the browser claimed otherwise
+    const say = armSay({ arch: hi.architecture, platform: navigator.platform, os: dv.os, gpu: R.gpuRaw });
+    if (say) txt("arch", t("arch_off", { a: armGpu(R.gpuRaw) ? "ARM" : t("v_unknown"), said: say.said }));
+    else if (hi.architecture) txt("arch", t("arch_v", { a: hi.architecture, b: hi.bitness || "?" }) + (dv.model ? " · " + dv.model : "") + (hi.wow64 ? " · " + t("arch_32") : ""));
     else if (navigator.platform) txt("arch", navigator.platform);
     else na("arch");
     // what the browser calls the device's form: Desktop, Mobile, Tablet, XR, Watch, EInk, Automotive (Chromium says)

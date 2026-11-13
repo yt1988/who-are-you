@@ -210,7 +210,7 @@ export default {
   tp_id: "the browser's vendor or productSub says it is not the browser it claims to be", tp_ch: "the request's Client Hints and the page's own values disagree",
   c_bot_headless: "Traces of a headless browser: this looks like a browser driven by a script or an AI agent",
   c_bot_cdp: "A browser driver's globals are in the page: this looks like a browser driven by a script or an AI agent",
-  arch_32: "32-bit browser", aud_lat: "latency {l} ms", a11y_slow: "slow updates (e-ink)", dm_folded: "folded", gamut_hdrv: "HDR video",
+  arch_32: "32-bit browser", arch_off: "{a} (the browser says {said}, which this device isn't)", aud_lat: "latency {l} ms", a11y_slow: "slow updates (e-ink)", dm_folded: "folded", gamut_hdrv: "HDR video",
   touch_hybrid: "touchscreen and a mouse", ptr_pen: "pen",
   xr_none: "no VR or AR device", xr_why: "A site can ask whether this browser could present VR or AR. No permission is asked and no headset is used: it only says whether one is available here.",
   gp_btn: "Press a button on a controller", gp_wait: "Press a button on the controller…", gp_none: "no controller answered", gp_v: "{id} · {b} buttons · {a} axes",

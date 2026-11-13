@@ -1,7 +1,7 @@
 // What the readings are taken to mean: system and browser, graphics card, keyboard, network, nationality, checks.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { macOf, v6Type, tunnelOf, langCC, nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, netOf, sysLangs, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, discreteGpu, isRelayIp, rfpClock, isIntegratedGpu, FEATURES, engineRange, engineOff, platformOff, glVendorOff, idLies } from "../src/infer.mjs";
+import { macOf, v6Type, tunnelOf, langCC, nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, netOf, sysLangs, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, discreteGpu, isRelayIp, rfpClock, isIntegratedGpu, FEATURES, engineRange, engineOff, platformOff, glVendorOff, idLies, armSay, armGpu } from "../src/infer.mjs";
 import { cleanSeen, rarity, durOf } from "../src/traits.mjs";
 import { regionName, flagCode } from "../src/regions.mjs";
 
@@ -79,6 +79,23 @@ test("browser and version", () => {
   assert.deepEqual(browser(WIN, [{ brand: "Chromium", version: "142" }, { brand: "Microsoft Edge", version: "142.0.1" }, { brand: "Not_A Brand", version: "99" }]), { name: "Edge", v: "142" });
   assert.deepEqual(browser(MAC_SAFARI), { name: "Safari", v: "18" });
   assert.deepEqual(browser(FIREFOX), { name: "Firefox", v: "144" });
+});
+
+test("a HarmonyOS tablet is not an x86 machine (#114)", () => {
+  // ArkWeb says Windows in the user agent to get the right pages, and the user agent's compatibility segment
+  // ("Windows NT 10.0; Win64; x64") comes back as navigator.platform "Win32" — and sometimes as the hints' architecture.
+  // The system alone could be an x86 emulator, so the reading waits for the graphics card: Mali, Maleoon and Adreno are
+  // ARM, and anything else leaves the row at 未知 beside what the browser claimed.
+  assert.deepEqual(armSay({ arch: "", platform: "Win32", os: "HarmonyOS 7.0", gpu: "Maleoon 920" }), { said: "Win32" });
+  assert.deepEqual(armSay({ arch: "x86", platform: "Win32", os: "HarmonyOS 7.0", gpu: null }), { said: "x86" });
+  assert.equal(armGpu("Maleoon 920"), true);
+  assert.equal(armGpu("ANGLE (Qualcomm, Adreno (TM) 740, OpenGL ES 3.2)"), true);
+  assert.equal(armGpu("ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Direct3D11 vs_5_0 ps_5_0, D3D11)"), false);
+  // a Windows machine saying x86 is a Windows machine, and an Android that already says ARM is no contradiction
+  assert.equal(armSay({ arch: "x86", platform: "Win32", os: "Windows 11", gpu: "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Direct3D11 vs_5_0 ps_5_0, D3D11)" }), null);
+  assert.equal(armSay({ arch: "arm", platform: "Linux armv8l", os: "Android 14", gpu: "Adreno (TM) 740" }), null);
+  // and the tamper check stays quiet on HarmonyOS: every one of its browsers says Win32
+  assert.equal(platformOff("Win32", "HarmonyOS 7.0"), false);
 });
 
 test("graphics card names and the system they give away", () => {
@@ -208,6 +225,17 @@ test("disguise checks", () => {
   assert.equal(platformOff("MacIntel", "Windows 11"), true);
   assert.equal(platformOff("MacIntel", "iPadOS 18"), false);
   assert.equal(platformOff("Linux armv81", "Android 14"), false);
+  // #114: a HarmonyOS tablet's browser answers for the Windows machine its user agent names. The system alone could be
+  // an x86 emulator, so nothing is claimed until the graphics card settles it; a card that is ARM does
+  assert.deepEqual(armSay({ arch: "", platform: "Win32", os: "HarmonyOS 7.0", gpu: "Maleoon 920" }), { said: "Win32" });
+  assert.deepEqual(armSay({ arch: "x86", platform: "Win32", os: "HarmonyOS 7.0", gpu: null }), { said: "x86" });
+  assert.equal(armGpu("Maleoon 920"), true);
+  assert.equal(armGpu("ANGLE (Qualcomm, Adreno (TM) 740, OpenGL ES 3.2)"), true);
+  assert.equal(armGpu("ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Direct3D11 vs_5_0 ps_5_0, D3D11)"), false);
+  assert.equal(armSay({ arch: "x86", platform: "Win32", os: "Windows 11", gpu: "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Direct3D11 vs_5_0 ps_5_0, D3D11)" }), null);
+  assert.equal(armSay({ arch: "arm", platform: "Linux armv8l", os: "Android 14", gpu: "Adreno (TM) 740" }), null);
+  // the tamper check stays quiet on HarmonyOS: every one of its browsers says Win32, so the row is where that is said
+  assert.equal(platformOff("Win32", "HarmonyOS 7.0"), false);
   assert.equal(glVendorOff("Google Inc. (NVIDIA)", "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Direct3D11 vs_5_0 ps_5_0, D3D11)"), false);
   assert.equal(glVendorOff("Google Inc. (AMD)", "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Direct3D11 vs_5_0 ps_5_0, D3D11)"), true);
   // the counter takes known traits and checks only, hashes as 8 hex characters

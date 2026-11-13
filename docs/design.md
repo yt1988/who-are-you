@@ -241,6 +241,16 @@ What the others had that a page needed work for, and how who covers it now:
   screenshot). `button.pa-go` drops the control's border, background and padding. Those rows also lay the link along
   the value's first line (`align-items: baseline`): given the value's whole height to stretch into, the words hung in
   the middle of a tall column.
+- 2026-11-13: the CPU architecture is read against the machine, not only from the browser. A Huawei tablet on
+  HarmonyOS 7.0 was reported as x86 (#114, the visitor's own report): ArkWeb copies the user agent's Windows
+  compatibility segment into `navigator.platform` ("Win32"), the client hints carried no architecture, and the row
+  took what the browser said — beside a Maleoon 920, an ARM card. `armSay` in `infer.mjs` recognizes the combination
+  (a machine that is ARM by its system — HarmonyOS, OpenHarmony, Android, iOS — or by its card, and a browser answering
+  x86, x64 or Win32), and the row names the card's answer instead: ARM when the renderer names Mali, Maleoon, Adreno,
+  Immortalis, Xclipse or PowerVR, and 未知 beside the browser's claim when the card says nothing — "ARM（浏览器报的是
+  Win32，与这台设备不符）". The system alone never claims ARM: an x86 Android emulator exists, so the card decides.
+  The tamper check keeps its HarmonyOS exemption on purpose: every HarmonyOS browser reports Win32, so counting that
+  as a contradiction would mark a whole system as tampered; the arch row is where the contradiction is said.
 - 2026-11-13: on a phone the verdict goes under the name, across the icon's column too. Three columns beside the dot
   left the name 74 px at 390: UA 和真实系统 broke into three lines and the rows came out anywhere from 44 to 129 px
   tall, each a different shape. Name on the first line with the icon at its right, verdict on the next line

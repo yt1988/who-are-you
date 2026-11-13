@@ -209,7 +209,7 @@ export default {
   tp_id: "le vendor ou le productSub du navigateur ne correspond pas au navigateur qu'il prétend être", tp_ch: "les Client Hints de la requête et les valeurs de la page ne concordent pas",
   c_bot_headless: "Des traces de navigateur headless : ce navigateur semble piloté par un script ou une IA",
   c_bot_cdp: "Des variables injectées par un pilote de navigateur : ce navigateur semble piloté par un script ou une IA",
-  arch_32: "navigateur 32 bits", aud_lat: "latence {l} ms", a11y_slow: "rafraîchissement lent (encre électronique)", dm_folded: "plié", gamut_hdrv: "vidéo HDR",
+  arch_32: "navigateur 32 bits", arch_off: "{a} (le navigateur annonce {said}, ce que cet appareil n'est pas)", aud_lat: "latence {l} ms", a11y_slow: "rafraîchissement lent (encre électronique)", dm_folded: "plié", gamut_hdrv: "vidéo HDR",
   touch_hybrid: "écran tactile et souris", ptr_pen: "stylet",
   xr_none: "aucun appareil VR ou AR", xr_why: "Un site peut demander si ce navigateur peut afficher de la VR ou de l'AR. Aucune autorisation n'est demandée et aucun casque n'est allumé : cela dit seulement s'il y en a un ici.",
   gp_btn: "Appuyez sur un bouton de la manette", gp_wait: "Appuyez sur un bouton de la manette…", gp_none: "aucune manette n'a répondu", gp_v: "{id} · {b} boutons · {a} axes",

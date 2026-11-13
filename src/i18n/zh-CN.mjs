@@ -208,7 +208,7 @@ export default {
   s_ch: "Client Hints", s_form: "设备形态", s_gamepad: "游戏手柄", s_xr: "VR / AR", s_auto: "自动化痕迹", s_idstr: "身份字符串",
   tp_id: "浏览器自称的身份和 vendor / productSub 对不上", tp_ch: "请求里的 Client Hints 和页面里读到的不一致",
   c_bot_headless: "有无头浏览器的痕迹：这个浏览器像是脚本或 AI 在驱动", c_bot_cdp: "页面里有浏览器驱动注入的变量：这个浏览器像是脚本或 AI 在驱动",
-  arch_32: "32 位浏览器", aud_lat: "延迟 {l} ms", a11y_slow: "慢刷新（电子墨水）", dm_folded: "折叠状态", gamut_hdrv: "HDR 视频",
+  arch_32: "32 位浏览器", arch_off: "{a}（浏览器报的是 {said}，与这台设备不符）", aud_lat: "延迟 {l} ms", a11y_slow: "慢刷新（电子墨水）", dm_folded: "折叠状态", gamut_hdrv: "HDR 视频",
   touch_hybrid: "触屏 + 鼠标", ptr_pen: "笔",
   xr_none: "没有 VR 或 AR 设备", xr_why: "网站可以问浏览器能不能显示 VR 或 AR。不用授权、也不会启动头显：只是告诉你这里有没有可用的设备。",
   gp_btn: "按一下手柄上的按键", gp_wait: "按一下手柄上的按键…", gp_none: "没有手柄应答", gp_v: "{id} · {b} 个按键 · {a} 个摇杆",

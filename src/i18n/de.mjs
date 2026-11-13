@@ -209,7 +209,7 @@ export default {
   tp_id: "vendor oder productSub des Browsers passen nicht zu dem Browser, den er vorgibt zu sein", tp_ch: "die Client Hints der Anfrage und die Werte der Seite stimmen nicht überein",
   c_bot_headless: "Spuren eines Headless-Browsers: dieser Browser wirkt von einem Skript oder einer KI gesteuert",
   c_bot_cdp: "Von einem Browser-Treiber eingeschleuste Variablen: dieser Browser wirkt von einem Skript oder einer KI gesteuert",
-  arch_32: "32-Bit-Browser", aud_lat: "Latenz {l} ms", a11y_slow: "langsame Aktualisierung (E-Ink)", dm_folded: "gefaltet", gamut_hdrv: "HDR-Video",
+  arch_32: "32-Bit-Browser", arch_off: "{a} (der Browser meldet {said} — das ist dieses Gerät nicht)", aud_lat: "Latenz {l} ms", a11y_slow: "langsame Aktualisierung (E-Ink)", dm_folded: "gefaltet", gamut_hdrv: "HDR-Video",
   touch_hybrid: "Touchscreen und Maus", ptr_pen: "Stift",
   xr_none: "kein VR- oder AR-Gerät", xr_why: "Eine Website kann fragen, ob dieser Browser VR oder AR anzeigen könnte. Es wird keine Berechtigung verlangt und kein Headset gestartet: Sie erfahren nur, ob hier eines verfügbar ist.",
   gp_btn: "Taste am Controller drücken", gp_wait: "Bitte eine Taste am Controller drücken…", gp_none: "kein Controller hat geantwortet", gp_v: "{id} · {b} Tasten · {a} Achsen",

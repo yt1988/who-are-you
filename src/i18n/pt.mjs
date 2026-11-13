@@ -209,7 +209,7 @@ export default {
   tp_id: "o vendor ou o productSub do navegador não batem com o navegador que ele diz ser", tp_ch: "os Client Hints da requisição e os valores da página não batem",
   c_bot_headless: "Há vestígios de navegador headless: parece um navegador controlado por script ou IA",
   c_bot_cdp: "Há variáveis injetadas por um driver de navegador: parece um navegador controlado por script ou IA",
-  arch_32: "navegador de 32 bits", aud_lat: "latência {l} ms", a11y_slow: "atualização lenta (tinta eletrônica)", dm_folded: "dobrado", gamut_hdrv: "vídeo HDR",
+  arch_32: "navegador de 32 bits", arch_off: "{a} (o navegador diz {said}, o que não é este aparelho)", aud_lat: "latência {l} ms", a11y_slow: "atualização lenta (tinta eletrônica)", dm_folded: "dobrado", gamut_hdrv: "vídeo HDR",
   touch_hybrid: "tela sensível ao toque e mouse", ptr_pen: "caneta",
   xr_none: "nenhum aparelho VR ou AR", xr_why: "Um site pode perguntar se este navegador consegue mostrar VR ou AR. Não pede permissão e não liga nenhum headset: só diz se há um disponível aqui.",
   gp_btn: "Aperte um botão do controle", gp_wait: "Aperte um botão do controle…", gp_none: "nenhum controle respondeu", gp_v: "{id} · {b} botões · {a} eixos",
