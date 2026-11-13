@@ -189,6 +189,11 @@ What the others had that a page needed work for, and how who covers it now:
   sentence, the checklist and the dns-leak page's visible copy now use the glossary's word (DNS resolver ·
   解析器 · DNS リゾルバー · DNS 리졸버 · resolvedor DNS · résolveur DNS · DNS-Resolver · DNS-резолвер). The page's
   `seo_*` fields keep the word people search for, and a name server (ip-api's own) stays a サーバー / server.
+- 2026-11-13: the comparison card says when it is probably the same machine. The audit's idea was to compare the
+  hardware ID, but a shared link deliberately carries no fingerprint (no `hw`, no `fp`; the smoke test checks it), so
+  the card uses what the link does carry: the same screen and the same system with a different browser, worded as a
+  possibility ("if these are your own two browsers…"). A friend's identical laptop matches the same way, which is why
+  the sentence does not claim it.
 
 ## Wording
 

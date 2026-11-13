@@ -1958,7 +1958,11 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
       ["vs_grade", X => X === Q ? gQ.grade : gP.grade], ["vs_found", X => String(found(X))]];
     const rows = F.map(([k, f]) => [k, f(P) || "–", f(Q) || "–"]).filter(([, a, b]) => a !== "–" || b !== "–");
     const same = rows.filter(([, a, b]) => a === b).length;
-    $("#vsN").textContent = t("vs_n", { n: same, m: rows.length });
+    // The same screen and the same system, but another browser: most likely one computer with two browsers, and what
+    // differs below is the browser's own doing. (Not the hardware ID: a shared link carries no fingerprint, so the
+    // comparison rests on what it does carry — the screen, the system and the browser's name.)
+    const hwSame = !!Q.os && Q.os === P.os && !!Q.screen && Q.screen === P.screen && !!Q.browser && Q.browser !== P.browser;
+    $("#vsN").textContent = (hwSame ? t("vs_samehw") + " · " : "") + t("vs_n", { n: same, m: rows.length });
     $("#vsT").innerHTML = `<thead><tr><th></th><th>${esc(t("vs_me"))}</th><th>${esc(t("vs_them"))}</th><td class="mk"></td></tr></thead><tbody>` +
       rows.map(([k, a, b]) => `<tr class="${a === b ? "same" : ""}"><th>${esc(k.startsWith("s_") ? t(k) : t(k))}</th><td>${esc(a)}</td><td>${esc(b)}</td><td class="mk">${a === b ? "=" : "≠"}</td></tr>`).join("") + "</tbody>";
     $("#vs").hidden = false;
