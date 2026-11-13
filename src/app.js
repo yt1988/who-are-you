@@ -2629,6 +2629,24 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
   }
   const sharedCode = (parsePath(location.pathname) || {}).code || (/^#p=/.test(location.hash) ? location.hash.slice(3) : null);
 
+  // The paragraph is held at the height it had while its blanks waited, so filling them moves nothing under it. That
+  // height is a line or so taller than the filled text, and left in place it is blank space under every paragraph —
+  // until a resize cleared it, which is how it read as "the paragraph spacing is wrong" (the owner, 2026-11-13).
+  // Once the words are in, each paragraph settles to the height its own words need; the stylesheet eases that change
+  // (.settle) so what follows slides up instead of jumping.
+  function settleStory() {
+    if (PHONE.matches) return;   // on a phone the first paragraph's height comes from the stylesheet, for the folded card
+    const ps = $$("#story p").filter(p => p.style.minHeight);
+    if (!ps.length) return;
+    $("#story").classList.add("settle");
+    for (const p of ps) {
+      p.style.minHeight = "";   // measure without it, in the same frame: nothing is painted in between
+      const h = p.getBoundingClientRect().height;
+      if (h > 0) p.style.minHeight = h + "px";
+    }
+    setTimeout(() => $("#story").classList.remove("settle"), 400);
+  }
+
   /* ---------- a run ---------- */
   async function run() {
     const g = ++gen;
@@ -2725,8 +2743,9 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     // a topic page ends at its verdict: no portrait, no comparison with the last visit, nothing counted
     if (NEED) { focusFix(); R.end = true; $("#rerun").disabled = false; return; }
     readings(portrait(), R.ck);
-    // (each paragraph keeps the height it had while it waited: letting it shrink to its words here moved the labels,
-    // the ID card and everything beside them a whole paragraph's worth at the end of every run)
+    // (the words are in: give back the height the placeholders borrowed — easing it, so the labels, the ID card and
+    // everything beside them glide up by the line it was rather than jumping when the run ends)
+    settleStory();
     paintTarget(); osTips(); todo(); focusFix();
     R.end = true;
     syncReportEntries(); syncCheckReports();

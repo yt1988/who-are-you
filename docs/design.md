@@ -198,6 +198,19 @@ What the others had that a page needed work for, and how who covers it now:
   verdicts re-read the edge's trace, so switching a proxy and re-checking shows the new answer without a reload. The
   rows that rest on what the page read as it loaded (the request's headers, the environment's fingerprints, the
   browser's own choice of HTTP/3) still need a reload, and offer no button.
+- 2026-11-13: a paragraph gives its reserved height back once its words are in. Each paragraph was held at the height
+  it had while its blanks waited — a line or so taller than the filled text — so that filling them moved nothing under
+  it, and the height was left in place after the run. On a wide screen that leftover is blank space under every
+  paragraph, and it stayed until a resize cleared it; the owner reported it as broken paragraph spacing (2026-11-13,
+  screenshot). `settleStory()` measures each paragraph without the pin once the last blank is filled and eases it back
+  to its own words (`.settle`, 0.3 s, none under reduced motion), so what follows glides up by the line it was instead
+  of jumping when a run ends. The earlier choice was the gap, because the abrupt jump moved the labels and the ID card
+  "a whole paragraph's worth" (the note it replaced); the glide is the compromise between the two.
+- 2026-11-13: the per-row report link (「反馈」) waits for a hover. A verdict is on 18 rows, and the word spelled out
+  on all of them read as a column of its own (the owner). It now sits at opacity 0 with its space kept, so nothing
+  moves, and comes in when the row is pointed at or focused — `:focus-within`, so the keyboard reaches it; opacity
+  rather than visibility, which would take it out of the tab order. A touch screen has no hover, so there the link
+  stays out as it did.
 
 ## Wording
 
@@ -240,6 +253,9 @@ The sentences beside the readings follow these rules (the reports in `1ms-shell`
 Fixed on 2026-11-12: the Cyrillic font swapping in on ru (optional + preload), the portrait filling in (heights kept,
 one frame a paragraph), and the blocks that appeared when a run ended (the checks' buttons, the verdict, the
 anti-detect card). Smoke at 1280×900: en 0.11, zh 0.08, ru 0.07.
+
+Changed on 2026-11-13: those kept heights are given back when the run ends (the gap they left was worse than the
+move), eased over 0.3 s — one line per paragraph that over-reserved, which is a shift the smoke numbers will show.
 
 What is left is text filling inside boxes that already have their size: a paragraph's own words rewrapping as it
 fills, the checks' verdicts, the values in the readings list. Removing that would mean not filling after the first

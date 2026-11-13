@@ -56,6 +56,9 @@ html.shared .live, html[data-who-embed] .live { display: none; }
 /* one line per theme, a little air between them */
 .story p { margin: 0 0 10px; }
 .story p:last-child { margin-bottom: 0; }
+/* once the blanks are filled, each paragraph gives back the line its placeholders added: eased over a moment, so what
+   follows slides up instead of jumping (the script adds .settle only for that change, never while a run is filling) */
+#story.settle p { transition: min-height .3s ease; }
 /* an answer: in full ink, with a soft highlighter stroke over its lower half */
 .bl { display: inline; padding: 0 2px; margin: 0 1px; color: var(--fg); font-weight: 600; border-radius: 3px;
   background: linear-gradient(transparent 58%, color-mix(in srgb, var(--ink) 20%, transparent) 58%);
@@ -316,6 +319,13 @@ html.shared #share, html[data-who-embed] #share { display: none; }
 .ck-re:disabled { cursor: default; text-decoration: none; opacity: .7; }
 .ck-rp { border: 0; background: none; padding: 0; font: 500 12px var(--f-ui); color: var(--muted); cursor: pointer; }
 .ck-rp:hover { color: var(--ink); text-decoration: underline; }
+/* "report this one" is on every row that has a verdict, and spelled out on all of them it read as a column of its own:
+   it waits until the row is pointed at, or the keyboard reaches the row (opacity, not visibility, so Tab still finds it)
+   — a touch screen has no hover, so there it stays out */
+@media (hover: hover) and (pointer: fine) {
+  .ck-rp { opacity: 0; pointer-events: none; transition: opacity .12s; }
+  .ckr:hover .ck-rp, .ckr:focus-within .ck-rp { opacity: 1; pointer-events: auto; }
+}
 /* the fingerprint's parts, this visit against the last: the same, or moved */
 .stab-l { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 5px; font-size: 12px; }
 .stab-l li { display: flex; justify-content: space-between; gap: 10px; }
@@ -462,7 +472,7 @@ html.shared .todo, html[data-who-embed] .todo, html.shared .ck-re { display: non
 .help-pick select { flex: 1; min-width: 0; height: 34px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--fg); font: 600 16px var(--f-ui); text-overflow: ellipsis; } /* 16px: iOS zooms into smaller fields */
 .help-pick .icon-btn:disabled { opacity: .35; cursor: default; }
 
-@media (prefers-reduced-motion: reduce) { .skl, .pr.wait .pa, .eyebrow i { animation: none !important; transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { .skl, .pr.wait .pa, .eyebrow i, #story.settle p { animation: none !important; transition: none !important; } }
 @media (max-width: 900px) {
   .focus { grid-template-columns: minmax(0, 1fr); gap: 18px; padding: 20px 16px; }
   .hero-b { grid-template-columns: minmax(0, 1fr); gap: 18px; }
