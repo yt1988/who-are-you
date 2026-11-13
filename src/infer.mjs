@@ -281,7 +281,8 @@ export function checks(x) {
   // The connection itself, as the probe read it (probe.1ms.dog, reached directly): an HTTP/2 preface unlike the
   // browser engine's own means something re-made the HTTPS on the way (a capture tool, a company gateway, antivirus);
   // a SYN from another OS family than the user agent's, that another machine opened the connection (a proxy or VPN
-  // server). The system writes the SYN, so no user agent switch or anti-detect browser changes it
+  // server; on a phone, a carrier's or a company Wi-Fi gateway's TCP proxy does the same, which is why the sentence
+  // names them too). The system writes the SYN, so no user agent switch or anti-detect browser changes it
   if (x.conn === undefined) out.conn = null;
   else if (!x.conn) out.conn = ["info", "c_conn_na", {}];
   else {
