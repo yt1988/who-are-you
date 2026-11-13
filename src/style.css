@@ -298,13 +298,15 @@ html.shared #share, html[data-who-embed] #share { display: none; }
 .v-hist circle { fill: var(--panel); stroke: var(--ink); stroke-width: 1.4; }
 .v-hist circle:last-of-type { fill: var(--ink); }
 .ck { list-style: none; margin: 0; padding: 0; }
-.ckr { position: relative; display: grid; grid-template-columns: 18px minmax(0, 9fr) minmax(0, 13fr); gap: 0 10px; align-items: center; min-height: 44px; padding: 4px 0; border-top: 1px solid var(--line); font-size: 13px; }
+/* the row's four columns are the same in every row (a fixed width for the icons, not one that fits each row's two or
+   one or no icons), so names, verdicts and icons line up down the list instead of each row finding its own widths */
+.ckr { position: relative; display: grid; grid-template-columns: 18px minmax(0, 9fr) minmax(0, 13fr) 50px; gap: 0 10px; align-items: center; min-height: 44px; padding: 4px 0; border-top: 1px solid var(--line); font-size: 13px; }
 .ck-l { font-weight: 600; }
 /* "how to fix" under a check that gives you away, and the tip it opens across the whole row */
 /* the row's controls: one strip across the whole row, under the name and the verdict. In the name's column they wrapped
    onto a second line, and a row held both lines from the first paint so it would not grow when they appeared — which
    left every row without a fix showing an empty one. One line is kept from the first paint instead: the strip's height
-   never changes, and it holds the row's 反馈 too (dimmed until the row is pointed at) */
+   never changes, and a row with nothing in it keeps no strip at all */
 .ck-acts { grid-column: 2 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 0 12px; min-height: 18px; align-content: flex-start; }
 /* a row with nothing to do keeps no strip: on a hover screen the strip is where 反馈 waits, off to the side of it */
 .ck-acts.void { min-height: 0; }
@@ -314,20 +316,27 @@ html.shared #share, html[data-who-embed] #share { display: none; }
 .ck-fix::after { content: " ▾"; font-size: 9px; }
 .ck-fix[aria-expanded="true"]::after { content: " ▴"; }
 .ck-fix:hover { text-decoration: underline; }
-/* check one again, without the rest */
-.ck-re { border: 0; background: none; padding: 0; font: 500 12px var(--f-ui); color: var(--muted); cursor: pointer; }
-.ck-re:hover { color: var(--ink); text-decoration: underline; }
-.ck-re:disabled { cursor: default; text-decoration: none; opacity: .7; }
-.ck-rp { border: 0; background: none; padding: 0; font: 500 12px var(--f-ui); color: var(--muted); cursor: pointer; }
-.ck-rp:hover { color: var(--ink); text-decoration: underline; }
-/* "report this one" is on every row that has a verdict, and spelled out on all of them it read as a column of its own.
-   A screen with a pointer shows it at the row's right end, out of the row's flow (so it takes no space and moves
-   nothing), once the row is pointed at or the keyboard reaches it — opacity, not visibility, so Tab still finds it.
-   A touch screen has no hover and no side to put it on, so there it stays in the strip, always out */
+/* 重测 and 反馈: the two things asked of nearly every row. Spelled out on every line they read as a column of their own
+   and took the width a verdict needs, so they are drawn as two small icons at the row's right end instead — 重测 on
+   every row it can run, 反馈 on every row that has a verdict. Quiet until the row is pointed at, and the label of each
+   is its accessible name and its tooltip */
+.ck-btns { display: flex; justify-content: flex-end; gap: 2px; }
+.ck-btns button { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; padding: 0;
+  border: 0; border-radius: 7px; background: none; color: var(--muted); cursor: pointer; transition: color .12s, background-color .12s; }
+.ck-btns button svg { width: 15px; height: 15px; }
+.ck-btns button:hover, .ck-btns button:focus-visible { color: var(--ink); background: var(--soft); }
+.ck-btns button:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+.ck-btns button:disabled { cursor: progress; }
+/* a check running again: its icon turns while it runs, so the row itself says what it is waiting for */
+.ck-btns button.busy svg { animation: spinturn .9s linear infinite; }
+.ck-btns button.busy { color: var(--ink); }
+@keyframes spinturn { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .ck-btns button.busy svg { animation: none; opacity: .6; } }
+/* on a screen with a pointer, 反馈 waits for the row to be pointed at (or the keyboard to reach the row): opacity, not
+   visibility, so Tab still finds it and it shows itself when it does. A touch screen has no hover, so there it is out */
 @media (hover: hover) and (pointer: fine) {
-  .ck-rp { position: absolute; right: 0; top: 50%; transform: translateY(-50%); padding: 2px 8px; border-radius: 8px;
-    background: var(--panel); opacity: 0; pointer-events: none; transition: opacity .12s; }
-  .ckr:hover .ck-rp, .ckr:focus-within .ck-rp { opacity: 1; pointer-events: auto; }
+  .ck-rp { opacity: 0; transition: opacity .12s; }
+  .ckr:hover .ck-rp, .ckr:focus-within .ck-rp { opacity: 1; }
 }
 /* the fingerprint's parts, this visit against the last: the same, or moved */
 .stab-l { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 5px; font-size: 12px; }
@@ -377,7 +386,17 @@ html.shared .todo, html[data-who-embed] .todo, html.shared .ck-re { display: non
    and after the verdict arrives */
 .ck-v { color: var(--muted); font-size: 12.5px; line-height: 1.4; min-height: 2.8em; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 /* (a phone has no hover: the whole text, the row as tall as it needs; the checks are below the first screen there) */
-@media (max-width: 720px) { .ck-v { display: block; -webkit-line-clamp: unset; overflow: visible; } }
+@media (max-width: 720px) {
+  /* a phone puts the verdict under the name instead of beside it: three columns there left the name 74px, so names
+     like UA 和真实系统 broke into three lines and the rows came out 44 to 129px tall, each a different shape */
+  .ckr { grid-template-columns: 18px minmax(0, 1fr) auto; align-items: start; padding: 7px 0; }
+  .ck-l { grid-column: 2; }
+  .ck-btns { grid-column: 3; grid-row: 1; }
+  .ck-v, .ck-acts { grid-column: 2 / -1; }
+  /* (the verdict is not cut to two lines here, so the height kept for a second line is a blank line under every short
+     verdict; the list is far below the first screen on a phone, so nothing there moves what the visitor is reading) */
+  .ck-v { display: block; -webkit-line-clamp: unset; overflow: visible; min-height: 0; }
+}
 .ckr[data-why] { cursor: help; }
 .ck-v .skl { width: 70%; }
 /* the check's status dot: 18px square, so a circle. Scoped and padding reset because the shared base.css has a status
@@ -528,10 +547,15 @@ html.shared .todo, html[data-who-embed] .todo, html.shared .ck-re { display: non
 }
 /* touch: links and small buttons on their own get a finger-sized target, looking the same */
 @media (pointer: coarse) {
-  .ck-fix, .ck-go, .ck-re, .ck-rp, .rp-btn, .v-go, .pg-a, .focus-go { min-height: 32px; display: inline-flex; align-items: center; }
+  .ck-fix, .ck-go, .rp-btn, .v-go, .pg-a, .focus-go { min-height: 32px; display: inline-flex; align-items: center; }
   .ck-acts { gap: 0 16px; }
+  .ck-btns button { width: 32px; height: 32px; }
+  .ck-btns button svg { width: 17px; height: 17px; }
   .topics a { min-height: 32px; display: inline-flex; align-items: center; }
 }
+/* a tablet has the two icons out at all times on every row, so the column is wide enough for both at a finger's size;
+   (a phone stacks the verdict under the name instead — see the narrow-screen rule above) */
+@media (pointer: coarse) and (min-width: 721px) { .ckr { grid-template-columns: 18px minmax(0, 9fr) minmax(0, 13fr) 66px; } }
 @media (max-width: 420px) {
   .bar .btn span { display: none; }
   .bar .btn { padding: 0 10px; }
@@ -609,7 +633,7 @@ html[data-who-embed] .bar { margin: 0 -16px; padding: 10px 16px 12px; }
   @page { margin: 14mm 12mm; }
   html, body { background: #fff !important; color: var(--fg); }
   .app { max-width: none; padding: 0; }
-  .top, .bar, .acts, .topics, .scrim, .adsbox, .live, .un-go, .story-more, .story-sk, .icon-btn, .rp-btn, .ck-rp,
+  .top, .bar, .acts, .topics, .scrim, .adsbox, .live, .un-go, .story-more, .story-sk, .icon-btn, .rp-btn, .ck-btns,
   .ck-fix, .v-acts, .scene, .inapp, [data-ms-more] { display: none !important; }
   .story { font-size: 11pt; line-height: 1.65; color: #222; }
   .story.fold p:not(:first-child) { display: block; }

@@ -149,12 +149,19 @@ export async function build({ check = false } = {}) {
 
       // the checks and every sniffer have their rows from the start; readings fill them in place
       // (the connection's protocols follow under their own heading, in the same rows)
-      // The row's controls sit in one strip of their own under the name and the verdict, across the row's whole width:
-      // in the name's narrow column they wrapped onto a second line, and a row waiting for a verdict held both lines
-      // from the first paint, so every row without a fix showed an empty one
+      // The row's two small actions — check this one again, and report it as wrong — are on every row that has a
+      // verdict, so they are drawn as icons at the row's right end rather than as the same two words eighteen times
+      // (the owner, 2026-11-13). 怎么改 and the check's own test stay words, in a strip under the name, because they
+      // say something: the strip keeps no height on a row that has neither
+      const ICON = {
+        re: `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.4 8a5.4 5.4 0 1 1-1.6-3.8"/><path d="M13.6 2.6v3.2h-3.2"/></svg>`,
+        rp: `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3.1c3 0 5.4 1.9 5.4 4.4S11 11.9 8 11.9c-.8 0-1.5-.1-2.2-.4l-3.2 1.1 1-2.6c-.7-.7-1-1.5-1-2.5 0-2.5 2.4-4.4 5.4-4.4z"/></svg>`,
+      };
       const ckRows = (id, list) => `<ul class="ck" id="${id}">` + list.map(c => `<li class="ckr" data-c="${c}"><i class="st"></i><span class="ck-l">${esc(T("c_" + c))}</span><span class="ck-v"><i class="skl"></i></span>` +
+        `<span class="ck-btns"><button class="ck-re" type="button" hidden aria-label="${esc(T("re_btn"))}" title="${esc(T("re_btn"))}">${ICON.re}</button>` +
+        `<button class="ck-rp" type="button" hidden aria-label="${esc(T("rp_btn"))}" title="${esc(T("rp_btn"))}">${ICON.rp}</button></span>` +
         `<span class="ck-acts"><button class="ck-fix" type="button" aria-expanded="false" hidden>${esc(T("fix"))}</button>` +
-        (GO[c] ? `<a class="ck-go" target="_blank" rel="noopener" hidden>${esc(T("go_" + GO[c]))}${EXT}</a>` : "") + `<button class="ck-re" type="button" hidden>${esc(T("re_btn"))}</button><button class="ck-rp" type="button" hidden>${esc(T("rp_btn"))}</button>` +
+        (GO[c] ? `<a class="ck-go" target="_blank" rel="noopener" hidden>${esc(T("go_" + GO[c]))}${EXT}</a>` : "") +
         `</span>` +
         `<ul class="ck-tip" hidden>${T("tip_" + c).split("\n").map(l => `<li>${esc(l)}</li>`).join("")}</ul></li>`).join("") + "</ul>";
       const checks = ckRows("checks", CHECKS) + `<div class="proto" id="protoBox"><div class="sec-h"><span>${esc(T("h_proto"))}</span></div>${ckRows("proto", PROTO)}</div>`;

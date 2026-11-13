@@ -145,7 +145,7 @@ What the others had that a page needed work for, and how who covers it now:
   A paragraph now fills in
   one frame, when its last reading lands, instead of at every answer: each rewrap moved the words after it, and
   filling a line at a time took the story's share of the shift from about 0.2 to under 0.1. The checks' action strip
-  (32 px — one line since 2026-11-13, and only on a row with something to do), the verdict's two lines, the headline's
+  (one line, 18 px, since 2026-11-13 — and none at all on a row with nothing to do), the verdict's two lines, the headline's
   two-line row and the anti-detect card (drawn when the run starts, not when it ends: it pushed the tally down 60 px)
   keep their space from the first paint, so the right column does not move when the verdicts land. Measured at 1280×900 against a mocked Worker: en 0.11, zh 0.08, ru 0.07 CLS
   (0.24/0.24/0.16 with the story filling a blank at a time; 0.4–1.0 before any of this).
@@ -217,15 +217,28 @@ What the others had that a page needed work for, and how who covers it now:
   nothing to do keeps no strip. In the name's narrow column (129 px at 1180) the controls wrapped onto a second line,
   and each row held both lines from the first paint so it would not grow when a fix appeared — which left every fine
   row showing an empty line, the "broken layout" the owner reported (screenshots of rows with a void under the name).
-  The strip is one line (怎么改 · the check's own test · 重测这一项 · 反馈) and its height goes to zero when only 反馈
-  would be in it. The price is the one the earlier design paid the strip's height for: a row grows by that line when a
-  verdict — and with it a fix — turns up at the end of a run.
-- 2026-11-13: the per-row report link (「反馈」) is no longer spelled out on all 18 rows (the owner: too many, the
-  same word again and again). On a screen with a pointer it sits at the row's right end, out of the row's flow, so it
-  takes no space and moves nothing; it comes in when the row is pointed at or focused (`:focus-within`, so the keyboard
-  reaches it — opacity rather than visibility, which would take it out of the tab order). A touch screen has no hover
-  and no side to put it on, so there it stays in the strip, always out. It can cover the tail of a long verdict while
-  the row is pointed at; the row's own hover text still carries the whole sentence.
+  The strip is one line (怎么改 · the check's own test) and its height goes to zero on a row that has neither. The
+  price is the one the earlier design paid the strip's height for: a row grows by that line when a verdict — and with
+  it a fix — turns up at the end of a run.
+- 2026-11-13: 「重测」 and 「反馈」 are icons, not words. Spelled out they were on nearly every row — 重测 on the
+  fourteen a single check can be run again for, 反馈 on all eighteen — and the owner called the repetition out twice:
+  too many of the same word, and the width it took ("if they stay like that it shows up again and again, and wastes
+  the layout"). The two are the same sentence eighteen times, so they are the row's two small actions: a circular
+  arrow and a speech bubble at the row's right end, 24 px, muted until the row is pointed at. The column is a fixed
+  50 px and not one that fits each row's icons, or the names and verdicts from row to row would each start at their
+  own x — the same misalignment in a different place. 重测 shows on every row it can run on, whatever the check found
+  (it says nothing about the verdict, and a fine row is exactly where a visitor wants to check again after changing
+  something). While it runs, its arrow turns and its label becomes 正在重测…, for the screen reader and the tooltip;
+  there is no room for words inside the icon. 反馈 still waits for the row to be pointed at or focused
+  (`:focus-within`, so the keyboard reaches it — opacity rather than visibility, which would take it out of the tab
+  order).
+- 2026-11-13: on a phone the verdict goes under the name, across the icons' column too. Three columns beside the dot
+  left the name 74 px at 390: UA 和真实系统 broke into three lines and the rows came out anywhere from 44 to 129 px
+  tall, each a different shape. Name on the first line with the two icons at its right, verdict on the next line
+  across the rest of the width: two heights only, 65 px for a fine row and 82 or more for one with a fix. The verdict
+  gives up the height it keeps for a second line on a phone (`min-height: 0`, it is not clamped there anyway): that
+  line was blank under every short verdict. Nothing above moves when a row below the fold grows — the checks are
+  under the first screen on a phone.
 
 ## Wording
 

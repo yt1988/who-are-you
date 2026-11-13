@@ -2145,10 +2145,10 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     box.querySelector("ul").innerHTML = CK[id].querySelector(".ck-tip").innerHTML;
     box.hidden = R.ck[id][0] !== "bad" && R.ck[id][0] !== "warn";
   }
-  // The strip under a check holds 怎么改, the check's own test, 重测这一项 and 反馈. A row with none of them keeps no
-  // strip (its height goes to zero): the empty line under every fine row was what read as a broken layout. 反馈 alone
-  // does not count: on a screen with a pointer it waits at the row's right end, off the strip (see style.css).
-  const actsVoid = r => { const a = r.querySelector(".ck-acts"); if (a) a.classList.toggle("void", [...a.children].every(x => x.hidden || x.classList.contains("ck-rp"))); };
+  // The strip under a check holds 怎么改 and the check's own test; 重测 and 反馈 are icons at the row's right end, off the
+  // strip. A row with neither of the strip's two keeps no strip (its height goes to zero): the empty line under every
+  // fine row was what read as a broken layout (see style.css).
+  const actsVoid = r => { const a = r.querySelector(".ck-acts"); if (a) a.classList.toggle("void", [...a.children].every(x => x.hidden)); };
   function paintChecks(res, ipc, final) {
     let bad = 0, warn = 0;
     for (const id of [...CHECKS, ...PROTO]) {
@@ -2169,7 +2169,9 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
       }
       // a check that gives you away says how to fix it
       r.querySelector(".ck-fix").hidden = lv !== "bad" && lv !== "warn";
-      const re = r.querySelector(".ck-re"); if (re) re.hidden = !final || (lv !== "bad" && lv !== "warn");
+      // 重测 says nothing about the verdict: it is one of the two things every row is asked for (重测, 反馈), and a row
+      // it can be run on shows it as soon as the run is over, whatever the check found
+      const re = r.querySelector(".ck-re"); if (re) re.hidden = !final;
       const go = r.querySelector(".ck-go");
       if (go) {
         // only when the check gives you away
@@ -2241,13 +2243,21 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
   $$(".ck-re").forEach(btn => {
     const id = btn.closest(".ckr").dataset.c;
     if (!RETEST[id]) return btn.remove();
+    // an icon has room for no words, so while the check runs its arrow turns and the two labels say 正在重测 for a
+    // screen reader and on hover; a second click while it runs is ignored, not queued
+    const on = () => { btn.setAttribute("aria-label", t("re_btn")); btn.title = t("re_btn"); };
     btn.onclick = async e => {
       e.stopPropagation();
-      btn.disabled = true; btn.textContent = t("re_wait");
-      for (const f of RETEST[id]) { try { await f(); } catch (x) {} }
-      if (id === "rtt") R.latDone = true;
-      judge(true); readings(portrait(), R.ck); paintTarget(); osTips(); todo();
-      btn.disabled = false; btn.textContent = t("re_btn");
+      if (btn.disabled) return;
+      btn.disabled = true; btn.classList.add("busy");
+      btn.setAttribute("aria-label", t("re_wait")); btn.title = t("re_wait");
+      try {
+        for (const f of RETEST[id]) { try { await f(); } catch (x) {} }
+        if (id === "rtt") R.latDone = true;
+        judge(true); readings(portrait(), R.ck); paintTarget(); osTips(); todo();
+      } finally {
+        btn.disabled = false; btn.classList.remove("busy"); on();
+      }
       const r = CK[id]; r.classList.remove("re-done"); void r.offsetWidth; r.classList.add("re-done");
     };
   });
