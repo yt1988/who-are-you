@@ -90,7 +90,7 @@ export default {
   c_dns: "Vazamento de DNS",
   c_dns_ok: "O servidor DNS também está em {ipc}",
   c_dns_bad: "Servidor DNS em {cc}, IP em {ipc}",
-  c_dns_warn: "Servidor DNS em {cc}, IP em {ipc}",
+  c_dns_warn: "Servidor DNS em {cc}, IP em {ipc}", c_dns_rot: "As duas consultas deram resolvedores em países diferentes ({cc} e {cc2}): a rota muda a cada pedido e um site vê o que levou o dele",
   c_dns_info: "Não deu para localizar o servidor DNS",
   c_split: "Roteamento dividido",
   c_split_ok: "Todos os destinos veem a mesma saída",

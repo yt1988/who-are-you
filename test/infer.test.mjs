@@ -351,6 +351,12 @@ test("DNS leak: the resolver's country against the address's", () => {
   assert.equal(checks({ ipcc: "HU", dnsCC: "DE", conn: { mtu: 9001 } }).dns[0], "warn");
   // and one hint keeps the grade at A, where a contradiction cost it B
   assert.equal(grade(checks({ ipcc: "HU", dnsCC: "DE" }), ["dns"]).grade, "A");
+  // two lookups, two countries: the route varies per request, which is what the check says instead of one country
+  assert.deepEqual(checks({ ipcc: "HU", dnsCC: "DE", dns2CC: "NL", dnsRot: true }).dns, ["warn", "c_dns_rot", { cc: "DE", cc2: "NL" }]);
+  // (and it outranks the corroborated case: the route's variation is the explanation)
+  assert.equal(checks({ ipcc: "HU", dnsCC: "DE", dns2CC: "NL", dnsRot: true, ip: "1.2.3.4", rtc: ["5.6.7.8"] }).dns[1], "c_dns_rot");
+  // the same country twice changes nothing
+  assert.equal(checks({ ipcc: "HU", dnsCC: "DE", dns2CC: "DE", dnsRot: false }).dns[0], "warn");
 });
 
 test("identity strings: on iOS every browser reads Apple's, whatever it calls itself", () => {

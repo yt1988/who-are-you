@@ -90,7 +90,7 @@ export default {
   c_dns: "DNS-Leck",
   c_dns_ok: "Der DNS-Server liegt auch hier: {ipc}",
   c_dns_bad: "DNS-Server: {cc}, IP: {ipc}",
-  c_dns_warn: "DNS-Server: {cc}, IP: {ipc}",
+  c_dns_warn: "DNS-Server: {cc}, IP: {ipc}", c_dns_rot: "Die beiden Abfragen bekamen Resolver in verschiedenen Ländern ({cc} und {cc2}): Die Route wechselt bei jeder Anfrage, und eine Website sieht den, der ihre eigene befördert hat",
   c_dns_info: "Standort des DNS-Servers unklar",
   c_split: "Split-Routing",
   c_split_ok: "Alle Ziele sehen denselben Ausgang",

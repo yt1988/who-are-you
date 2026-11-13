@@ -175,6 +175,10 @@ What the others had that a page needed work for, and how who covers it now:
   lists, and in Chromium `rtt` in its 25 ms steps (`tp_conn`). Not judged from the values themselves: the browser's
   own `rtt` is an estimate with a deliberately conservative bias, so it can sit far above the measured round trip
   without anyone rewriting it, and a claim built on it would be wrong often.
+- 2026-11-13: the resolver is looked up twice. A second random name right after the first; when the two answers come
+  from resolvers in two countries the dns check says the route varies from request to request (`c_dns_rot`, `warn`)
+  instead of naming one country — a proxy pool whose nodes resolve for themselves, or a DoH endpoint that moved. The
+  same country twice changes nothing, and the row's hover shows the second answer when it differs at all.
 
 ## Wording
 

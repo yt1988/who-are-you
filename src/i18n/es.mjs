@@ -90,7 +90,7 @@ export default {
   c_dns: "Fuga de DNS",
   c_dns_ok: "El servidor DNS también está en {ipc}",
   c_dns_bad: "Servidor DNS en {cc}, IP en {ipc}",
-  c_dns_warn: "Servidor DNS en {cc}, IP en {ipc}",
+  c_dns_warn: "Servidor DNS en {cc}, IP en {ipc}", c_dns_rot: "Las dos consultas dieron resolutores en países distintos ({cc} y {cc2}): la ruta cambia en cada petición y la web ve la que la llevó",
   c_dns_info: "No se pudo ubicar el servidor DNS",
   c_split: "Enrutamiento dividido",
   c_split_ok: "Todos los destinos ven la misma salida",

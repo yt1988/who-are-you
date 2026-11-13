@@ -318,7 +318,11 @@ export function checks(x) {
   // neighbour's, and a tunnel that keeps DNS outside shows the visitor's own provider. It costs like a hint. It is a
   // contradiction only when another check already says the route is inconsistent: another system opened the
   // connection (a proxy in front), or WebRTC gave away an address the page's exit doesn't have (#108)
+  // (Two lookups a moment apart, and they got resolvers in two countries: the route changes from request to request
+  // — a proxy pool whose nodes resolve for themselves, a DoH endpoint moved between answers — so naming one country
+  // says less than saying the route varies)
   if (x.dnsCC === undefined || !x.ipcc) out.dns = null;
+  else if (x.dnsRot && x.dns2CC) out.dns = ["warn", "c_dns_rot", { cc: x.dnsCC || x.dns2CC, cc2: x.dns2CC }];
   else if (!x.dnsCC) out.dns = ["info", "c_dns_info", {}];
   else if (x.dnsCC === x.ipcc) out.dns = ["ok", "c_dns_ok", {}];
   else if ((out.conn && out.conn[1] === "c_conn_os") || (out.webrtc && out.webrtc[0] === "bad")) out.dns = ["bad", "c_dns_bad", { cc: x.dnsCC }];

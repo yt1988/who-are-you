@@ -1328,13 +1328,28 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     return EN_CC[name] || null;
   }
   async function dnsResolver() {
-    const id = [...crypto.getRandomValues(new Uint8Array(16))].map(b => b.toString(16).padStart(2, "0")).join("");
-    let j;
-    try { j = await getJ(`https://${id}.edns.ip-api.com/json`, 6000); } catch (e) { R.dnsCC = null; return na("dns", "v_fail"); }
+    const ask = async () => {
+      const id = [...crypto.getRandomValues(new Uint8Array(16))].map(b => b.toString(16).padStart(2, "0")).join("");
+      try { return await getJ(`https://${id}.edns.ip-api.com/json`, 6000); } catch (e) { return null; }
+    };
+    const j = await ask();
+    if (!j) { R.dnsCC = null; return na("dns", "v_fail"); }
     const d = j.dns || {}, geo = String(d.geo || ""), parts = geo.split(" - "), cname = parts[0].trim();
     R.dnsCC = ccOfName(cname); R.dnsOrg = parts.slice(1).join(" - ").trim();
     const ecs = j.edns && j.edns.ip ? "ECS " + j.edns.ip : "";
-    row("dns", flagged(R.dnsCC, [d.ip, R.dnsOrg || cname, ecs].filter(Boolean).join(" · ")), { why: [d.ip, geo, ecs].filter(Boolean).join("\n") });
+    // a second name right after the first: one resolver answering both is the one a site meets. Two answers from two
+    // countries mean the resolver varies per request (a proxy pool whose nodes resolve for themselves, a DoH endpoint
+    // that moved), and the check says the route varies rather than naming one of them
+    let why2 = "", d2 = null;
+    const j2 = await ask();
+    if (j2 && j2.dns) {
+      d2 = j2.dns;
+      const g2 = String(d2.geo || ""), p2 = g2.split(" - "), c2 = ccOfName(p2[0].trim()), e2 = j2.edns && j2.edns.ip ? "ECS " + j2.edns.ip : "";
+      R.dns2CC = c2;
+      if (R.dnsCC && c2 && c2 !== R.dnsCC) R.dnsRot = true;
+      if (d2.ip !== d.ip || c2 !== R.dnsCC || e2 !== ecs) why2 = [d2.ip, g2, e2].filter(Boolean).join("\n");
+    }
+    row("dns", flagged(R.dnsCC, [d.ip, R.dnsOrg || cname, ecs].filter(Boolean).join(" · ")), { why: [d.ip, geo, ecs, why2 && "— " + why2].filter(Boolean).join("\n") });
   }
 
   // Whether this address is a public Tor exit node. The Worker keeps Tor's exit list and matches the address there,
@@ -2110,7 +2125,7 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
   const CK = Object.fromEntries($$(".ckr[data-c]").map(r => [r.dataset.c, r]));
   // a check's result as text: [level, key, vars]; ipc: the address's country
   function ckText(id, [, key, vars], ipc) {
-    const vv = Object.fromEntries(Object.entries(vars).map(([k, x]) => [k, k === "cc" ? country(x) : id === "split" ? exitName(x) : id === "conn" && k === "a" ? t("tos_" + x) : x]));
+    const vv = Object.fromEntries(Object.entries(vars).map(([k, x]) => [k, k === "cc" || k === "cc2" ? country(x) : id === "split" ? exitName(x) : id === "conn" && k === "a" ? t("tos_" + x) : x]));
     if (id === "tz" || id === "lang" || id === "dns" || id === "syslang") vv.ipc = ipc ? country(ipc) : "?";
     if (id === "syslang" && vars.from) vv.from = list(String(vars.from).split(",").map(rowName));
     if ((id === "tamper" || id === "fpb") && vars.list) vv.list = list(String(vars.list).split(",").map(k => t(k)));
@@ -2460,7 +2475,7 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     const c = (R.srv && R.srv.cf) || {};
     const res = checks({
       tz: R.tz, rfp: rfp(), tzOff: R.tzOff == null ? null : offTxt(R.tzOff), tzAlt: R.tzAlt == null ? null : offTxt(R.tzAlt), ipTzOff: c.timezone ? offTxt(tzOffset(c.timezone)) : null, ipTz: c.timezone || null, ipcc: c.country,
-      langs: R.langs, dnsCC: R.dnsCC, exits: allExits(), rtc: R.rtc, ip: R.srv && R.srv.ip, asn: c.asn, org: orgName(c.asOrganization, c.asn),
+      langs: R.langs, dnsCC: R.dnsCC, dns2CC: R.dns2CC, dnsRot: R.dnsRot, exits: allExits(), rtc: R.rtc, ip: R.srv && R.srv.ip, asn: c.asn, org: orgName(c.asOrganization, c.asn),
       uaOS: R.dev && R.dev.os, real: !!R.dev, hintOS: R.hi && R.hi.platform, gpuOS: gpuOS(R.gpuRaw), rand: R.rand, noise: R.noise, webdriver: R.webdriver, agent: ACT.state, auto: R.auto,
       rttB: R.latDone ? R.rttB : null, coarse: R.latDone ? !!R.coarse : false, rttCf: c.clientTcpRtt || null, sys: final || R.voices ? sysOf() : undefined, tamper: R.dev && R.srv ? tampered() : null, fpb: fpbTraces(),
       conn: R.probe === undefined ? undefined : R.probe && (R.probe.tcp || R.probe.http2) ? { os: R.probe.tcp && R.probe.tcp.os, pseudo: R.probe.http2 && R.probe.http2.pseudo, engine: R.engine, mtu: R.probe.tcp && R.probe.tcp.mtu } : null,

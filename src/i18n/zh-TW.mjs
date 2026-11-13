@@ -90,7 +90,7 @@ export default {
   c_dns: "DNS 外洩",
   c_dns_ok: "解析器也在{ipc}",
   c_dns_bad: "解析器在{cc}，IP 卻在{ipc}",
-  c_dns_warn: "解析器在{cc}，IP 在{ipc}",
+  c_dns_warn: "解析器在{cc}，IP 在{ipc}", c_dns_rot: "兩次查詢的解析器在不同國家（{cc} 和 {cc2}）：線路每次不一樣，網站看到的是當次那個",
   c_dns_info: "判斷不出解析器在哪裡",
   c_split: "分流",
   c_split_ok: "所有網站看到的都是同一個出口",

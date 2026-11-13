@@ -90,7 +90,7 @@ export default {
   c_dns: "DNS 漏れ",
   c_dns_ok: "DNS サーバーも{ipc}",
   c_dns_bad: "DNS サーバーは{cc}、IP は{ipc}：プロキシ利用の手がかりに",
-  c_dns_warn: "DNS サーバーは{cc}、IP は{ipc}",
+  c_dns_warn: "DNS サーバーは{cc}、IP は{ipc}", c_dns_rot: "2 回の問い合わせで DNS サーバーの国が違います（{cc} と {cc2}）：毎回経路が変わり、サイトにはその回のものが見えます",
   c_dns_info: "DNS サーバーの場所が分からない",
   c_split: "スプリットトンネル（分流）",
   c_split_ok: "どの宛先にも同じ出口",
