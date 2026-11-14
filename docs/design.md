@@ -412,3 +412,30 @@ The row the frontier pass left out, built once the owner put a second registrabl
   exactly that. Trading COOP for one row wasn't worth it.
 - **Cost:** one CSP source (`frame-src`), one Workers route and DNS record in the `1ms.one` zone, one row, one module
   and one test (`test/frame.test.mjs`), 11 strings × 10 languages.
+
+## 2026-11-14 — the paragraph catches up with the rows
+
+The five rows of the frontier pass and the cross-site row were on the page but not in the words at the top. The
+paragraph now says three more things, and the cross-site frame runs on its own so it can.
+
+- **`{cross}` — a site on another domain.** The frame moves from click-only to load-time, like the six exit probes:
+  no prompt, and what it leaves behind is two unnamed cookies that expire in 30 seconds. That buys a sentence the
+  tool could not say before: *a site on another domain would know you too, so switching sites doesn't shake it off*
+  (or *would see a stranger* / *can still follow you while you stay on this one*, for CHIPS), and *the other domain
+  didn't answer* when the frame is blocked. It sits right after `{track}`, which is the same question asked
+  first-party.
+- **`{adapi}` — ads without cookies.** What the browser still hands sites for ad targeting (Topics, Protected
+  Audience, Shared Storage, Attribution Reporting) or that it hands them nothing extra. Runs from `psb`, already on
+  every load.
+- **`{wow}` gains the impossible reading.** "The worst of it" used to need three rewritten APIs. Now one reading
+  that no real device can produce (a phone with no touch points, an available screen larger than the screen) is
+  enough: that is the disguise nothing else on the page notices, because nothing was rewritten.
+- Both new blanks are inline `<span class="bl">`s in the existing fifth paragraph, so `{cross}{adapi}` are one
+  insertion in ten story strings (no space in zh/ja) and nothing about the layout changes. Story placeholders are
+  compared across languages by the test, which is what keeps them in step.
+
+**Not done: `navigator.managed`.** It looked like a free row — "this browser is run by an organization" — but
+Chromium exposes the object on *unmanaged* browsers too (`typeof navigator.managed === "object"` on a plain
+headless Chrome), and the only call that tells the difference, `getManagedConfiguration()`, needs a permission no
+page can obtain. A row built on presence alone would tell every Chrome user they are managed. Dropped rather than
+shipped wrong; the strings were taken back out.

@@ -844,6 +844,7 @@ import { exifOf } from "./exif.mjs";
     if (screen.availWidth > screen.width || screen.availHeight > screen.height) L.push(t("adsp_screen"));
     if (!outerWidth || !outerHeight || (outerWidth && innerWidth > outerWidth + 2)) L.push(t("adsp_win"));
     if (!mob && R.fonts && R.fonts.length && R.fonts.length < 8) L.push(t("adsp_fonts"));
+    R.adsp = L;
     txt("adsp", L.length ? t("adsp_v", { list: L.join(" · ") }) : t("adsp_none"));
   }
 
@@ -1168,6 +1169,7 @@ import { exifOf } from "./exif.mjs";
     if (typeof navigator.runAdAuction === "function") L.push("Protected Audience");
     if (w.sharedStorage) L.push("Shared Storage");
     if (w.attributionReporting) L.push("Attribution Reporting");
+    R.psb = L;
     txt("psb", L.length ? t("psb_v", { list: L.join(" · ") }) : t("psb_none"));
   }
 
@@ -1239,31 +1241,28 @@ import { exifOf } from "./exif.mjs";
   }
   // Cross-site: this page frames cross.1ms.one, another domain of this tool, which writes a SameSite=None cookie, a
   // Partitioned one (CHIPS) and a localStorage tag, then says which of them it could write and read back. It is the
-  // one question a page can't ask its own domain, and the frame keeps nothing: its cookie names nobody and the server
-  // sets it to expire in 30 seconds. Asked when the visitor clicks, never on its own, and nothing is sent anywhere.
+  // one question a page can't ask its own domain. The frame keeps nothing: both cookies name nobody and expire in 30
+  // seconds. Like the exit probes it runs on its own, with no prompt and no click, because the answer belongs in the
+  // paragraph a visitor reads without having to ask for it.
   const XS = "https://cross.1ms.one";
-  function xsite() {
-    row("xsite", esc(t("xs_none")) + `<button type="button" class="pa-go xs-go">${esc(t("xs_btn"))}</button>`, { why: t("xs_why") });
-    const btn = $('.pr[data-s="xsite"] .xs-go'); if (!btn) return;
-    btn.onclick = async () => {
-      btn.disabled = true; btn.textContent = t("xs_wait");
-      const a = await new Promise(resolve => {
-        const f = document.createElement("iframe");
-        f.title = "cross-site"; f.tabIndex = -1; f.referrerPolicy = "no-referrer";
-        f.style.cssText = "position:fixed;left:-20px;top:0;width:2px;height:2px;border:0;opacity:0";
-        const end = v => { removeEventListener("message", msg); clearTimeout(timer); f.remove(); resolve(v); };
-        const msg = e => { if (e.origin === XS && e.source === f.contentWindow && e.data && typeof e.data.c3p === "boolean") end(e.data); };
-        const timer = setTimeout(() => end(null), 8000);
-        addEventListener("message", msg);
-        f.src = XS + "/f";
-        document.body.appendChild(f);
-      });
-      done.delete("xsite");
-      if (!a) { row("xsite", esc(t("xs_fail")), { why: t("xs_why"), na: true }); return; }
-      const yn = v => t(v ? "xs_yes" : "xs_no");
-      row("xsite", esc(t(a.c3p ? "xs_share" : a.chips ? "xs_chips" : "xs_block")),
-        { why: t("xs_why2", { c: yn(a.c3p), p: yn(a.chips), s: yn(a.ls) }) });
-    };
+  async function xsite() {
+    const a = await new Promise(resolve => {
+      const f = document.createElement("iframe");
+      f.title = "cross-site"; f.tabIndex = -1; f.referrerPolicy = "no-referrer";
+      f.style.cssText = "position:fixed;left:-20px;top:0;width:2px;height:2px;border:0;opacity:0";
+      const end = v => { removeEventListener("message", msg); clearTimeout(timer); f.remove(); resolve(v); };
+      const msg = e => { if (e.origin === XS && e.source === f.contentWindow && e.data && typeof e.data.c3p === "boolean") end(e.data); };
+      const timer = setTimeout(() => end(null), 8000);
+      addEventListener("message", msg);
+      f.src = XS + "/f";
+      document.body.appendChild(f);
+    });
+    R.xs = a;
+    // no answer: the frame was blocked (an extension, a network) — nothing about cookies can be said then
+    if (!a) return na("xsite", "xs_fail");
+    const yn = v => t(v ? "xs_yes" : "xs_no");
+    row("xsite", esc(t(a.c3p ? "xs_share" : a.chips ? "xs_chips" : "xs_block")),
+      { why: t("xs_why2", { c: yn(a.c3p), p: yn(a.chips), s: yn(a.ls) }) });
   }
   // fingerprints: the same drawing, sound or setup comes out slightly differently on every system
   function canvasPrint() {
@@ -1722,6 +1721,10 @@ import { exifOf } from "./exif.mjs";
       ...connOf(), sh: R.shield || undefined, ln: R.lies ? (R.lies.list.length + R.lies.frame.length) || undefined : undefined,
       et: (R.etag && R.etag.seen) || undefined, lost: R.traces && R.traces.lost.length ? R.traces.lost : undefined, kept: R.traces && !R.traces.first ? R.traces.kept : undefined,
       hw: R.hwid || undefined, mc: R.v6mac || undefined,
+      // (the frame's answer on the other domain, the ad interfaces still on offer, and how many readings can't exist
+      // together: three facts the paragraph says in words and no other blank carries)
+      xs: R.xs ? { c: !!R.xs.c3p, p: !!R.xs.chips } : undefined, psb: R.psb && R.psb.length ? R.psb : undefined,
+      adp: R.adsp && R.adsp.length ? R.adsp.length : undefined,
       cpu: navigator.hardwareConcurrency || null, multi: R.multi === true || undefined, fs: R.fontPx || null, rm: R.rm || undefined, hc: R.hc || undefined,
       bat: !R.battery ? undefined : R.battery.level === 1 && R.battery.charging && R.battery.chargingTime === 0 ? "ac" : (R.battery.charging ? "c" : "b") + Math.round(R.battery.level * 100),
       x: { split, fullOrg: [c.asn ? "AS" + c.asn : "", c.asOrganization].filter(Boolean).join(" · "), dnsOrg: R.dnsOrg || "", fpHex: R.fpHex } };
@@ -1853,7 +1856,9 @@ import { exifOf } from "./exif.mjs";
       : P.tos || P.mtu ? t("cn_self", { ua }) : t("cn_na")));
     // the worst of it, in a sentence of its own (good news when there is none)
     blank("wow", esc(P.nt === "tor" ? t("pt_wow_tor") : P.mc ? t("pt_wow_mac", { mac: P.mc }) : P.mitm ? t("pt_wow_mitm") : P.cos ? t("pt_wow_os", { os: t("tos_" + P.tos), ua })
-      : P.et && (P.lost || []).includes("ls") ? t("pt_wow_etag") : P.ln >= 3 ? tn("pt_wow_lies", P.ln, { n: P.ln }) : t("pt_wow_none")), BLANKS.wow);
+      : P.et && (P.lost || []).includes("ls") ? t("pt_wow_etag") : P.ln >= 3 ? tn("pt_wow_lies", P.ln, { n: P.ln })
+        // (nothing was rewritten, but readings that can't exist together: the disguise that hides from the lie check)
+        : P.adp ? tn("pt_wow_adsp", P.adp, { n: P.adp }) : t("pt_wow_none")), BLANKS.wow);
     blank("job", esc(P.jobs.length ? list(P.jobs.map(([k]) => t("jb_" + k))) : t("jb_none")), BLANKS.job, P.jobs.length ? t("from", { list: P.jobs.map(([, f]) => f).join(", ") }) : "");
     if (!PARTIAL) {
       $("#story").classList.remove("wait"); $("#storySk").hidden = true;
@@ -1886,6 +1891,11 @@ import { exifOf } from "./exif.mjs";
     // (the store probes answer this, not the fingerprint alone: in a partial pass it waits for them, not for "same")
     if (!PARTIAL || R.traces) blank("track", esc(P.rand ? t("tk_rand") : P.fz ? t("tk_site") : P.et ? t("tk_etag") : (P.lost || []).includes("ls") && kept.length ? t("tk_revive", { list: list(kept.map(k => t("tr_" + k))) })
       : P.hw ? t("tk_hw", { id: P.hw.slice(0, 4) + "·" + P.hw.slice(4, 8) }) : t("tk_same")), BLANKS.track);
+    // The third-party half of that question, from the frame on the other domain: a site you visit next would see
+    // either the same visitor or a stranger. Nothing about the reader is kept to say it.
+    blank("cross", esc(!P.xs ? t("xs_story_na") : P.xs.c ? t("xs_story_same") : P.xs.p ? t("xs_story_chips") : t("xs_story_new")), BLANKS.cross);
+    // and what the browser still offers for ad targeting when cookies are off
+    blank("adapi", esc(P.psb ? t("pt_ad_v", { list: list(P.psb) }) : t("pt_ad_none")), BLANKS.adapi);
     // the paragraphs after: what the machine is worth, updates, when, power, settings; then the labels and standing out
     const tier = tierOf(P);
     blank("tier", esc(tier.text));

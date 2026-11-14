@@ -166,6 +166,7 @@ export const BLANKS = {
   wow: ["v6mac", "tcpfp", "h2fp", "etag", "lies"], conn: ["tcpfp", "h2fp"], shield: ["shield", "lies"],
   isp: ["isp"], nettype: ["isp", "ex_cn", "ex_intl", "ex_gpt", "ex_claude", "ex_cf"], dns: ["dns"], read: ["geo", "tz", "dns", "langs", "isp"], age: [],
   tier: ["gpu", "screen", "hz", "cpu", "screens"], fresh: ["browser"], when: ["tz"], power: ["battery"], prefs: ["sysui", "motion", "a11y"], stand: ["fpid"], theme: ["scheme"], adblock: ["adblock"], track: ["fpid", "rand"], job: ["fonts", "ext"],
+  cross: ["xsite"], adapi: ["psb"],
 };
 
 // the disguise checks, one row each
