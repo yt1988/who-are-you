@@ -3,7 +3,10 @@
 // Used by the page (what to send, which rows get a "common / rare / only you" tag) and the Worker (what it accepts).
 import { CHECKS, PROTO } from "./sniffers.mjs";
 
-export const TRAITS = ["os", "browser", "screen", "gpu", "langs", "tz", "fontfp", "canvas", "webgl", "audio", "mathfp", "emoji", "hwdec", "fpid"];
+export const TRAITS = ["os", "browser", "screen", "gpu", "langs", "tz", "fontfp", "canvas", "webgl", "audio", "mathfp", "emoji", "hwdec", "fpid",
+  // (the coarse readings beside the fingerprints: one value each, counted the same way, so every row with one can say
+  // how common it is — the page sends them, the Worker accepts them, src/tally.mjs counts them)
+  "arch", "cpu", "mem", "hz", "engine", "engver", "kbd", "locale", "scheme", "a11y", "scrollbar", "touch", "form"];
 const HASHED = new Set(["fontfp", "canvas", "webgl", "audio", "mathfp", "fpid"]);
 const LEVELS = new Set(["ok", "warn", "bad", "info"]);
 const IDS = new Set([...CHECKS, ...PROTO]);

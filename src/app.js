@@ -11,6 +11,7 @@ import { nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, 
 import { wasmProbe, WASM_FEATURES } from "./wasm.mjs";
 import { TZ_CC } from "./tz.mjs";
 import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
+import { exifOf } from "./exif.mjs";
 
 (function () {
   "use strict";
@@ -283,6 +284,20 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     hv("h_plat", [h["sec-ch-ua-platform"], h["sec-ch-ua-mobile"] === "?1" ? "mobile" : ""].filter(Boolean).join(" · "));
     hv("h_enc", h["accept-encoding"]);
     hv("h_dnt", [h.dnt != null ? "DNT: " + h.dnt : "", h["sec-gpc"] != null ? "Sec-GPC: " + h["sec-gpc"] : ""].filter(Boolean).join(" · "));
+  }
+
+  // Web Bot Auth (RFC 9421): an AI agent that signs its requests says who runs it in Signature-Agent, a claim a
+  // spoofer can't invent without the key. Most visitors sign nothing, so the row says that in as many words
+  const AGENTS = [["ChatGPT-User", /ChatGPT-User/i], ["Claude-User", /Claude-User/i], ["Claude-SearchBot", /Claude-SearchBot/i],
+    ["PerplexityBot", /PerplexityBot/i], ["Perplexity-User", /Perplexity-User/i], ["Operator", /OpenAI-Operator/i]];
+  function webBotAuth() {
+    const h = (R.srv && R.srv.h) || {}, ua = h["user-agent"] || "";
+    const said = (AGENTS.find(([, re]) => re.test(ua)) || [])[0];
+    const who = (h["signature-agent"] || h["signed-agent"] || "").replace(/^"|"$/g, "");
+    if (who) return txt("wba", t("wba_sig", { a: who }) + (said ? " · " + said : ""), { why: h["signature-input"] || "" });
+    if (h.signature || h["signature-input"]) return txt("wba", t("wba_sig0"), { why: h["signature-input"] || "" });
+    if (said) return txt("wba", t("wba_ua", { a: said }));
+    txt("wba", t("wba_none"));
   }
 
   // a time zone's name in the page's language ("北美太平洋时间"), with its offset
@@ -647,6 +662,16 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     txt("bt", t(ok ? "v_yes" : "v_no"));
   }
   // the JavaScript engine, from the wording of an error: it can't be changed the way a user agent can
+  // Devices a site may already name: once a site has been given a USB, HID or serial device, getDevices/getPorts lists
+  // it again without asking, so the list of what is plugged in can follow the permission around
+  async function devices() {
+    let u = 0, h = 0, s = 0;
+    try { if (navigator.usb) u = (await navigator.usb.getDevices()).length; } catch (e) {}
+    try { if (navigator.hid) h = (await navigator.hid.getDevices()).length; } catch (e) {}
+    try { if (navigator.serial) s = (await navigator.serial.getPorts()).length; } catch (e) {}
+    txt("devs", u + h + s ? t("devs_v", { u, h, s }) : t("devs_none"));
+  }
+
   function engine() {
     let m = "";
     try { JSON.parse("null").x; } catch (e) { m = String(e.message); }
@@ -809,6 +834,17 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
       : apple && noisy ? "sh_atfp" : ext ? "sh_ext" : ua ? "sh_ua" : noisy ? "sh_noise" : "sh_none";
     R.shield = k;
     txt("shield", t(k), { why: t("sh_why") });
+  }
+
+  // Readings a real browser can't produce: the marks an anti-detect browser or a user-agent switcher leaves, which the
+  // lie check doesn't cover because nothing was rewritten — the values are simply impossible together
+  function adsp() {
+    const L = [], ua = navigator.userAgent || "", mob = /Mobile|Android|iPhone|iPad/.test(ua);
+    if (mob && navigator.maxTouchPoints === 0) L.push(t("adsp_mobile"));
+    if (screen.availWidth > screen.width || screen.availHeight > screen.height) L.push(t("adsp_screen"));
+    if (!outerWidth || !outerHeight || (outerWidth && innerWidth > outerWidth + 2)) L.push(t("adsp_win"));
+    if (!mob && R.fonts && R.fonts.length && R.fonts.length < 8) L.push(t("adsp_fonts"));
+    txt("adsp", L.length ? t("adsp_v", { list: L.join(" · ") }) : t("adsp_none"));
   }
 
   // Rendering and engine fingerprints (as CreepJS and BrowserLeaks read them): how this system lays out and draws
@@ -1119,7 +1155,20 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
       .filter(([q]) => mq(q)).map(([, k]) => t(k));
     txt("a11y", a11y.length ? list(a11y) : t("a11y_none"));
     const dm = ["fullscreen", "standalone", "minimal-ui"].find(m => mq(`(display-mode: ${m})`));
-    txt("display", t(dm === "fullscreen" ? "dm_full" : dm ? "dm_app" : "dm_tab") + (mq("(device-posture: folded)") ? " · " + t("dm_folded") : ""));
+    // (a foldable's own API, where the browser has it: the shape the device is held in, beyond the media query above)
+    const pos = navigator.devicePosture && navigator.devicePosture.type;
+    txt("display", t(dm === "fullscreen" ? "dm_full" : dm ? "dm_app" : "dm_tab") + (mq("(device-posture: folded)") ? " · " + t("dm_folded") : "") + (pos ? " · " + t("dm_posture", { p: pos }) : ""));
+  }
+
+  // What the browser offers a site to target ads with, cookies aside (Chrome's Privacy Sandbox). It changes with the
+  // version, the region and the visitor's own settings; the row names what is here rather than judging it
+  function sandbox() {
+    const L = [], w = window;
+    if ("browsingTopics" in document) L.push("Topics");
+    if (typeof navigator.runAdAuction === "function") L.push("Protected Audience");
+    if (w.sharedStorage) L.push("Shared Storage");
+    if (w.attributionReporting) L.push("Attribution Reporting");
+    txt("psb", L.length ? t("psb_v", { list: L.join(" · ") }) : t("psb_none"));
   }
 
   // an element with the class names ad blockers hide: if it has no height, something hid it
@@ -1169,6 +1218,25 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     };
   }
 
+  // A photo's own small print: the camera or phone that took it, the moment, often the place. Read here, in this tab:
+  // the file never leaves the browser, and the page has no upload to leave by
+  function exif() {
+    row("exif", esc(t("ex_none")) + `<button type="button" class="pa-go ex-go">${esc(t("ex_btn"))}</button>`, { why: t("ex_why") });
+    const el = $('.pr[data-s="exif"] .ex-go'); if (!el) return;
+    const inp = document.createElement("input");
+    inp.type = "file"; inp.accept = "image/jpeg,image/jpg"; inp.hidden = true; document.body.appendChild(inp);
+    el.onclick = () => inp.click();
+    inp.onchange = async () => {
+      const f = inp.files && inp.files[0]; if (!f) return;
+      el.disabled = true; el.textContent = t("ex_wait");
+      let b = null; try { b = new Uint8Array(await f.arrayBuffer()); } catch (e) {}
+      const e = b ? exifOf(b) : null;
+      const v = e ? [e.cam, e.time, e.lat != null ? t("ex_gps", { lat: e.lat.toFixed(4), lon: e.lon.toFixed(4) }) : null, e.soft].filter(Boolean).join(" · ") : "";
+      done.delete("exif");
+      row("exif", esc(v || t("ex_read0")), { why: t("ex_why") });
+      el.remove(); inp.remove();
+    };
+  }
   // fingerprints: the same drawing, sound or setup comes out slightly differently on every system
   function canvasPrint() {
     const cv = document.createElement("canvas"); cv.width = 280; cv.height = 60;
@@ -1858,7 +1926,8 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     $("#lbs").hidden = false;
   }
   // how much the visitor stands out: how many had the same fingerprint, and the readings that are rarest
-  const READABLE = ["gpu", "screen", "browser", "os", "langs", "tz", "emoji", "hwdec", "fontfp", "canvas", "audio", "webgl", "mathfp"];
+  const READABLE = ["gpu", "screen", "browser", "os", "langs", "tz", "emoji", "hwdec", "fontfp", "canvas", "audio", "webgl", "mathfp",
+    "arch", "cpu", "mem", "hz", "engine", "engver", "kbd", "locale", "scheme", "a11y", "scrollbar", "touch", "form"];
   const rarest = n => READABLE.filter(k => n[k]).sort((a, b) => n[a] - n[b]).slice(0, 2);
   function standText(m, k, top) {
     const others = Math.max(0, k - 1), v = { m: m.toLocaleString(LANG), n: others.toLocaleString(LANG), top: list((top || []).map(rowName)) };
@@ -2276,8 +2345,14 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
   $("#tlMore").onclick = () => openHelp(typeof D.store === "number" ? D.store : 0);
   paintOptout();
   function traitValues() {
-    const p = R.fpParts || {}, v = { os: R.osTxt, browser: R.browser, screen: /×/.test(R.screen || "") ? R.screen : null, gpu: R.gpu, langs: (R.langs || [])[0], tz: R.tz,
-      fontfp: p.fontfp, canvas: p.canvas, webgl: p.webgl, audio: p.audio, mathfp: R.mathfp, emoji: R.emoji, hwdec: R.hwdec, fpid: R.fpHex && R.fpHex.slice(0, 8) };
+    const p = R.fpParts || {}, loc = (() => { try { return Intl.DateTimeFormat().resolvedOptions().locale; } catch (e) { return null; } })();
+    const ev = R.engVer, hi = R.hi || {};
+    const v = { os: R.osTxt, browser: R.browser, screen: /×/.test(R.screen || "") ? R.screen : null, gpu: R.gpu, langs: (R.langs || [])[0], tz: R.tz,
+      fontfp: p.fontfp, canvas: p.canvas, webgl: p.webgl, audio: p.audio, mathfp: R.mathfp, emoji: R.emoji, hwdec: R.hwdec, fpid: R.fpHex && R.fpHex.slice(0, 8),
+      // (the coarse readings beside the fingerprints: each one on its own says something about where a visitor comes from)
+      arch: hi.architecture, cpu: navigator.hardwareConcurrency, mem: navigator.deviceMemory, hz: R.hz, engine: R.engine,
+      engver: ev ? ev.lo + "-" + (ev.hi == null ? "+" : ev.hi) : null, kbd: R.kbd, locale: loc, scheme: R.dark ? "dark" : "light",
+      a11y: R.hc ? "contrast" : "none", scrollbar: R.sbw, touch: navigator.maxTouchPoints, form: hi.formFactors && hi.formFactors.join(",") };
     return Object.fromEntries(TRAITS.filter(k => v[k]).map(k => [k, String(v[k])]));
   }
   async function seen() {
@@ -2681,10 +2756,10 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
       Promise.all(probes).then(() => { if (g === gen && !R.dnsCC && !(R.stack || []).length && !Object.values(R.ex || {}).some(Boolean)) fail(); });
     }
     const S = [["kbd", "kbd", keyboard], ["voices", "voices", voices], ["battery", "battery", battery], ["media", "media", media], ["audiohw", "audiohw", audioHw],
-      ["bio", "bio", biometric], ["bt", "bt", bluetooth], ["storage", "storage", storage], ["adblock", "adblock", adblock], ["ext", "ext", extensions],
+      ["bio", "bio", biometric], ["bt", "bt", bluetooth], ["devs", "devs", devices], ["storage", "storage", storage], ["adblock", "adblock", adblock], ["ext", "ext", extensions],
       ["prints", ["canvas", "audio", "fontfp", "rand", "fpid"], () => prints(glInfo)], ["trace", ["kex", "warp"], trace],
-      ["webgpu", "webgpu", webgpu], ["tor", "tor", torCheck], ["hz", "hz", refresh], ["screens", "screens", screens], ["codecs", "codecs", codecs], ["drm", "drm", drm], ["perms", "perms", perms],
-      ["traces", "traces", traces], ["lies", "lies", lies], ["icu", "icu", icu], ["scrollbar", "scrollbar", scrollbar], ["extwar", "extwar", extFiles],
+      ["webgpu", "webgpu", webgpu], ["tor", "tor", torCheck], ["psb", "psb", sandbox], ["wba", "wba", () => srv.then(webBotAuth)], ["hz", "hz", refresh], ["screens", "screens", screens], ["codecs", "codecs", codecs], ["drm", "drm", drm], ["perms", "perms", perms],
+      ["traces", "traces", traces], ["exif", "exif", exif], ["lies", "lies", lies], ["icu", "icu", icu], ["scrollbar", "scrollbar", scrollbar], ["extwar", "extwar", extFiles],
       ["cssv", "cssv", cssLevel], ["smooth", "smooth", smoothing], ["geoloc", "geoloc", geoloc], ["sensors", "sensors", sensors], ["etag", "etag", etagId], ["trackers", "trackers", trackers],
       ["domrect", "domrect", domRect], ["svgrect", "svgrect", svgRect], ["textm", "textm", textMetrics], ["glimg", "glimg", glImage], ["gpulim", "gpulim", gpuLimits],
       ["rtccodecs", "rtccodecs", rtcCodecs], ["recmime", "recmime", recMime], ["keys", "keys", engineKeys], ["timer", "timer", timerRes], ["callstack", "callstack", stackDepth], ["probe", ["tcpfp", "ja4", "h2fp"], probe], ["apis", "apis", apis], ["engver", "engver", engineVer], ["wasm", "wasm", wasmFeatures], ["mathfp", "mathfp", mathPrint], ["emoji", "emoji", emoji], ["hwdec", "hwdec", hwdec], ["heap", "heap", heap], ["sysui", "sysui", sysui], ["worker", "worker", workerNav], ["ai", "ai", builtinAI], ["xr", "xr", xr], ["gamepad", "gamepad", gamepad], ["ch", "ch", chHints], ["agent", "agent", async () => actPaint()]];
@@ -2703,6 +2778,8 @@ import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
     if (g !== gen) return;
     // (once the drawings and the lie check are in)
     if (on("prints") && on("lies")) shield();
+    // (after every reading is in: it compares them)
+    if (on("adsp")) adsp();
     // The graphics card's note follows the lie check: when browser APIs were found rewritten, the card's name is only
     // what the browser chose to say, and the line says so instead of passing it off as the machine's own card
     if (typeof R.gpuRaw === "string" && !R.gpuStandIn) {

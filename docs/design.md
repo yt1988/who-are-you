@@ -349,3 +349,41 @@ and rejected: long answers wrap into a column inside the prose).
   mousemove straight before each click, pasted or programmatic input, zero-duration scroll jumps).
 - Chrome's built-in AI (Translator, LanguageModel, Summarizer): availability() answers without downloading; the
   Language Detector's model is shared, so it leaks at most one bit.
+
+## 2026-11-14 — the frontier pass
+
+Five rows and a wider counter, none of which asks for a permission:
+
+- **`wba` (AI agent signature).** A request can carry Web Bot Auth (RFC 9421): `Signature-Agent` names the operator,
+  and a page script cannot fake it because the Worker reads it. Most visitors get "no signature", which is the honest
+  answer; an agent that signs shows who runs it. Six user-agent names are recognised beside it (ChatGPT-User,
+  Claude-User, Claude-SearchBot, PerplexityBot, Perplexity-User, Operator); a name without a signature says so.
+- **`devs` (devices already allowed).** `usb.getDevices()`, `hid.getDevices()` and `serial.getPorts()` list what a
+  site was once given, with no prompt. The page never opens a chooser (no `requestDevice`/`requestPort` call), and
+  Permissions-Policy is now `usb=(self)` where it was `usb=()`: a device appears only if the visitor granted it to
+  this site before.
+- **`psb` (Privacy Sandbox).** The ad-targeting interfaces this browser exposes (Topics, Protected Audience, Shared
+  Storage, Attribution Reporting). Presence, not state: the sentence says "work in this browser", not "on".
+  `document.hasStorageAccess` is left out on purpose — it is standard everywhere now and would make the row answer
+  "available" on a browser with no ad interfaces at all.
+- **`adsp` (anti-detect tells).** Readings a real browser cannot produce: a phone user agent with 0 touch points, an
+  available screen larger than the screen, a zero-size or smaller-than-viewport window, a desktop claiming almost no
+  fonts. This is the class the lie check cannot see, because nothing was rewritten — the values are simply impossible
+  together. It runs after every reading is in, since it compares them.
+- **`exif` (a photo's small print).** A picked JPEG is read in the page (`src/exif.mjs`, `test/exif.test.mjs`):
+  camera, software, shutter time, GPS point. The file never leaves the tab; the page has no upload path at all. A
+  photo stripped by a social network is a clean result, not an error. JPEG only: HEIC needs a decoder the page
+  doesn't carry.
+- **Rarity on 13 more rows.** `TRAITS` goes from 14 to 27: arch, cores, memory, refresh rate, engine and its version
+  range, keyboard layout, locale, colour scheme, contrast setting, scrollbar width, touch points, form factor. A
+  per-attribute share was AmIUnique's one real advantage; the corpus here already existed, so this is the trait list
+  and nothing else. Values stay coarse and short, and a tag appears only past `MIN_TOTAL`.
+
+Not done, and why:
+
+- **Third-party cookie / CHIPS / storage partitioning.** The test needs a frame from a second registrable domain
+  (`who.1ms.dog` and `1ms.dog` are same-site). `workers_dev` is off and the domain is routed from the 1ms.dog Worker,
+  so a second origin is an infrastructure decision, not a code change.
+- **DNS-level ad filtering (Pi-hole, AdGuard, NextDNS) and ISP script injection.** The first has no signal the
+  tracker test does not already give (a filtered resolver fails the same requests); the second needs a pinned hash of
+  a third-party file, which changes with every CDN release and would cry wolf.
