@@ -316,6 +316,14 @@ and rejected: long answers wrap into a column inside the prose).
 - The stats pill wraps to two lines on phones in fr, de, es, pt, ru, ja and pushes the title down 12 px (fr phone CLS
   about 0.23 in production).
 
+Changed on 2026-11-14, the owner's call: nothing a visitor has to read is cut. The check verdicts were clamped to two
+lines and the fixes in 先改这几项 to one, and the longest ones stopped mid-sentence — "IP 在日本标准时间 UTC+09:00，你设备的
+时钟…" in a verdict, "Clash Verge Rev：打开「TUN 模式」，DNS 用 fa…" in a fix. Both wrap now and their row grows with
+them; the two-line height is still kept while a verdict is read, so short rows keep their shape. A verdict past two
+lines therefore makes its row taller at the end of a run, which is where the small rise comes from: measured with the
+same page twice, ru desktop 0.250 → 0.262, zh-CN 0.090 → 0.095, phones (390 px) unchanged at 0.024 and 0.031–0.041.
+Prose that is cut is worse than a shift: a fix you can't finish reading is a fix you can't follow.
+
 ## Upkeep
 
 - A new iPhone or iPad screen size (usually each September) needs a row in src/models.mjs; until then the page says
