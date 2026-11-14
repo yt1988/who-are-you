@@ -425,8 +425,9 @@ html.shared .todo, html[data-who-embed] .todo { display: none; }
 .pg-n { font: 500 12px var(--f-num); color: var(--muted); }
 .pg-a { margin-left: auto; font: 500 12px var(--f-ui); color: var(--ink); text-decoration: none; }
 .pg-a:hover { text-decoration: underline; }
-/* a row as tall as its value: long readings wrap instead of ending in "…" (the method on the right stays one line) */
-.pr { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 13fr) minmax(0, 7fr); align-items: center; gap: 10px; min-height: 34px; padding: 7px 0; line-height: 1.45; border-top: 1px solid var(--line); font-size: 13px; transition: background-color .15s; }
+/* a row as tall as its value: long readings wrap instead of ending in "…", and the method on the right wraps too —
+   the column it needs for one line is about three times the card's, so 7fr/13fr/7fr (2026-11-14) */
+.pr { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 10fr) minmax(0, 11fr); align-items: center; gap: 10px; min-height: 34px; padding: 7px 0; line-height: 1.45; border-top: 1px solid var(--line); font-size: 13px; transition: background-color .15s; }
 .pn { min-width: 0; overflow-wrap: anywhere; }
 .pa { min-width: 0; overflow-wrap: anywhere; font: 12.5px/1.45 var(--f-num); } .pa .nw { white-space: normal; }
 .pa a { color: inherit; text-decoration: underline dotted color-mix(in srgb, var(--fg) 40%, transparent); text-underline-offset: 3px; }
@@ -449,7 +450,9 @@ button.pa-go { border: 0; background: none; padding: 0; cursor: pointer; }
 .ck-go, .focus-go, .pg-a, .pa-go { display: inline-flex; align-items: center; gap: 3px; }
 .ext { width: .95em; height: .95em; flex: none; }
 .pa .flag { margin-right: 4px; }
-.pm { justify-self: end; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font: 10.5px/18px var(--f-num); color: var(--muted); padding: 0 6px; border-radius: 5px; background: var(--soft); }
+/* where a reading comes from, in full: it breaks between words where it can and inside one only when it must
+   ("navigator.xr.isSessionSupported"), never with an "…" that hides which source it was (2026-11-14) */
+.pm { justify-self: end; max-width: 100%; white-space: normal; overflow-wrap: break-word; text-align: right; font: 10.5px/1.6 var(--f-num); color: var(--muted); padding: 1px 6px; border-radius: 5px; background: var(--soft); }
 .pr.wait .pa { color: var(--muted); animation: blink 1.2s ease-in-out infinite; }
 .pr.na .pa { color: var(--muted); font-family: var(--f-ui); }
 .pr[data-why] { cursor: help; outline: none; }
