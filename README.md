@@ -4,7 +4,7 @@
 
 Who do websites think you are? [Who Are You](https://who.1ms.dog) runs the sniffers any site can run the moment you open it, without a single permission prompt, and writes down the result as a paragraph with the blanks filled in: your likely nationality, the city you're in, your language and time zone, your device, browser, screen and graphics card, your network, your preferences, what your fonts say about your work, and your browser fingerprint.
 
-It then checks those readings against each other the way a site would to spot a disguise, and lists all 132 sniffers with how each one reads and what it read.
+It then checks those readings against each other the way a site would to spot a disguise, and lists all 133 sniffers with how each one reads and what it read.
 
 **Live:** https://who.1ms.dog · topic pages: [browser fingerprint test](https://who.1ms.dog/fingerprint/), [DNS leak test](https://who.1ms.dog/dns-leak/), [Browser Environment Check](https://who.1ms.dog/browser-check/), [Time Zone Check](https://who.1ms.dog/timezone-check/), [Proxy Check](https://who.1ms.dog/proxy-check/), [Browser Language Check](https://who.1ms.dog/language-check/), [Canvas Fingerprint Test](https://who.1ms.dog/canvas-fingerprint/), [User Agent Check](https://who.1ms.dog/user-agent/), [Browser Extension Check](https://who.1ms.dog/extensions/), [WebRTC leak test](https://who.1ms.dog/webrtc-leak/), [AI agent check](https://who.1ms.dog/ai-agent/), [Client Hints check](https://who.1ms.dog/client-hints/) (same tool, that result first; text in `src/pages.mjs`)
 

@@ -12,6 +12,7 @@
 import { decode, findings, tier, SLUG, parsePath } from "./share.mjs";
 import { Tally } from "./tally.mjs";
 import { regionName } from "./regions.mjs";
+import { framePage } from "./frame.mjs";
 export { Tally };
 import en from "./i18n/en.mjs";
 import zhCN from "./i18n/zh-CN.mjs";
@@ -150,6 +151,7 @@ function etag(request) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (url.hostname === "cross.1ms.one") return framePage(url);
     const r = parsePath(url.pathname);
     if (r && request.method === "GET") return result(request, env, r, url);
     if (url.pathname === "/api/seen" || url.pathname === "/api/stats") return tally(request, env, url);

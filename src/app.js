@@ -1237,6 +1237,34 @@ import { exifOf } from "./exif.mjs";
       el.remove(); inp.remove();
     };
   }
+  // Cross-site: this page frames cross.1ms.one, another domain of this tool, which writes a SameSite=None cookie, a
+  // Partitioned one (CHIPS) and a localStorage tag, then says which of them it could write and read back. It is the
+  // one question a page can't ask its own domain, and the frame keeps nothing: its cookie names nobody and the server
+  // sets it to expire in 30 seconds. Asked when the visitor clicks, never on its own, and nothing is sent anywhere.
+  const XS = "https://cross.1ms.one";
+  function xsite() {
+    row("xsite", esc(t("xs_none")) + `<button type="button" class="pa-go xs-go">${esc(t("xs_btn"))}</button>`, { why: t("xs_why") });
+    const btn = $('.pr[data-s="xsite"] .xs-go'); if (!btn) return;
+    btn.onclick = async () => {
+      btn.disabled = true; btn.textContent = t("xs_wait");
+      const a = await new Promise(resolve => {
+        const f = document.createElement("iframe");
+        f.title = "cross-site"; f.tabIndex = -1; f.referrerPolicy = "no-referrer";
+        f.style.cssText = "position:fixed;left:-20px;top:0;width:2px;height:2px;border:0;opacity:0";
+        const end = v => { removeEventListener("message", msg); clearTimeout(timer); f.remove(); resolve(v); };
+        const msg = e => { if (e.origin === XS && e.source === f.contentWindow && e.data && typeof e.data.c3p === "boolean") end(e.data); };
+        const timer = setTimeout(() => end(null), 8000);
+        addEventListener("message", msg);
+        f.src = XS + "/f";
+        document.body.appendChild(f);
+      });
+      done.delete("xsite");
+      if (!a) { row("xsite", esc(t("xs_fail")), { why: t("xs_why"), na: true }); return; }
+      const yn = v => t(v ? "xs_yes" : "xs_no");
+      row("xsite", esc(t(a.c3p ? "xs_share" : a.chips ? "xs_chips" : "xs_block")),
+        { why: t("xs_why2", { c: yn(a.c3p), p: yn(a.chips), s: yn(a.ls) }) });
+    };
+  }
   // fingerprints: the same drawing, sound or setup comes out slightly differently on every system
   function canvasPrint() {
     const cv = document.createElement("canvas"); cv.width = 280; cv.height = 60;
@@ -2759,7 +2787,7 @@ import { exifOf } from "./exif.mjs";
       ["bio", "bio", biometric], ["bt", "bt", bluetooth], ["devs", "devs", devices], ["storage", "storage", storage], ["adblock", "adblock", adblock], ["ext", "ext", extensions],
       ["prints", ["canvas", "audio", "fontfp", "rand", "fpid"], () => prints(glInfo)], ["trace", ["kex", "warp"], trace],
       ["webgpu", "webgpu", webgpu], ["tor", "tor", torCheck], ["psb", "psb", sandbox], ["wba", "wba", () => srv.then(webBotAuth)], ["hz", "hz", refresh], ["screens", "screens", screens], ["codecs", "codecs", codecs], ["drm", "drm", drm], ["perms", "perms", perms],
-      ["traces", "traces", traces], ["exif", "exif", exif], ["lies", "lies", lies], ["icu", "icu", icu], ["scrollbar", "scrollbar", scrollbar], ["extwar", "extwar", extFiles],
+      ["traces", "traces", traces], ["exif", "exif", exif], ["xsite", "xsite", xsite], ["lies", "lies", lies], ["icu", "icu", icu], ["scrollbar", "scrollbar", scrollbar], ["extwar", "extwar", extFiles],
       ["cssv", "cssv", cssLevel], ["smooth", "smooth", smoothing], ["geoloc", "geoloc", geoloc], ["sensors", "sensors", sensors], ["etag", "etag", etagId], ["trackers", "trackers", trackers],
       ["domrect", "domrect", domRect], ["svgrect", "svgrect", svgRect], ["textm", "textm", textMetrics], ["glimg", "glimg", glImage], ["gpulim", "gpulim", gpuLimits],
       ["rtccodecs", "rtccodecs", rtcCodecs], ["recmime", "recmime", recMime], ["keys", "keys", engineKeys], ["timer", "timer", timerRes], ["callstack", "callstack", stackDepth], ["probe", ["tcpfp", "ja4", "h2fp"], probe], ["apis", "apis", apis], ["engver", "engver", engineVer], ["wasm", "wasm", wasmFeatures], ["mathfp", "mathfp", mathPrint], ["emoji", "emoji", emoji], ["hwdec", "hwdec", hwdec], ["heap", "heap", heap], ["sysui", "sysui", sysui], ["worker", "worker", workerNav], ["ai", "ai", builtinAI], ["xr", "xr", xr], ["gamepad", "gamepad", gamepad], ["ch", "ch", chHints], ["agent", "agent", async () => actPaint()]];

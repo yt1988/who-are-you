@@ -124,6 +124,7 @@ export const GROUPS = [
     { id: "history", m: "history.length" },
     { id: "exif", m: "a photo's EXIF, read locally" },
     { id: "traces", m: "localStorage · IndexedDB · Cache · window.name" },
+    { id: "xsite", m: "cross.1ms.one · iframe · SameSite=None · CHIPS" },
     { id: "fonts", m: "canvas measureText" },
   ]],
   ["fp", [

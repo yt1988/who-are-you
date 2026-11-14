@@ -387,3 +387,28 @@ Not done, and why:
 - **DNS-level ad filtering (Pi-hole, AdGuard, NextDNS) and ISP script injection.** The first has no signal the
   tracker test does not already give (a filtered resolver fails the same requests); the second needs a pinned hash of
   a third-party file, which changes with every CDN release and would cry wolf.
+
+## 2026-11-14 — the cross-site row (`xsite`)
+
+The row the frontier pass left out, built once the owner put a second registrable domain in place. `1ms.dog` and
+`who.1ms.dog` are the same site; a frame from either answers nothing about third-party storage.
+
+- **The origin.** `cross.1ms.one`: a proxied `AAAA 100::` record and a Workers route (`cross.1ms.one/*`) to the `who`
+  script, in the owner's own zone. Not a `workers.dev` subdomain (off everywhere here), not another Worker: the same
+  script, told by hostname. `src/worker.js` hands that host to `framePage` (`src/frame.mjs`) and nothing else; every
+  other path on the site's own host is unchanged. Universal SSL already covers `*.1ms.one`.
+- **The frame** (`/f`, and `/` for anyone who types the host in): writes a `SameSite=None; Secure` cookie, a second
+  one with `Partitioned` (CHIPS), and a localStorage tag, reads each back, and posts the three booleans to its parent.
+  `Max-Age=30`, no identifier in either cookie, `default-src 'none'`, no request of any kind — it can't leak what it
+  is asked to store. Framable by `https://*.1ms.dog` alone.
+- **The row** asks when clicked, never on its own, and its value is the verdict, not the three booleans: a plain
+  third-party cookie that survives means *another site can recognise you here*; one that fails while `Partitioned`
+  succeeds means *blocked, but CHIPS still writes* (the browser's own replacement); both failing is *blocked*. The
+  three readings sit in the row's tooltip. No answer in 8 s (offline, an extension, a network that drops the host)
+  says so rather than guessing.
+- **What it can't do.** Without a popup it cannot compare a first-party seed against the third-party copy, so it
+  names the mechanism that survived rather than proving a partition boundary. A popup would have to be a user-gesture
+  window whose `opener` reaches back — and this site sends `Cross-Origin-Opener-Policy: same-origin`, which severs
+  exactly that. Trading COOP for one row wasn't worth it.
+- **Cost:** one CSP source (`frame-src`), one Workers route and DNS record in the `1ms.one` zone, one row, one module
+  and one test (`test/frame.test.mjs`), 11 strings × 10 languages.

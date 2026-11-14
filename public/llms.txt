@@ -3,7 +3,7 @@
 > Free privacy self-check. Shows who websites take you for, as a paragraph with the blanks filled in (likely
 > nationality, city, language, time zone, device, browser, screen, graphics card, network, preferences, what your
 > fonts say about your work, browser fingerprint), checks those readings against each other the way a site would to
-> spot a VPN, proxy or spoofed browser, and lists all 132 sniffers with what each one read: what the server sees
+> spot a VPN, proxy or spoofed browser, and lists all 133 sniffers with what each one read: what the server sees
 > in the request (address, Cloudflare geolocation, ASN, TLS, headers, clock) and standard browser APIs (languages,
 > Intl, keyboard layout, speech voices, client hints, WebGL, screen, battery, media devices, fonts, canvas and audio
 > fingerprints, WebRTC), plus the exit each kind of site sees and the DNS resolver. Nothing is stored.
