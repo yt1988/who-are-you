@@ -1252,7 +1252,7 @@ import { exifOf } from "./exif.mjs";
       f.style.cssText = "position:fixed;left:-20px;top:0;width:2px;height:2px;border:0;opacity:0";
       const end = v => { removeEventListener("message", msg); clearTimeout(timer); f.remove(); resolve(v); };
       const msg = e => { if (e.origin === XS && e.source === f.contentWindow && e.data && typeof e.data.c3p === "boolean") end(e.data); };
-      const timer = setTimeout(() => end(null), 8000);
+      const timer = setTimeout(() => end(null), 3000);   // the frame is on the same edge as this page: 3 s is already slow
       addEventListener("message", msg);
       f.src = XS + "/f";
       document.body.appendChild(f);

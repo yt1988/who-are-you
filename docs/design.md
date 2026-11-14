@@ -439,3 +439,21 @@ Chromium exposes the object on *unmanaged* browsers too (`typeof navigator.manag
 headless Chrome), and the only call that tells the difference, `getManagedConfiguration()`, needs a permission no
 page can obtain. A row built on presence alone would tell every Chrome user they are managed. Dropped rather than
 shipped wrong; the strings were taken back out.
+
+**The words, written twice.** The first draft of those sentences read like a translation ("As for ad targeting without
+cookies, this browser offers sites nothing extra"). The site's standard is `docs/translation.md` in the shell repo —
+信·达·雅: a fact, short sentences, and the way a local would say it, rewritten per language rather than carried over.
+The second pass:
+
+- the fact first, the mechanism after: *"Ads have no other way to find you: this browser gives them nothing beyond
+  cookies"*, not a subordinate clause about "ad targeting without cookies";
+- a plain word beside every term: the cookie a partitioned frame keeps is *"that mark, and it only counts on that
+  site"*, not "CHIPS allows it to write a partitioned cookie";
+- no construction repeated from the sentence next to it. The row above already says *"switching browsers doesn't
+  help"*, so the next one says *"another site would know it's you too"* — and in ru/de, where the first draft had
+  copied that same "смена … не помогает" / "… hilft nicht" shape from the sentence before it, it was rewritten
+to the plain statement.
+- the metaphors stay where they land. "No other door in" works in zh, ja, ko, es, fr, pt; in ru and de the sentence
+  uses "путь" / "Weg" instead, because a door into advertising doesn't.
+
+The tool's own tests cannot see any of this, which is why it is in this file.
