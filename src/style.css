@@ -353,32 +353,30 @@ html.shared .scene, html[data-who-embed] .scene { display: none; }
 /* what to fix first: the checks that give you away most, each with its first step */
 .todo { margin: 12px 0 4px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); }
 .todo-h { font-size: 12.5px; font-weight: 700; color: var(--muted); margin: 0 0 6px; }
-/* three rows of one height, kept from the first paint: the list fills in place and the checks below don't move */
-.todo ol { margin: 0; padding: 0; list-style: none; display: grid; grid-auto-rows: 47px; align-content: start; gap: 4px; min-height: calc(3 * 47px + 2 * 4px); counter-reset: td; }
+/* three rows, kept from the first paint: the list fills in place and the checks below don't move. A row is 47px when
+   one line of title and one of the first step fit, and as tall as it needs when they don't — a fix cut short at "DNS
+   用 fa…" is a fix you can't follow (2026-11-14) */
+.todo ol { margin: 0; padding: 0; list-style: none; display: grid; grid-auto-rows: auto; align-content: start; gap: 4px; min-height: calc(3 * 47px + 2 * 4px); counter-reset: td; }
 .todo li.sk { padding: 8px 6px 0 34px; } .todo li.sk .skl { display: block; width: 45%; } .todo li.sk .skl + .skl { width: 80%; margin-top: 9px; }
 .todo li { counter-increment: td; }
-.todo button { all: unset; box-sizing: border-box; width: 100%; height: 100%; display: grid; grid-template-columns: 20px minmax(0, 1fr); align-content: center; gap: 0 8px; padding: 5px 6px; border-radius: 8px; cursor: pointer; font-size: 13px; line-height: 1.45; }
+.todo button { all: unset; box-sizing: border-box; width: 100%; min-height: 47px; display: grid; grid-template-columns: 20px minmax(0, 1fr); align-content: center; gap: 0 8px; padding: 5px 6px; border-radius: 8px; cursor: pointer; font-size: 13px; line-height: 1.45; }
 .todo button::before { content: counter(td); grid-row: span 2; width: 18px; height: 18px; margin-top: 1px; border-radius: 50%; display: grid; place-items: center; font: 700 10.5px/1 var(--f-ui); color: #fff; background: var(--t3); }
 .todo .bad button::before { background: var(--bad); }
 .todo button:hover, .todo button:focus-visible { background: var(--ink-soft); }
-.todo b, .todo span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* every word of a fix, at every width: the title wraps and the first step runs on for as many lines as it takes
+   (2026-11-14 — "Clash Verge Rev：打开「TUN 模式」，DNS 用 fa…" stopped before the setting you were meant to change) */
+.todo b, .todo span { overflow-wrap: anywhere; }
 .todo b { font-weight: 600; }
 .todo span { color: var(--muted); font-size: 12.5px; }
-/* a phone: each fix in full, up to three lines, under its title (the list is below the fold there, so it may grow) */
-@media (max-width: 720px) {
-  .todo ol { grid-auto-rows: auto; }
-  .todo button { height: auto; }
-  .todo b { white-space: normal; }
-  .todo span { white-space: normal; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
-}
 html.shared .todo, html[data-who-embed] .todo { display: none; }
 .ck-tip { grid-column: 1 / -1; margin: 6px 0 4px 28px; padding: 8px 12px 8px 26px; border-radius: 10px; background: var(--panel); border: 1px solid var(--line); font-size: 12.5px; line-height: 1.6; color: var(--fg); }
 .ck-tip li::marker { color: var(--ink); }
-/* two lines at most, so a long network name doesn't make the row taller; the whole text is on hover */
-/* two lines are what the verdict may take: the height is kept while it waits, so the row is the same height before
-   and after the verdict arrives */
-.ck-v { color: var(--muted); font-size: 12.5px; line-height: 1.4; min-height: 2.8em; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-/* (a phone has no hover: the whole text, the row as tall as it needs; the checks are below the first screen there) */
+/* The whole verdict, never cut (2026-11-14: the two-line clamp stopped "IP 在日本标准时间 UTC+09:00，你设备的时钟…"
+   right before the point it was making). The height of two lines is still kept while it waits, so a row is the same
+   height before and after its verdict arrives; a verdict longer than two lines grows its row instead of losing words */
+.ck-v { color: var(--muted); font-size: 12.5px; line-height: 1.4; min-height: 2.8em; overflow-wrap: anywhere; }
+/* a phone: the verdict goes under the name, and the checks are far below the first screen, so a row may grow as its
+   verdict arrives without moving what the visitor is reading */
 @media (max-width: 720px) {
   /* a phone puts the verdict under the name instead of beside it: three columns there left the name 74px, so names
      like UA 和真实系统 broke into three lines and the rows came out 44 to 129px tall, each a different shape */
@@ -386,9 +384,9 @@ html.shared .todo, html[data-who-embed] .todo { display: none; }
   .ck-l { grid-column: 2; }
   .ck-btns { grid-column: 3; grid-row: 1; }
   .ck-v, .ck-acts { grid-column: 2 / -1; }
-  /* (the verdict is not cut to two lines here, so the height kept for a second line is a blank line under every short
-     verdict; the list is far below the first screen on a phone, so nothing there moves what the visitor is reading) */
-  .ck-v { display: block; -webkit-line-clamp: unset; overflow: visible; min-height: 0; }
+  /* (the height kept for a second line is a blank line under every short verdict; the list is far below the first
+     screen on a phone, so nothing there moves what the visitor is reading) */
+  .ck-v { min-height: 0; }
 }
 .ckr[data-why] { cursor: help; }
 .ck-v .skl { width: 70%; }
