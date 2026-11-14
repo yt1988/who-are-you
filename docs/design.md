@@ -324,6 +324,17 @@ lines therefore makes its row taller at the end of a run, which is where the sma
 same page twice, ru desktop 0.250 → 0.262, zh-CN 0.090 → 0.095, phones (390 px) unchanged at 0.024 and 0.031–0.041.
 Prose that is cut is worse than a shift: a fix you can't finish reading is a fix you can't follow.
 
+The same rule reached the readings card the same day, on the owner's word ("标签也完整显示"): the method tag on the right
+of a reading (request.cf.latitude, www.cloudflare.com/cdn-cgi/trace) was cut to the column with no title to fall back
+on — 94 of the 133 readings. The longest tag needs about 300 px on one line, three times what the card can give it, so
+it wraps; what was left to decide is which column pays. The tag now gets 11fr where the reading had 13fr
+(6fr/10fr/11fr, was 7fr/13fr/7fr), the split that leaves 103 of 133 tags on one line and breaks inside an identifier in
+only four (www.cloudflare.com/cdn-cgi/trace, navigator.xr.isSessionSupported, MediaRecorder.isTypeSupported,
+mediaCapabilities.decodingInfo) against 15 for the next candidate tried. A tag breaks between its words where it can and
+inside one only when it must; it is a source path, not prose, so it is never shortened or split with " · " to make it
+fit. Cost: the reading column narrows from 225 to 173 px, 11 more readings take a second line, and the page grows about
+6%.
+
 ## Upkeep
 
 - A new iPhone or iPad screen size (usually each September) needs a row in src/models.mjs; until then the page says
