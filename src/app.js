@@ -15,6 +15,9 @@ import { exifOf } from "./exif.mjs";
 
 (function () {
   "use strict";
+  // (the page's pre-paint snippet watches for this: a script that never got here is a browser too old to parse it,
+  // and shows the one-line notice instead of a page that reads nothing — 2026-11-15)
+  window.__whoAlive = 1;
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
   const D = JSON.parse($("#data").textContent);
   const L = window.L1MS || {}, LANG = D.lang;
@@ -858,7 +861,12 @@ import { exifOf } from "./exif.mjs";
     d.style.cssText = "position:absolute;left:-9999px;top:0;font:16px serif;width:max-content";
     d.innerHTML = '<span style="display:inline-block;transform:rotate(7.3deg) skewX(3deg)">Who are you 你是谁 😃</span><span style="font:italic 13px monospace;letter-spacing:.37px">0.123 WWW</span>';
     document.body.appendChild(d);
-    const v = [...d.querySelectorAll("span")].flatMap(s => [...s.getClientRects()].map(r => [r.x, r.y, r.width, r.height].map(x => x.toFixed(6)).join(",")));
+    // (a plain loop: flatMap is Chrome 69, Safari 12, and this page still gets opened in older in-app browsers — 2026-11-15)
+    const v = [], spans = d.querySelectorAll("span");
+    for (let i = 0; i < spans.length; i++) {
+      const rc = spans[i].getClientRects();
+      for (let j = 0; j < rc.length; j++) { const r = rc[j]; v.push([r.x, r.y, r.width, r.height].map(x => x.toFixed(6)).join(",")); }
+    }
     const rg = document.createRange(); rg.selectNodeContents(d); const rr = rg.getBoundingClientRect();
     v.push(rr.width.toFixed(6) + "," + rr.height.toFixed(6));
     d.remove();
@@ -1148,7 +1156,10 @@ import { exifOf } from "./exif.mjs";
     txt("auto", R.auto.length ? R.auto.map(k => t("auto_" + k)).join(" · ") : t("auto_none"), { why: at.why });
     // (the identity strings a user-agent switcher forgets: they say Chromium, Firefox or WebKit on their own)
     R.vendor = navigator.vendor; R.productSub = navigator.productSub;
-    const plugins = navigator.plugins ? [...navigator.plugins].map(x => x.name) : [];
+    // (PluginArray is only iterable where someone added Symbol.iterator to it: Firefox and Safari throw on a spread,
+    // and the uncaught error took the rest of the run with it — 2026-11-15. It is an array-like everywhere, so read
+    // it like one)
+    const plugins = navigator.plugins ? Array.prototype.map.call(navigator.plugins, x => x.name) : [];
     txt("idstr", [navigator.vendor || "–", navigator.productSub || "–", t("id_plugins", { n: plugins.length })].join(" · "), { why: plugins.join("\n") });
     // the window, and what the system's bar (taskbar, Dock) takes off the screen
     txt("win", t("win_v", { w: innerWidth, h: innerHeight, tb: Math.max(0, screen.height - screen.availHeight) }));
@@ -2379,7 +2390,7 @@ import { exifOf } from "./exif.mjs";
     $("#tlOff").textContent = t(optedOut() ? "tl_back" : "tl_off");
     $("#tally").classList.toggle("off", optedOut());
   }
-  $("#tlOff").onclick = () => { store.set(K.optout, optedOut() ? "0" : "1"); paintOptout(); document.documentElement.toggleAttribute("data-nouniq", optedOut()); if (optedOut()) { $("#fpUniq").hidden = true; $$(".rar").forEach(e => e.remove()); R.uniq = null; blank("stand", esc(t("st_off"))); } };
+  $("#tlOff").onclick = () => { store.set(K.optout, optedOut() ? "0" : "1"); paintOptout(); if (optedOut()) document.documentElement.setAttribute("data-nouniq", ""); else document.documentElement.removeAttribute("data-nouniq"); if (optedOut()) { $("#fpUniq").hidden = true; $$(".rar").forEach(e => e.remove()); R.uniq = null; blank("stand", esc(t("st_off"))); } };
   $("#tlMore").onclick = () => openHelp(typeof D.store === "number" ? D.store : 0);
   paintOptout();
   function traitValues() {

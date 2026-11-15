@@ -157,7 +157,8 @@ export const GROUPS = [
 ];
 // the two columns of the sniffers card
 export const COLUMNS = [["net", "exit", "hdr", "loc", "fp"], ["dev", "brw"]];
-export const SNIFFERS = GROUPS.flatMap(([, l]) => l);
+// (a plain loop, not flatMap: Chrome 69 and Safari 12, and this runs at import — 2026-11-15)
+export const SNIFFERS = GROUPS.reduce((a, [, l]) => a.concat(l), []);
 
 // the blanks of the portrait, in the order the sentence template uses them; each names the rows it comes from
 export const BLANKS = {

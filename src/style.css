@@ -21,10 +21,15 @@ h2 { font-size: 15px; font-weight: 700; }
 .eyebrow { display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; margin-bottom: 10px; padding: 3px 10px 3px 8px; border-radius: 999px;
   font-size: 12px; font-weight: 600; color: var(--ink); background: var(--ink-soft); }
 /* beside it, everyone's numbers: a pill to the stats page, its room kept until the numbers come */
-/* an app's own browser (the root's data-inapp, set before the first paint): which browser the results are for */
-.inapp { display: none; align-items: center; gap: 10px; margin: 0 0 12px; padding: 9px 10px 9px 12px; border-radius: 12px; font-size: 13px; line-height: 1.5;
+/* an app's own browser (the root's data-inapp, set before the first paint): which browser the results are for.
+   .oldapp is the same strip for a browser too old to run the page at all (data-old, set by the same snippet) */
+.inapp, .oldapp { display: none; align-items: center; gap: 10px; margin: 0 0 12px; padding: 9px 10px 9px 12px; border-radius: 12px; font-size: 13px; line-height: 1.5;
   border: 1px solid color-mix(in srgb, var(--warn) 40%, var(--line)); background: color-mix(in srgb, var(--warn) 9%, var(--panel)); }
-html[data-inapp] .inapp { display: flex; } html.shared .inapp, html[data-who-embed] .inapp { display: none; }
+html[data-inapp] .inapp, html[data-old] .oldapp { display: flex; } html.shared .inapp, html[data-who-embed] .inapp, html.shared .oldapp, html[data-who-embed] .oldapp { display: none; }
+/* (the browsers this one is for have no color-mix: a plain border and background, else the strip loses both) */
+.oldapp { border: 1px solid var(--line); background: var(--soft); }
+/* (a browser that can't run the page keeps the notice and nothing that pretends to still be loading — see the end of
+   this file: those rules have to come after every block they hide) */
 .ia-t { flex: 1; min-width: 0; } .ia-v, .ia-x { display: none; }
 html[data-inapp="wv"] .ia-a, html[data-inapp="WeChat"] .ia-a { display: none; } html[data-inapp="wv"] .ia-v, html[data-inapp="WeChat"] .ia-x { display: inline; }
 html[data-inapp="X"] .ia-n::before { content: "X"; } html[data-inapp="Weibo"] .ia-n::before { content: "Weibo"; } html[lang^="zh"][data-inapp="Weibo"] .ia-n::before { content: "微博"; }
@@ -633,7 +638,7 @@ html[data-who-embed] .bar { margin: 0 -16px; padding: 10px 16px 12px; }
   html, body { background: #fff !important; color: var(--fg); }
   .app { max-width: none; padding: 0; }
   .top, .bar, .acts, .topics, .scrim, .adsbox, .live, .un-go, .story-more, .story-sk, .icon-btn, .rp-btn, .ck-btns,
-  .ck-fix, .v-acts, .scene, .inapp, [data-ms-more] { display: none !important; }
+  .ck-fix, .v-acts, .scene, .inapp, .oldapp, [data-ms-more] { display: none !important; }
   .story { font-size: 11pt; line-height: 1.65; color: #222; }
   .story.fold p:not(:first-child) { display: block; }
   .hero { padding: 0; }
@@ -647,3 +652,10 @@ html[data-who-embed] .bar { margin: 0 -16px; padding: 10px 16px 12px; }
   a { color: inherit; text-decoration: none; }
   .tally button { display: none !important; }
 }
+/* A browser too old to run the page (html[data-old], set by the pre-paint snippet when the app script never got in):
+   the notice stands alone, and nothing that would sit there shimmering forever is drawn — the story's placeholders, the
+   checks, the readings, the fixes, the actions and the disguise scenes (2026-11-15). Last in the file on purpose: each
+   of these blocks sets its own display further up */
+html[data-old] .story-w, html[data-old] #mSlot, html[data-old] .lbs, html[data-old] .un-go, html[data-old] .todo,
+html[data-old] .ck, html[data-old] .col.disg, html[data-old] .probes, html[data-old] .disg, html[data-old] .idc,
+html[data-old] .live, html[data-old] .acts, html[data-old] .scene, html[data-old] .target { display: none !important; }

@@ -476,3 +476,38 @@ to the plain statement.
   uses "путь" / "Weg" instead, because a door into advertising doesn't.
 
 The tool's own tests cannot see any of this, which is why it is in this file.
+
+## 2026-11-15 — the floor: what browser can still read this page
+
+The front-end error report (`npm run errors -- 7`) kept showing white pages: `SyntaxError: Unexpected token '?'` and
+`'…'` on Chrome 79 and Chrome 57-64, `Unexpected token {` on Chrome 64 (an optional catch binding), `navigator.plugins
+is not iterable` and `Ur.flatMap is not a function` under them. The build lowered to ES2019/Chrome 70, which is inside
+the range of in-app browsers (an old LBBROWSER on Windows, an old WeChat WebView on Android) that still open this page,
+and two runtime APIs were called bare.
+
+What was wrong, in order of how many people it hit:
+
+- `navigator.plugins` was spread (`[...navigator.plugins]`). A PluginArray is only iterable where someone added
+  `Symbol.iterator` to it: Chrome and Edge have it, Firefox and Safari do not. So the reading threw for every Firefox and
+  Safari visitor, and the throw took the rest of that sniffer's run with it. Read as an array-like now
+  (`Array.prototype.map.call`), which is what the spec defines it as.
+- `flatMap` (Chrome 69, Safari 12) ran at import in `sniffers.mjs` and `infer.mjs` and in the DOMRect reading. Replaced
+  with plain loops: an import-time throw means nothing on the page runs at all.
+- Syntax newer than Chrome 57: optional catch binding, object spread, and the rest ES2018+. The build's target is now
+  `es2017, chrome57, safari11`, and esbuild refuses the build outright when it cannot lower something for that target —
+  so a green build is the guarantee. (`firefox52` and `edge15` in the target list make esbuild error on default
+  arguments and destructuring it cannot lower; es2017 covers them.)
+
+Runtime APIs still newer than the floor are filled in by `src/compat.mjs` (Object.fromEntries, AbortSignal.timeout,
+globalThis, CSS.supports), or guarded where a shim would lie (ResizeObserver, Intl.Locale in a try/catch,
+structuredClone only ever probed).
+
+Below the floor nothing can be read at all — iOS 9's WeChat, Chrome 39 — so the pre-paint snippet says so: it listens for
+a SyntaxError naming `/assets/app.<hash>.js`, and for the script never marking `window.__whoAlive` within 8 s, then sets
+`data-old` on the root and fills the notice with `old_b` (ten languages). `html[data-old]` hides everything that would
+otherwise shimmer as "still loading" — the story's placeholders, the checks, the readings, the fixes, the actions, the
+target picker. The notice is a strip, not a dialog, and it does not try to talk anyone into anything.
+
+Measured before shipping, on the built page with the newer APIs deleted from the window (flatMap, flat, fromEntries,
+hasOwn, CSS, AbortSignal.timeout, ResizeObserver, and a PluginArray that is array-like but not iterable): the page fills
+in completely, story and readings included. With the app script served unparsable, only the notice appears.

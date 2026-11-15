@@ -483,7 +483,8 @@ export function protocols(x) {
 // systems ship every font and voice).
 const SYS_FONTS = [["CN", ["DengXian", "FangSong", "KaiTi", "SimHei", "STKaiti", "STSong", "STXihei"]], ["TW", ["DFKai-SB", "MingLiU", "PMingLiU"]],
   ["JP", ["BIZ UDGothic", "BIZ UDMincho", "UD Digi Kyokasho N-R", "Yu Mincho"]], ["KR", ["Batang", "Gulim", "Dotum", "Gungsuh"]]];
-export const SYS_FONT_LIST = SYS_FONTS.flatMap(([, l]) => l);
+// (a plain loop, not flatMap: Chrome 69 and Safari 12, and this runs at import — 2026-11-15)
+export const SYS_FONT_LIST = SYS_FONTS.reduce((a, [, l]) => a.concat(l), []);
 const KBD_CC = { AZERTY: ["FR", "BE"], QWERTZ: ["DE", "AT", "CH", "CZ", "SK", "HU"], "ЙЦУКЕН": ["RU", "UA", "BY", "KZ"], Hebrew: ["IL"], Greek: ["GR", "CY"] };
 export function sysLangs({ os, fonts = [], voices = [], kbd }) {
   if (os !== "Windows") return false;

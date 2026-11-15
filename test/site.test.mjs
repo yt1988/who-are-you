@@ -128,3 +128,31 @@ test("no language file defines a key twice", async () => {
     }
   }
 });
+
+// Old browsers: the page's script must parse where the reported visits were (Chrome 57, Safari 11), and use no runtime
+// API that is newer than that without the compat shim filling it in (2026-11-15, issue #124: white pages on Chrome 57-79).
+test("the script parses on the browsers an in-app browser still runs", async () => {
+  const build = await read("scripts/build.mjs");
+  assert.match(build, /target: \["es2017", "chrome57", "safari11"\]/, "the build's floor is Chrome 57 / Safari 11");
+  const name = (await read("public/index.html")).match(/\/assets\/(app\.[0-9a-f]+\.js)/)[1];
+  const js = await read("public/assets/" + name);
+  // (the syntax esbuild lowers at that target never survives; these two it can only lower if they are there at all)
+  assert.ok(!/\bcatch\s*\{/.test(js), "optional catch binding (Chrome 66) is lowered");
+  assert.ok(!/\?\.\w/.test(js), "optional chaining (Chrome 80) is lowered");
+  // (runtime APIs: the compat shim fills in the ones the page needs, so the page must not call a newer one bare)
+  for (const api of [".flatMap(", ".replaceAll(", "Object.hasOwn(", "structuredClone("]) assert.ok(!js.includes(api), `${api} is not in the page script`);
+  // (PluginArray is an array-like, not iterable, on Firefox and Safari: spreading it throws and takes the run with it)
+  assert.ok(!/\[\.\.\.navigator\.plugins\]/.test(js), "navigator.plugins is not spread");
+  assert.match((await read("src/compat.mjs")), /Object\.fromEntries/, "the shims are in the bundle");
+});
+
+test("a browser too old to parse the page says so instead of showing nothing", async () => {
+  const build = await read("scripts/build.mjs");
+  assert.match(build, /data-old/, "the pre-paint snippet sets data-old");
+  assert.match(build, /__whoAlive/, "the page script marks itself alive");
+  const h = await page("");
+  assert.match(h, /<p class="oldapp" id="old" hidden><\/p>/, "the notice's place is in the page, hidden");
+  const en = (await read("src/i18n/en.mjs")).match(/old_b: "([^"]*)"/);
+  assert.ok(en && en[1].length > 20, "old_b says what to do");
+  for (const [lang] of LANGS) assert.ok(new RegExp(`old_b: "`).test(await read(`src/i18n/${lang}.mjs`)), lang + ": old_b");
+});
