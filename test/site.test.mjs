@@ -2,7 +2,7 @@
 // every string the page uses exists in every language.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { LANGS, storyHtml } from "../scripts/build.mjs";
 import { SNIFFERS, BLANKS, CHECKS, PROTO } from "../src/sniffers.mjs";
 
@@ -144,6 +144,18 @@ test("the script parses on the browsers an in-app browser still runs", async () 
   // (PluginArray is an array-like, not iterable, on Firefox and Safari: spreading it throws and takes the run with it)
   assert.ok(!/\[\.\.\.navigator\.plugins\]/.test(js), "navigator.plugins is not spread");
   assert.match((await read("src/compat.mjs")), /Object\.fromEntries/, "the shims are in the bundle");
+  // (a dynamic import() can't survive that target either: esbuild turns it into a require() no browser has, which took
+  // the share dialog and help down with no error anyone saw. Modules are reached through a module script instead, and
+  // the questions ship as a classic script — 2026-11-15)
+  assert.ok(!/\bimport\s*\(/.test(js), "the built page script has no import()");
+  assert.ok(!/Dynamic require/.test(js), "the bundle carries no require() shim");
+  const assets = await readdir(new URL("../public/assets/", import.meta.url));
+  const boot = assets.find(f => /^share-boot\.[0-9a-f]+\.js$/.test(f));
+  assert.ok(boot, "the share dialog's module boot is built");
+  assert.match(js, new RegExp("/assets/" + boot.replace(/\./g, "\\.")), "the page script names the boot");
+  assert.match(await read("public/assets/" + boot), /^import\*as m from"\/assets\/share\/share\.js\?v=\d+";window\.__1msShare=m;\n$/, "the boot imports the dialog and leaves it on the page");
+  const help = assets.find(f => /^h\.en\.[0-9a-f]+\.js$/.test(f));
+  assert.match(await read("public/assets/" + help), /^window\.L1MS_HELP=/, "the questions are a classic script");
 });
 
 test("a browser too old to parse the page says so instead of showing nothing", async () => {

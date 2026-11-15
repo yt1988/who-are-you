@@ -19,6 +19,9 @@
 /assets/h.*
   ! Cache-Control
   Cache-Control: public, max-age=31536000, immutable
+/assets/share-boot.*
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
 /assets/fonts/*
   ! Cache-Control
   Cache-Control: public, max-age=31536000, immutable

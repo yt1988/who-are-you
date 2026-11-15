@@ -81,16 +81,24 @@ export async function build({ check = false } = {}) {
   const tpl = await readFile(new URL("page.html", src), "utf8");
 
   const root = fileURLToPath(new URL("..", import.meta.url));
+  // The share dialog is an ES module, and the page's own script must parse on browsers that have no modules at all (the
+  // floor above): a dynamic import cannot survive that target — esbuild lowers it to a require() the browser hasn't got,
+  // which took the dialog and the "someone shared this" note down without an error anyone saw (2026-11-15). So the
+  // module is reached through one tiny module script, which a browser without modules skips and never parses.
+  const SHARE_V = 10;
+  const shareBoot = `import*as m from"/assets/share/share.js?v=${SHARE_V}";window.__1msShare=m;\n`;
+  const bootName = `share-boot.${hash(shareBoot)}.js`;
   const js = (await bundle({ entryPoints: [fileURLToPath(new URL("app.js", src))], bundle: true, minify: true, format: "iife",
     // Chrome 57 and Safari 11, the floor the reading page still gets opened at (an in-app browser of an old WeChat, an
     // old LBBROWSER on Windows, 2026-11-15): lower than that, the pre-paint snippet shows the one-line notice instead
     target: ["es2017", "chrome57", "safari11"],
+    define: { __SHARE_BOOT: JSON.stringify("/assets/" + bootName) },
     // 1ms.dog's share dialog stays out: it is copied verbatim to public/assets/share/ and loaded when someone shares
     legalComments: "none", write: false, absWorkingDir: root, external: ["/assets/share/*"] })).outputFiles[0].text;
   const cssFull = (await Promise.all(["fonts.css", "base.css", "style.css"].map(f => readFile(new URL(f, src), "utf8")))).join("\n");
   const css = (await transform(cssFull, { loader: "css", minify: true, legalComments: "none" })).code;
   const jsName = `app.${hash(js)}.js`, cssName = `app.${hash(css)}.css`;
-  const files = { ["assets/" + jsName]: js, ["assets/" + cssName]: css };
+  const files = { ["assets/" + jsName]: js, ["assets/" + cssName]: css, ["assets/" + bootName]: shareBoot };
 
   // a page's URL path: the language folder, then the topic page's folder ("" for the main page)
   const path = (slug, page = "") => "/" + (slug ? slug + "/" : "") + (page ? page + "/" : "");
@@ -106,7 +114,9 @@ export async function build({ check = false } = {}) {
     // The help's questions and answers: one file per language, fetched when help is first opened. They used to be in
     // every page's HTML, the same four to eight questions in 18 folders, about a tenth of each page
     const pageDocs = Object.fromEntries(Object.keys(TEXT).map(p => [p, TEXT[p][lang].docs]));
-    const hjs = `export default ${JSON.stringify({ "": base.docs, ...pageDocs }).replace(/</g, "\\u003c")};\n`;
+    // (a classic script that leaves its questions on the page, like the strings beside it, not a module: the page's
+    // script does the loading, and it has to parse where there are no modules at all — 2026-11-15)
+    const hjs = `window.L1MS_HELP=${JSON.stringify({ "": base.docs, ...pageDocs }).replace(/</g, "\\u003c")};\n`;
     const hName = `h.${lang.toLowerCase()}.${hash(hjs)}.js`;
     files["assets/" + hName] = hjs;
 
@@ -282,6 +292,9 @@ export async function build({ check = false } = {}) {
 /assets/h.*
   ! Cache-Control
   Cache-Control: public, max-age=31536000, immutable
+/assets/share-boot.*
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
 /assets/fonts/*
   ! Cache-Control
   Cache-Control: public, max-age=31536000, immutable
@@ -298,7 +311,7 @@ export async function build({ check = false } = {}) {
 `;
 
   // generated files that are no longer produced (old hashes) are stale too
-  const gen = async () => (await readdir(new URL("assets/", pub))).filter(f => /^(app|l|h)\..+\.(js|css)$/.test(f)).map(f => "assets/" + f);
+  const gen = async () => (await readdir(new URL("assets/", pub))).filter(f => /^(app|l|h|share-boot)\..+\.(js|css)$/.test(f)).map(f => "assets/" + f);
   const stale = [];
   for (const [f, body] of Object.entries(files)) {
     let cur = null; try { cur = await readFile(new URL(f, pub), "utf8"); } catch (e) {}

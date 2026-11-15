@@ -511,3 +511,25 @@ target picker. The notice is a strip, not a dialog, and it does not try to talk 
 Measured before shipping, on the built page with the newer APIs deleted from the window (flatMap, flat, fromEntries,
 hasOwn, CSS, AbortSignal.timeout, ResizeObserver, and a PluginArray that is array-like but not iterable): the page fills
 in completely, story and readings included. With the app script served unparsable, only the notice appears.
+
+### Modules at that floor: no `import()` in the page's script
+
+Lowering the target to Chrome 57 took the two dynamically imported modules with it, silently. Chrome 57 and Safari 11
+have no `import()` — esbuild cannot leave the syntax there — so it rewrote both calls as `require()`, and its `require`
+shim throws `Dynamic require of "…" is not supported` inside a browser that has no `require` at all. The help panel
+opened empty and the share dialog never appeared, with the throw swallowed by each call's own `catch`. Neither shows up
+as a page error, so `npm run errors` stayed quiet; the smoke test caught the share.
+
+So the page's script (which must parse where modules do not exist at all) no longer contains `import()`:
+
+- The help's questions (`/assets/h.<lang>.<hash>.js`) are a classic script that leaves them on `window.L1MS_HELP`, like
+  the strings file beside it, loaded by a `<script src>` when help first opens.
+- 1ms.dog's share dialog is an ES module and stays one, copied verbatim. The build emits one tiny module script,
+  `/assets/share-boot.<hash>.js` (`import*as m from"/assets/share/share.js?v=10";window.__1msShare=m;`), and the page
+  loads it by tag. A browser with no module support ignores that tag and never parses the file; there the share button
+  copies the plain link instead and says so on the button, and the "someone shared this" note simply doesn't appear.
+
+`npm test` now fails if the built script contains `import(` or esbuild's require shim, so this cannot come back by
+another route. Verified: the share dialog and the image card work in Chrome; with `HTMLScriptElement.prototype.noModule`
+deleted (a browser with no modules), clicking share copies a link with no city, network or address in it and the button
+reads "copied"; the help panel lists its questions.

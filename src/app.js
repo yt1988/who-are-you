@@ -26,6 +26,11 @@ import { exifOf } from "./exif.mjs";
   const tn = (k, n, v) => { let c = "other"; try { c = new Intl.PluralRules(LANG).select(n); } catch (e) {} return t(L[k + "_" + c] != null ? k + "_" + c : k + "_other", v); };
   const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
   const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+  // a classic script, loaded when it is first needed (the help's questions): dynamic import() has no place in this file,
+  // which must parse on browsers old enough to have no ES modules at all (2026-11-15)
+  const loadScript = src => new Promise((ok, no) => {
+    const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s);
+  });
   const K = { seen: "who:seen", optout: "who:optout", scene: "who:scene", theme: "who:theme", lang: "who:lang", mask: "who:mask", last: "who:last", prev: "who:prev", target: "who:target", hist: "who:hist" };
   const dn = type => { try { return new Intl.DisplayNames([LANG], { type }); } catch (e) { return null; } };
   const REG = dn("region"), LNG = dn("language");
@@ -146,7 +151,9 @@ import { exifOf } from "./exif.mjs";
   async function openHelp(i) {
     if (!HELP) {
       HELP = [];
-      try { const m = await import(D.help); HELP = (m.default && (m.default[HELP_PAGE] || m.default[""])) || []; } catch (e) {}
+      // (its own file, a classic script like the strings: this file must parse on browsers old enough to have no ES
+      // modules, where a dynamic import would be lowered into a require() that isn't there — 2026-11-15)
+      try { await loadScript(D.help); HELP = (window.L1MS_HELP && (window.L1MS_HELP[HELP_PAGE] || window.L1MS_HELP[""])) || []; } catch (e) {}
       helpRender();
     }
     showHelp(typeof i === "number" ? i : helpIdx);
@@ -2720,9 +2727,32 @@ import { exifOf } from "./exif.mjs";
     return y + 52 * Math.ceil(CHECKS.length / 2);
   }
 
+  // 1ms.dog's share dialog is an ES module: a browser with no modules at all can't run it, so the page fetches it
+  // through one tiny module script (built as /assets/share-boot.*.js) that leaves it on window, leaving this file free
+  // of import() syntax, which the bundle would otherwise lower into a require() no browser has (2026-11-15)
+  let shareP = null;
+  function shareApi() {
+    if (shareP) return shareP;
+    if (!("noModule" in document.createElement("script"))) return Promise.reject(new Error("no modules"));
+    shareP = new Promise((ok, no) => {
+      const s = document.createElement("script"); s.type = "module"; s.src = __SHARE_BOOT;
+      const fail = e => { shareP = null; no(e || new Error("share")); };
+      s.onload = () => window.__1msShare ? ok(window.__1msShare) : fail();
+      s.onerror = () => fail();
+      document.head.appendChild(s);
+    });
+    return shareP;
+  }
   $("#share").onclick = async () => {
-    const { share } = await import("/assets/share/share.js?v=10");
     const link = show => location.origin + linkPath(LANG, encode(sharedPortrait(show)));
+    let share;
+    try { ({ share } = await shareApi()); } catch (e) {
+      // (a browser too old for the dialog still gets the link itself, said on the button)
+      const ok = await copy(link(false));
+      $("#share span").textContent = t(ok ? "copied_txt" : "copy_fail");
+      setTimeout(() => { $("#share span").textContent = t("share"); }, 2000);
+      return;
+    }
     share({
       lang: LANG, name: t("app_name"), file: "who-1ms-dog", show: ["city", "isp"], never: ["ip"], ts: Date.now(),
       link, home: location.origin + (D.paths[LANG] || "/"), text: () => t("card_me"),
@@ -2751,7 +2781,7 @@ import { exifOf } from "./exif.mjs";
     for (const id of CHECKS) if (!(P.ck || {})[id]) { CK[id].hidden = true; const sg = $(`#segs [data-c="${id}"]`); if (sg) sg.hidden = true; }
     paintChecks(P.ck || {}, P.cc, true);
     readings(P, P.ck || {});
-    import("/assets/share/share.js?v=10").then(({ received }) => received({ lang: LANG, ts: P.t || undefined, at: $(".hero"), test: mine })).catch(() => {});
+    shareApi().then(({ received }) => received({ lang: LANG, ts: P.t || undefined, at: $(".hero"), test: mine })).catch(() => {});
     return true;
   }
   const sharedCode = (parsePath(location.pathname) || {}).code || (/^#p=/.test(location.hash) ? location.hash.slice(3) : null);
