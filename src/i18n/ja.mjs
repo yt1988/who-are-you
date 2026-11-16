@@ -16,7 +16,7 @@ export default {
   progress: "{n} / {of} 項目", done_n: "{n} 項目を読み取り済み", from: "根拠：{list}",
 
   g_net: "サーバーから見える情報", g_hdr: "リクエストごとに送られる情報（ヘッダー）", g_loc: "言語と地域", g_dev: "端末", g_brw: "ブラウザの設定", g_fp: "フィンガープリント",
-  s_ip: "IP アドレス", s_geo: "位置", s_coords: "座標", s_isp: "ネットワーク（ASN）", s_tzip: "IP のタイムゾーン", s_ptr: "逆引き DNS",
+  s_ip: "IP アドレス", s_geo: "IP の登録地", s_geo_note: "この IP が登録されている国と都市で、あなたが今いる場所ではありません。", s_geo_note_short: "IP の登録地で、現在地ではありません", s_coords: "座標", s_isp: "ネットワーク（ASN）", s_tzip: "IP のタイムゾーン", s_ptr: "逆引き DNS",
   s_edge: "最寄りのデータセンター", s_proto: "HTTP と TLS", s_tlsfp: "TLS フィンガープリント", s_clock: "端末の時計", s_webrtc: "WebRTC のアドレス",
   s_h_ua: "ユーザーエージェント", s_h_lang: "言語", s_h_chua: "ブラウザの銘柄", s_h_plat: "プラットフォーム", s_h_enc: "圧縮方式", s_h_dnt: "トラッキング拒否（DNT）", s_h_ref: "参照元",
   s_langs: "ブラウザの言語", s_locale: "ロケール", s_tz: "システムのタイムゾーン", s_hour: "時刻の表示形式", s_week: "週の始まり", s_fmt: "数字と日付の書式",

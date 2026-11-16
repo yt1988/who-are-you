@@ -17,7 +17,7 @@ export default {
   progress: "{n} / {of} signals", done_n: "{n} signals read", from: "Based on: {list}",
 
   g_net: "What the server sees", g_hdr: "Sent with every request (headers)", g_loc: "Language and region", g_dev: "Device", g_brw: "Browser settings", g_fp: "Fingerprints",
-  s_ip: "IP address", s_geo: "Location", s_coords: "Coordinates", s_isp: "Network (ASN)", s_tzip: "Time zone of the IP", s_ptr: "Reverse DNS",
+  s_ip: "IP address", s_geo: "IP location", s_geo_note: "This is where the IP is registered, not where you are right now.", s_geo_note_short: "where the IP is registered, not where you are", s_coords: "Coordinates", s_isp: "Network (ASN)", s_tzip: "Time zone of the IP", s_ptr: "Reverse DNS",
   s_edge: "Nearest data center", s_proto: "HTTP and TLS", s_tlsfp: "TLS fingerprint", s_clock: "Your clock", s_webrtc: "WebRTC addresses",
   s_h_ua: "User agent", s_h_lang: "Languages", s_h_chua: "Browser brands", s_h_plat: "Platform", s_h_enc: "Compression", s_h_dnt: "Do Not Track", s_h_ref: "Came from",
   s_langs: "Browser languages", s_locale: "Locale", s_tz: "System time zone", s_hour: "Clock format", s_week: "Week starts", s_fmt: "Number and date format",

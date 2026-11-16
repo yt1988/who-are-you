@@ -16,7 +16,7 @@ export default {
   progress: "{n} / {of} signaux", done_n: "{n} signaux lus", from: "Source : {list}",
 
   g_net: "Ce que voit le serveur", g_hdr: "En-têtes envoyés", g_loc: "Langue et région", g_dev: "Appareil", g_brw: "Réglages du navigateur", g_fp: "Empreintes",
-  s_ip: "Adresse IP", s_geo: "Position", s_coords: "Coordonnées", s_isp: "Réseau (ASN)", s_tzip: "Fuseau de l’IP", s_ptr: "DNS inverse",
+  s_ip: "Adresse IP", s_geo: "Localisation de l’IP", s_geo_note: "C’est le pays et la ville où l’IP est enregistrée, pas l’endroit où vous êtes.", s_geo_note_short: "enregistrement de l’IP, pas votre position", s_coords: "Coordonnées", s_isp: "Réseau (ASN)", s_tzip: "Fuseau de l’IP", s_ptr: "DNS inverse",
   s_edge: "Centre de données le plus proche", s_proto: "HTTP et TLS", s_tlsfp: "Empreinte TLS", s_clock: "Votre horloge", s_webrtc: "Adresses WebRTC",
   s_h_ua: "User agent", s_h_lang: "Langues", s_h_chua: "Marques du navigateur", s_h_plat: "Plateforme", s_h_enc: "Compression", s_h_dnt: "Do Not Track", s_h_ref: "Page d’origine",
   s_langs: "Langues du navigateur", s_locale: "Paramètres régionaux", s_tz: "Fuseau du système", s_hour: "Format de l’heure", s_week: "Début de semaine", s_fmt: "Format des nombres et dates",

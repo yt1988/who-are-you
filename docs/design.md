@@ -533,3 +533,13 @@ So the page's script (which must parse where modules do not exist at all) no lon
 another route. Verified: the share dialog and the image card work in Chrome; with `HTMLScriptElement.prototype.noModule`
 deleted (a browser with no modules), clicking share copies a link with no city, network or address in it and the button
 reads "copied"; the help panel lists its questions.
+
+## 2026-11-16 — the IP row says whose place it is
+
+Visitors kept reading the `geo` row as "where I am" rather than "where the IP is registered" (1ms-shell#126,
+after #110 and #103): the label was just "Location" / 「位置」, and nothing visible on the page said the two differ. The
+label is now the IP's: "IP location" / 「IP 归属地」 (ja IP の登録地, ko IP 등록지, …) in all ten languages, and the row
+keeps a muted line under the value — the note the graphics card's row uses, a short phrase after the value on a phone —
+saying it is where the IP is registered, not where the visitor is right now. The value still ends in " (by IP)" and the
+tooltip still explains that the city is an IP database's estimate; no reading changed. The note's line is in the HTML
+from the first paint, so filling it moves nothing.

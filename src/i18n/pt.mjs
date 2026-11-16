@@ -16,7 +16,7 @@ export default {
   progress: "{n} / {of} sinais", done_n: "{n} sinais lidos", from: "Vem de: {list}",
 
   g_net: "O que o servidor vê", g_hdr: "Cabeçalhos da requisição", g_loc: "Idioma e região", g_dev: "Aparelho", g_brw: "Configurações do navegador", g_fp: "Impressões digitais",
-  s_ip: "Endereço IP", s_geo: "Localização", s_coords: "Coordenadas", s_isp: "Rede (ASN)", s_tzip: "Fuso horário do IP", s_ptr: "DNS reverso",
+  s_ip: "Endereço IP", s_geo: "Localização do IP", s_geo_note: "É o país e a cidade onde o IP está registrado, não onde você está agora.", s_geo_note_short: "registro do IP, não sua localização", s_coords: "Coordenadas", s_isp: "Rede (ASN)", s_tzip: "Fuso horário do IP", s_ptr: "DNS reverso",
   s_edge: "Data center mais próximo", s_proto: "HTTP e TLS", s_tlsfp: "Impressão TLS", s_clock: "Seu relógio", s_webrtc: "Endereços WebRTC",
   s_h_ua: "User agent", s_h_lang: "Idiomas", s_h_chua: "Marcas do navegador", s_h_plat: "Plataforma", s_h_enc: "Compressão", s_h_dnt: "Do Not Track", s_h_ref: "Página de origem",
   s_langs: "Idiomas do navegador", s_locale: "Localidade", s_tz: "Fuso horário do sistema", s_hour: "Formato do relógio", s_week: "Início da semana", s_fmt: "Formato de números e datas",

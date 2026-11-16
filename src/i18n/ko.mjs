@@ -16,7 +16,7 @@ export default {
   progress: "탐지 항목 {n} / {of}", done_n: "탐지 항목 {n}개 완료", from: "출처: {list}",
 
   g_net: "서버가 보는 정보", g_hdr: "요청 헤더", g_loc: "언어와 지역", g_dev: "기기", g_brw: "브라우저 설정", g_fp: "지문",
-  s_ip: "IP 주소", s_geo: "위치", s_coords: "좌표", s_isp: "네트워크(ASN)", s_tzip: "IP 위치의 시간대", s_ptr: "역방향 DNS",
+  s_ip: "IP 주소", s_geo: "IP 등록지", s_geo_note: "이 IP가 등록된 국가와 도시이며, 지금 있는 곳이 아닙니다.", s_geo_note_short: "IP 등록지, 현재 위치 아님", s_coords: "좌표", s_isp: "네트워크(ASN)", s_tzip: "IP 위치의 시간대", s_ptr: "역방향 DNS",
   s_edge: "가장 가까운 데이터센터", s_proto: "HTTP와 TLS", s_tlsfp: "TLS 지문", s_clock: "기기 시계", s_webrtc: "WebRTC 주소",
   s_h_ua: "User-Agent", s_h_lang: "언어", s_h_chua: "브라우저 브랜드", s_h_plat: "플랫폼", s_h_enc: "압축 방식", s_h_dnt: "추적 금지(DNT)", s_h_ref: "이전 페이지",
   s_langs: "브라우저 언어", s_locale: "로캘", s_tz: "시스템 시간대", s_hour: "시계 형식", s_week: "한 주의 시작", s_fmt: "숫자와 날짜 형식",

@@ -276,6 +276,8 @@ import { exifOf } from "./exif.mjs";
     // (the place and the point are an IP database's guess for the address, said so on the row itself)
     await within(citiesP, 1500, null);
     row("geo", c.country ? flagged(c.country, [...place(c.city, c.region), country(c.country)].join(", ") + t("ex_geo")) : esc(t("v_empty")), c.country ? { why: t("ex_geo_why") } : { na: true });
+    // (the label says the IP's place; this line says in words that it is not the visitor's own. 1ms-shell#126)
+    if (c.country) note("geo", t("s_geo_note"), t("s_geo_note_short"));
     if (c.latitude != null) txt("coords", [(+c.latitude).toFixed(2) + ", " + (+c.longitude).toFixed(2), c.postalCode].filter(Boolean).join(" · ") + t("ex_geo"), { why: t("ex_geo_why") }); else na("coords", "v_empty");
     if (c.asn) {
       const kind = netKind(c.asn, c.asOrganization);

@@ -16,7 +16,7 @@ export default {
   progress: "已讀 {n} / {of} 項", done_n: "{n} 項全部讀完", from: "依據：{list}",
 
   g_net: "伺服器看到的", g_hdr: "請求標頭", g_loc: "語言與地區", g_dev: "裝置", g_brw: "瀏覽器設定", g_fp: "指紋",
-  s_ip: "IP 位址", s_geo: "位置", s_coords: "座標", s_isp: "網路（ASN）", s_tzip: "IP 所在時區", s_ptr: "反向解析",
+  s_ip: "IP 位址", s_geo: "IP 歸屬地", s_geo_note: "這是這個 IP 登記的國家和城市，不是你此刻的所在地。", s_geo_note_short: "IP 登記地，不是目前位置", s_coords: "座標", s_isp: "網路（ASN）", s_tzip: "IP 所在時區", s_ptr: "反向解析",
   s_edge: "最近的資料中心", s_proto: "HTTP 與 TLS", s_tlsfp: "TLS 指紋", s_clock: "你的時鐘", s_webrtc: "WebRTC 位址",
   s_h_ua: "User-Agent", s_h_lang: "語言", s_h_chua: "瀏覽器品牌", s_h_plat: "平台", s_h_enc: "壓縮方式", s_h_dnt: "不要追蹤（DNT）", s_h_ref: "來源頁面",
   s_langs: "瀏覽器語言", s_locale: "地區設定", s_tz: "系統時區", s_hour: "時間格式", s_week: "一週從哪天開始", s_fmt: "數字與日期格式",

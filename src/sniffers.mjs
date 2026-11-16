@@ -7,7 +7,7 @@
 export const GROUPS = [
   ["net", [
     { id: "ip", m: "CF-Connecting-IP", s: 1 },
-    { id: "geo", m: "request.cf.city", s: 1 },
+    { id: "geo", m: "request.cf.city", s: 1, note: 1 },
     { id: "coords", m: "request.cf.latitude", s: 1 },
     { id: "isp", m: "request.cf.asOrganization" },
     { id: "tor", m: "check.torproject.org exit list" },

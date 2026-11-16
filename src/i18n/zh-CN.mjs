@@ -16,7 +16,7 @@ export default {
   progress: "已读 {n} / {of} 项", done_n: "{n} 项全部读完", from: "依据：{list}",
 
   g_net: "服务器看到的", g_hdr: "请求头", g_loc: "语言和地区", g_dev: "设备", g_brw: "浏览器设置", g_fp: "指纹",
-  s_ip: "IP 地址", s_geo: "位置", s_coords: "坐标", s_isp: "网络（ASN）", s_tzip: "IP 所在时区", s_ptr: "反向解析",
+  s_ip: "IP 地址", s_geo: "IP 归属地", s_geo_note: "这是这个 IP 登记的国家和城市，不是你此刻的所在地。", s_geo_note_short: "IP 登记地，不是当前位置", s_coords: "坐标", s_isp: "网络（ASN）", s_tzip: "IP 所在时区", s_ptr: "反向解析",
   s_edge: "最近的数据中心", s_proto: "HTTP 和 TLS", s_tlsfp: "TLS 指纹", s_clock: "你的时钟", s_webrtc: "WebRTC 地址",
   s_h_ua: "User-Agent", s_h_lang: "语言", s_h_chua: "浏览器品牌", s_h_plat: "平台", s_h_enc: "压缩方式", s_h_dnt: "请勿追踪（DNT）", s_h_ref: "来源页面",
   s_langs: "浏览器语言", s_locale: "区域设置", s_tz: "系统时区", s_hour: "时钟格式", s_week: "一周从哪天开始", s_fmt: "数字和日期格式",
