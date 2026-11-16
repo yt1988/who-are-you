@@ -191,8 +191,9 @@ for (const broken of [false, true]) {
     story: document.querySelector("#story").textContent,
   }));
   for (const e of errors) fail("battery", "script error: " + e);
-  // (a card sold as a laptop's names the laptop by itself, with or without a battery: only other machines are judged)
-  if (!/Laptop GPU|Mobile|Max-Q|Adreno|Snapdragon/i.test(r.gpu) && r.model !== r.pc) fail("battery", `a replaced getBattery named the device "${r.model}", not "${r.pc}"`);
+  // (a card sold as a laptop's names the laptop by itself, with or without a battery, and so does an Apple chip
+  // ("Apple M1 Pro" names the Mac by its chip and display): only other machines are judged)
+  if (!/Laptop GPU|Mobile|Max-Q|Adreno|Snapdragon|Apple M\d/i.test(r.gpu) && r.model !== r.pc) fail("battery", `a replaced getBattery named the device "${r.model}", not "${r.pc}"`);
   if (broken) { if (/NaN/.test(r.battery + r.story)) fail("battery", "a NaN reading reached the page: " + r.battery); }
   else if (!/62/.test(r.battery)) fail("battery", `the stand-in never reached the page (battery reads "${r.battery}")`);
   await page.close();
