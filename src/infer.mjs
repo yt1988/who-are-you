@@ -315,6 +315,11 @@ export function checks(x) {
     else if (os || pseudo) out.conn = ["ok", "c_conn_ok", {}];
     else out.conn = ["info", "c_conn_na", {}];
   }
+  // A proxy or gateway that names itself in Via or Forwarded: the request says an intermediary is on the path. Company,
+  // school and hotel networks and reverse proxies often add one; a home line and most VPNs send neither. It is a hint,
+  // not a finding: the header says something forwarded the request, never who or why
+  if (x.via == null) out.via = null;
+  else out.via = x.via ? ["warn", "c_via_warn", { list: x.via }] : ["ok", "c_via_ok", {}];
   // WebRTC: addresses the STUN servers saw that a site doesn't already see, over IPv4 or IPv6. The IPv4 / IPv6 test's
   // addresses count only when one of them is the page's own (otherwise they took another route, and the page's is the
   // one a site gets); another destination's exit never does. One of the page's family leaks; one of the other family

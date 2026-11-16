@@ -543,3 +543,14 @@ keeps a muted line under the value — the note the graphics card's row uses, a 
 saying it is where the IP is registered, not where the visitor is right now. The value still ends in " (by IP)" and the
 tooltip still explains that the city is an IP database's estimate; no reading changed. The note's line is in the HTML
 from the first paint, so filling it moves nothing.
+
+## 2026-11-16 — the proxy headers
+
+A request can carry `Via` (RFC 9110) or `Forwarded` (RFC 7239), added by a proxy or gateway that forwards it; a site
+reads both without any script. The readings list had neither, although the Worker already returned both (it drops only
+Cloudflare's own `cf-*`, `x-forwarded-*` and the like). The `via` row now shows them, or says none were sent — the
+ordinary answer, since a home line and most consumer VPNs add neither — and the `via` check reports a hint when one is
+there: an intermediary is on the path, never who it is or why. Company, school and hotel networks and reverse proxies
+often add them; the tip says so, and how to stop it on a proxy of your own. The value is marked sensitive (a
+`Forwarded: for=` carries an address), so it blurs with the address in screenshot mode. One more reading (134) and one
+more check (15); the check weighs as little as a language hint in "fix these first".

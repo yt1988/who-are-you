@@ -296,6 +296,9 @@ import { exifOf } from "./exif.mjs";
     hv("h_plat", [h["sec-ch-ua-platform"], h["sec-ch-ua-mobile"] === "?1" ? "mobile" : ""].filter(Boolean).join(" · "));
     hv("h_enc", h["accept-encoding"]);
     hv("h_dnt", [h.dnt != null ? "DNT: " + h.dnt : "", h["sec-gpc"] != null ? "Sec-GPC: " + h["sec-gpc"] : ""].filter(Boolean).join(" · "));
+    // (a proxy or gateway on the way that names itself; most home lines send neither, so the row says so)
+    const vh = [h.via ? "Via: " + h.via : "", h.forwarded ? "Forwarded: " + h.forwarded : ""].filter(Boolean).join(" · ");
+    if (vh) txt("via", vh); else na("via", "v_none");
   }
 
   // Web Bot Auth (RFC 9421): an AI agent that signs its requests says who runs it in Signature-Agent, a claim a
@@ -2356,7 +2359,7 @@ import { exifOf } from "./exif.mjs";
     if (R.ck) { paintChecks(R.ck, R.srv && R.srv.cf && R.srv.cf.country, true); todo(); }
     paintScene();
   };
-  const WEIGHT = { bot: 9, webrtc: 9, dns: 8, tz: 8, tamper: 7, fpb: 7, conn: 7, ua: 6, rtt: 6, split: 5, dc: 5, lang: 4, syslang: 3, fp: 2 };
+  const WEIGHT = { bot: 9, webrtc: 9, dns: 8, tz: 8, tamper: 7, fpb: 7, conn: 7, ua: 6, rtt: 6, split: 5, dc: 5, via: 4, lang: 4, syslang: 3, fp: 2 };
   function todo() {
     const res = R.ck || {}, lvOf = id => res[id] && res[id][0];
     const top = CHECKS.filter(id => counted(id) && (lvOf(id) === "bad" || lvOf(id) === "warn"))
@@ -2622,6 +2625,8 @@ import { exifOf } from "./exif.mjs";
       langs: R.langs, dnsCC: R.dnsCC, dns2CC: R.dns2CC, dnsRot: R.dnsRot, exits: allExits(), rtc: R.rtc, ip: R.srv && R.srv.ip, asn: c.asn, org: orgName(c.asOrganization, c.asn),
       uaOS: R.dev && R.dev.os, real: !!R.dev, hintOS: R.hi && R.hi.platform, gpuOS: gpuOS(R.gpuRaw), rand: R.rand, noise: R.noise, webdriver: R.webdriver, agent: ACT.state, auto: R.auto,
       rttB: R.latDone ? R.rttB : null, coarse: R.latDone ? !!R.coarse : false, rttCf: c.clientTcpRtt || null, sys: final || R.voices ? sysOf() : undefined, tamper: R.dev && R.srv ? tampered() : null, fpb: fpbTraces(),
+      // (the check names the headers; the row holds their values, which a Forwarded can make an address)
+      via: R.srv && R.srv.h ? [R.srv.h.via ? "Via" : "", R.srv.h.forwarded ? "Forwarded" : ""].filter(Boolean).join(", ") : null,
       conn: R.probe === undefined ? undefined : R.probe && (R.probe.tcp || R.probe.http2) ? { os: R.probe.tcp && R.probe.tcp.os, pseudo: R.probe.http2 && R.probe.http2.pseudo, engine: R.engine, mtu: R.probe.tcp && R.probe.tcp.mtu } : null,
       brName: R.br && R.br.name,
     });

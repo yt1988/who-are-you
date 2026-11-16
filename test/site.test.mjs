@@ -19,7 +19,7 @@ test("every language page keeps the shell contract", async () => {
     assert.match(h, /<div class="scrim" id="help" hidden>/, lang + ": help dialog hidden by default");
     assert.match(h, /class="logo-light" src="\/assets\/logo-light.svg" width="90" height="36"/);
     assert.ok(!/\{\{\w+\}\}/.test(h), lang + ": unfilled placeholder");
-    // (114 sniffers and 14 checks, every row in the HTML from the start, in the longest language)
+    // (134 sniffers and 15 checks, every row in the HTML from the start, in the longest language)
     // (the whole page, the first screen's styles set inside it included; those have their own cap: the theme's tokens
     // in both schemes are 3 KB of it, the faces for the first screen's characters 1 KB)
     // (120,000 since 2026-11-09: the Client Hints and automation rows plus two more topic pages; gzip is still around

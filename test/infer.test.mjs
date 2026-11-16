@@ -156,10 +156,13 @@ test("fonts: only ones the system doesn't bring say something", () => {
 test("disguise checks", () => {
   const base = { tz: "Asia/Shanghai", tzOff: "+08:00", ipTzOff: "+08:00", ipcc: "CN", langs: ["zh-CN"], rtc: ["1.2.3.4"], ip: "1.2.3.4",
     asn: 4134, org: "Chinanet", uaOS: "Windows", real: true, hintOS: "Windows", gpuOS: "Windows", rand: false, webdriver: false,
-    dnsCC: "CN", exits: [["ip", "1.2.3.4"], ["ex_cn", "1.2.3.4"]], rttB: 30, rttCf: 25, sys: { cc: ["CN"], from: ["fonts"] }, tamper: [], fpb: [], conn: { os: "windows", pseudo: "m,a,s,p", engine: "V8" } };
+    dnsCC: "CN", exits: [["ip", "1.2.3.4"], ["ex_cn", "1.2.3.4"]], rttB: 30, rttCf: 25, sys: { cc: ["CN"], from: ["fonts"] }, tamper: [], fpb: [], conn: { os: "windows", pseudo: "m,a,s,p", engine: "V8" }, via: "" };
   const c = checks(base);
   assert.deepEqual(Object.fromEntries(Object.entries(c).map(([k, v]) => [k, v[0]])),
-    { tz: "ok", lang: "ok", dns: "ok", split: "ok", webrtc: "ok", dc: "ok", ua: "ok", fp: "warn", bot: "ok", rtt: "ok", syslang: "ok", tamper: "ok", fpb: "ok", conn: "ok" });
+    { tz: "ok", lang: "ok", dns: "ok", split: "ok", webrtc: "ok", dc: "ok", ua: "ok", fp: "warn", bot: "ok", rtt: "ok", syslang: "ok", tamper: "ok", fpb: "ok", conn: "ok", via: "ok" });
+  // a proxy or gateway that names itself in Via/Forwarded: a hint that something is on the path, never who or why
+  assert.deepEqual(checks({ ...base, via: "Via, Forwarded" }).via, ["warn", "c_via_warn", { list: "Via, Forwarded" }]);
+  assert.equal(checks({ ...base, via: null }).via, null);
   // through a proxy, Cloudflare only sees the proxy's leg of the round trip
   assert.deepEqual(checks({ ...base, rttB: 190, rttCf: 12 }).rtt, ["bad", "c_rtt_bad", { a: 12, b: 190 }]);
   assert.equal(checks({ ...base, rttB: 80, rttCf: 20 }).rtt[0], "warn");

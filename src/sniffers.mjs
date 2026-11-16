@@ -46,6 +46,7 @@ export const GROUPS = [
     { id: "h_enc", m: "Accept-Encoding" },
     { id: "h_dnt", m: "DNT · Sec-GPC" },
     { id: "h_ref", m: "Referer · document.referrer" },
+    { id: "via", m: "Via · Forwarded", s: 1 },
     { id: "wba", m: "Signature · Signature-Agent" },
   ]],
   ["loc", [
@@ -171,7 +172,7 @@ export const BLANKS = {
 };
 
 // the disguise checks, one row each
-export const CHECKS = ["tz", "lang", "syslang", "dns", "split", "webrtc", "rtt", "conn", "dc", "ua", "tamper", "fpb", "fp", "bot"];
+export const CHECKS = ["tz", "lang", "syslang", "dns", "split", "webrtc", "rtt", "conn", "via", "dc", "ua", "tamper", "fpb", "fp", "bot"];
 // what the verdict counts by default (passing as elsewhere): every check but the fingerprint's, which says nothing
 // about where someone is (the privacy scene counts it)
 export const COUNTED = CHECKS.filter(id => id !== "fp");

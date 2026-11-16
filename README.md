@@ -4,7 +4,7 @@
 
 Who do websites think you are? [Who Are You](https://who.1ms.dog) runs the sniffers any site can run the moment you open it, without a single permission prompt, and writes down the result as a paragraph with the blanks filled in: your likely nationality, the city you're in, your language and time zone, your device, browser, screen and graphics card, your network, your preferences, what your fonts say about your work, and your browser fingerprint.
 
-It then checks those readings against each other the way a site would to spot a disguise, and lists all 133 sniffers with how each one reads and what it read.
+It then checks those readings against each other the way a site would to spot a disguise, and lists all 134 sniffers with how each one reads and what it read.
 
 **Live:** https://who.1ms.dog · topic pages: [browser fingerprint test](https://who.1ms.dog/fingerprint/), [DNS leak test](https://who.1ms.dog/dns-leak/), [Browser Environment Check](https://who.1ms.dog/browser-check/), [Time Zone Check](https://who.1ms.dog/timezone-check/), [Proxy Check](https://who.1ms.dog/proxy-check/), [Browser Language Check](https://who.1ms.dog/language-check/), [Canvas Fingerprint Test](https://who.1ms.dog/canvas-fingerprint/), [User Agent Check](https://who.1ms.dog/user-agent/), [Browser Extension Check](https://who.1ms.dog/extensions/), [WebRTC leak test](https://who.1ms.dog/webrtc-leak/), [AI agent check](https://who.1ms.dog/ai-agent/), [Client Hints check](https://who.1ms.dog/client-hints/) (same tool, that result first; text in `src/pages.mjs`)
 
@@ -26,11 +26,11 @@ It then checks those readings against each other the way a site would to spot a 
 - **What a site makes of it**: three blanks of the portrait are conclusions rather than readings: what the machine looks like it's for (graphics card, refresh rate), whether everything lines up (if not, a site will likely guess a proxy), whether clearing cookies helps (a stable fingerprint).
 - **Against last time**: kept in your browser only; rerun after changing settings and it shows "last time 8, this time 7, fixed: …". When the fingerprint changes, it says whether the browser was updated or which parts moved.
 - **The last runs**: the count of the last ten runs as a small line, each point's time on hover, kept in your browser only.
-- **Copy as text**: the portrait, the twelve checks and the connection protocols as text to paste into a post, with the city, the network and addresses masked, and a link to this page.
+- **Copy as text**: the portrait, the fifteen checks and the connection protocols as text to paste into a post, with the city, the network and addresses masked, and a link to this page.
 - **Fixes for your system**: the DNS and WebRTC fixes name the clients and settings of Windows, macOS, iPhone or Android, whichever you're on.
 - **HarmonyOS**: its browsers (ArkWeb) claim Windows or Android in the user agent for compatibility; the OpenHarmony, HarmonyOS or ArkWeb token tells it apart.
 - **Where to seem to be**: pick a target region (by default the one the IP is in) and see, item by item, whether the IP, the system time zone, the browser language, the DNS resolver and WebRTC match it, and how to fix what doesn't.
-- **The disguise check**, fourteen rows that matter when you want to hide, and an A–F grade for the environment:
+- **The disguise check**, fifteen rows that matter when you want to hide, and an A–F grade for the environment:
   - system time zone vs. the IP's time zone
   - browser language vs. the IP's country
   - System language vs IP: the language packs a Windows system installed, from its supplemental fonts, local voices and keyboard layout (other systems ship every language's fonts and voices)
@@ -39,6 +39,7 @@ It then checks those readings against each other the way a site would to spot a 
   - WebRTC: public addresses STUN servers see that this site sees neither over IPv4 nor over IPv6
   - Round trip: the browser's round trip much longer than the one Cloudflare measures on its own connection means another hop in between, like a proxy (a residential IP doesn't hide it)
   - data center network (clouds, hosting, VPN providers)
+  - proxy headers: Via or Forwarded, which a proxy or gateway on the way adds itself (company, school and hotel networks often; home lines and most VPNs don't)
   - user agent vs. the system the client hints and WebGL renderer give away
   - Tampered environment: navigator properties redefined, drawing or audio functions replaced, a JS engine that isn't the user agent's, a language in JavaScript the request header doesn't have, Date and Intl disagreeing on the time zone
   - whether the fingerprint is stable (trackable) or randomized
