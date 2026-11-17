@@ -554,3 +554,28 @@ there: an intermediary is on the path, never who it is or why. Company, school a
 often add them; the tip says so, and how to stop it on a proxy of your own. The value is marked sensitive (a
 `Forwarded: for=` carries an address), so it blurs with the address in screenshot mode. One more reading (134) and one
 more check (15); the check weighs as little as a language hint in "fix these first".
+
+## 2026-11-17 — the share card fits the dialog
+
+The share funnel sat at 48% (148 opens, 71 taking the link, image, download or share sheet) while other tools run at
+63–65%. Measuring the live dialog found the cause in its geometry, not the options: who's card was 1200×1864, so at
+1280×900 the dialog showed the title and the top of the card and put every action below the fold — the copy-link
+button at y=1025 and the acts row at 1073 in a 900 px window. The dialog scrolls, but nothing says so. At 390 px the
+card scales down and the actions were visible, which is why the phone kept working.
+
+The card is now a summary sized to keep the whole dialog on one screen: the count and grade, the tags, the first two
+portrait paragraphs (who the site thinks you are, and the worst of it), and all 15 checks in three columns. It measures
+1200×860 in zh-CN, 900 in en, 936 in de and 976 in ru; at 1366×768 in Russian the actions sit at 584–670 inside a
+734 px dialog. The full portrait stays one tap away in the linked result.
+
+Two smaller measurements, both real but not the cause: the first click spent about 400 ms loading the dialog module
+and its stylesheet (boot 147 ms, share.js 119 ms, share.css 118 ms on a fast line; 648 ms at 390 px with 4G and 4×
+CPU), and the card then waited for the shortener (350 ms warm, 915 ms cold) before drawing. The page now warms the
+module and stylesheet once the run ends (first click opens in about 60 ms against the mocked Worker), and the build
+puts the stylesheet's address in the boot file so the preload uses the same `?v`. The shortener wait is the shared
+component's order — shorten, then draw — and its fix (draw with the long link, swap the QR when the short link
+arrives) belongs to the shell, not this repo.
+
+The card loses no words: the two paragraphs are selected, not cut; each check's label shrinks to its column with the
+component's `fit` rather than an ellipsis; the tags line now shrinks too instead of clipping. `npm run smoke:quick`
+fails if the dialog's link row or actions fall below the fold at 1280×900.

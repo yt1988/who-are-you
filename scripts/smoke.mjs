@@ -105,6 +105,10 @@ await pool(LANGS, N, async ([lang, slug], base) => {
     // the link, in this language's folder, and the image card, made in the page
     await page.waitForFunction(() => { const d = document.querySelector("dialog.ms-share"); return d && d.open && /\/zh-cn\/r\/\d+\./.test(d.querySelector(".ms-share-link input").value) && d.querySelector(".ms-share-img").src; }, { timeout: 8000 })
       .catch(() => fail("share", "no link or no image"));
+    // the whole dialog on one screen: a card taller than the window put every action below the fold (2026-11-17)
+    const fit = await page.evaluate(() => { const d = document.querySelector("dialog.ms-share"), b = s => Math.round(d.querySelector(s).getBoundingClientRect().bottom);
+      return { vh: innerHeight, link: b(".ms-share-link"), acts: b(".ms-share-acts") }; });
+    if (fit.link > fit.vh || fit.acts > fit.vh) fail("share", `the actions sit below the fold (link ${fit.link}, actions ${fit.acts}, window ${fit.vh})`);
     const link = await page.$eval("dialog.ms-share .ms-share-link input", x => x.value), P = decode(link.split("/r/")[1] || "");
     if (!P) fail("share", "the link doesn't decode");
     else {

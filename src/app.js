@@ -2658,8 +2658,10 @@ import { exifOf } from "./exif.mjs";
     return P;
   }
 
-  // The card's middle: the paragraph as the page shows it (masked blanks stay masked), then the count with every
-  // check. Laid out once to measure the height and once to paint, in the page's theme colors.
+  // The card's middle: the count and the checks, the first two paragraphs of the portrait (the "who" and the worst of
+  // it — the full story is a click away), the tags, and every check. Sized to keep the whole dialog on one screen:
+  // the shared dialog scrolls, and a card taller than the window put every action below the fold (2026-11-17).
+  // Laid out once to measure the height and once to paint, in the page's theme colors.
   function cardBody(c, kit, paint) {
     const { W, P, F, v } = kit, show = kit.show, FG = v("fg"), MUT = v("muted"), INK = v("ink"), LINE = v("line");
     const LV = { ok: v("t1"), warn: v("t3"), bad: v("t5"), info: MUT };
@@ -2672,43 +2674,42 @@ import { exifOf } from "./exif.mjs";
     const res = R.ck || {}, n = CHECKS.filter(id => counted(id) && res[id] && (res[id][0] === "bad" || res[id][0] === "warn")).length;
     const gr = grade(res, CHECKS.filter(id => res[id] && counted(id))), GC = /^A|^B/.test(gr.grade) ? LV.ok : gr.grade === "C" ? LV.warn : LV.bad;
     c.textBaseline = "alphabetic"; c.textAlign = "left";
-    // first, large: the count, the verdict and the grade (a link preview shrinks the whole card into 1200×630)
-    let y = kit.top + 116;
-    c.font = `800 132px ${F}`; c.fillStyle = n ? (CHECKS.some(id => res[id] && res[id][0] === "bad") ? LV.bad : LV.warn) : LV.ok;
+    // first, large: the count, the verdict and the grade
+    let y = kit.top + 94;
+    c.font = `800 104px ${F}`; c.fillStyle = n ? (CHECKS.some(id => res[id] && res[id][0] === "bad") ? LV.bad : LV.warn) : LV.ok;
     if (paint) c.fillText(String(n), P, y);
     const nw = c.measureText(String(n)).width, gt = t("grade_v", { g: gr.grade });
-    c.font = `800 46px ${F}`; const gw = c.measureText(gt).width + 52;
+    c.font = `800 38px ${F}`; const gw = c.measureText(gt).width + 44;
     if (paint) {
-      c.fillStyle = GC; c.beginPath(); c.roundRect ? c.roundRect(W - P - gw, y - 96, gw, 76, 38) : c.rect(W - P - gw, y - 96, gw, 76); c.fill();
-      c.fillStyle = "#fff"; c.textAlign = "center"; c.fillText(gt, W - P - gw / 2, y - 41); c.textAlign = "left";
+      c.fillStyle = GC; c.beginPath(); c.roundRect ? c.roundRect(W - P - gw, y - 82, gw, 64, 32) : c.rect(W - P - gw, y - 82, gw, 64); c.fill();
+      c.fillStyle = "#fff"; c.textAlign = "center"; c.fillText(gt, W - P - gw / 2, y - 36); c.textAlign = "left";
     }
     // the verdict between the two, as large as the room allows
-    const head = n ? tn("v_found", n, { n }) : t("v_clean"), room = W - 2 * P - nw - 30 - gw - 24;
-    let hs = 52; c.font = `800 ${hs}px ${F}`;
-    while (hs > 30 && c.measureText(head).width > room) { hs -= 2; c.font = `800 ${hs}px ${F}`; }
-    c.fillStyle = FG; if (paint) c.fillText(head, P + nw + 30, y - 40);
-    y += 44;
+    const head = n ? tn("v_found", n, { n }) : t("v_clean"), room = W - 2 * P - nw - 26 - gw - 24;
+    let hs = 44; c.font = `800 ${hs}px ${F}`;
+    while (hs > 26 && c.measureText(head).width > room) { hs -= 2; c.font = `800 ${hs}px ${F}`; }
+    c.fillStyle = FG; if (paint) c.fillText(head, P + nw + 26, y - 34);
+    y += 30;
     if (paint) { c.fillStyle = LINE; c.fillRect(P, y, W - 2 * P, 2); }
-    y += 24;
-    c.font = `700 34px ${F}`; c.fillStyle = FG; if (paint) c.fillText(t("card_me"), P, y + 34); y += 44;
+    y += 20;
+    c.font = `700 30px ${F}`; c.fillStyle = FG; if (paint) c.fillText(t("card_me"), P, y + 30); y += 40;
     const ul = uniqLine();
-    if (ul) { c.font = `600 28px ${F}`; c.fillStyle = INK; if (paint) c.fillText(ul, P, y + 30); y += 42; }
+    if (ul) { c.font = `600 26px ${F}`; c.fillStyle = INK; if (paint) c.fillText(ul, P, y + 26); y += 38; }
     if ((R.labels || []).length) {
       // (on as many lines as it takes, broken between labels: six in French or Russian run past the card's width even at 20px)
       const [pre, post = ""] = t("card_tags", { list: "\0" }).split("\0"), out = [];
-      c.font = `600 28px ${F}`; c.fillStyle = FG;
+      c.font = `600 26px ${F}`; c.fillStyle = FG;
       let cur = pre;
       R.labels.forEach((k, i) => {
         const it = t(k), more = (i ? " · " : "") + it;
         if (i && c.measureText(cur + more + " ·").width > W - 2 * P) { out.push(cur + " ·"); cur = it; } else cur += more;
       });
       out.push(cur + post);
-      for (const l of out) { if (paint) c.fillText(kit.clip(c, l, W - 2 * P), P, y + 30); y += 40; }
-      y += 2;
+      for (const l of out) { const z = kit.fit(c, l, W - 2 * P, 26, 18, 600); if (paint) { c.font = `600 ${z}px ${F}`; c.fillText(l, P, y + 26); } y += 36; }
     }
-    // wrapped word by word (character by character for CJK)
-    const size = 28, lh = 48;
-    for (const segs of lines) {
+    // the first two paragraphs only: who the site thinks you are, and the worst of it
+    const size = 26, lh = 40;
+    for (const segs of lines.slice(0, 2)) {
       let x = P; y += lh;
       for (const [text, ans] of segs) {
         c.font = `${ans ? 700 : 400} ${size}px ${F}`;
@@ -2722,22 +2723,38 @@ import { exifOf } from "./exif.mjs";
           x += w;
         }
       }
-      y += 10;
+      y += 8;
     }
-    y += 40;
-    const colW = (W - 2 * P) / 2;
+    y += 26;
+    // every check, in three columns: each label shrunk to its own column when a language runs long, never cut
+    const colW = (W - 2 * P) / 3, rowH = 32;
+    const labels = CHECKS.map(id => t("c_" + id));
+    const sizes = labels.map(l => kit.fit(c, l, colW - 34, 22, 16, 500));
     if (paint) CHECKS.forEach((id, i) => {
-      const r = res[id], cx = P + (i % 2) * colW, cy = y + 52 * Math.floor(i / 2) + 30;
-      c.fillStyle = r ? LV[r[0]] : LV.info; c.beginPath(); c.arc(cx + 9, cy - 9, 9, 0, Math.PI * 2); c.fill();
-      c.font = `500 25px ${F}`; c.fillStyle = FG; c.fillText(t("c_" + id), cx + 30, cy);
+      const r = res[id], cx = P + (i % 3) * colW, cy = y + rowH * Math.floor(i / 3) + 22;
+      c.fillStyle = r ? LV[r[0]] : LV.info; c.beginPath(); c.arc(cx + 7, cy - 7, 7, 0, Math.PI * 2); c.fill();
+      c.font = `500 ${sizes[i]}px ${F}`; c.fillStyle = FG; c.fillText(labels[i], cx + 22, cy);
     });
-    return y + 52 * Math.ceil(CHECKS.length / 2);
+    return y + rowH * Math.ceil(CHECKS.length / 3) + 18;
   }
 
   // 1ms.dog's share dialog is an ES module: a browser with no modules at all can't run it, so the page fetches it
   // through one tiny module script (built as /assets/share-boot.*.js) that leaves it on window, leaving this file free
   // of import() syntax, which the bundle would otherwise lower into a require() no browser has (2026-11-15)
-  let shareP = null;
+  let shareP = null, warmed = false;
+  // Warm the dialog and its stylesheet once the run is over, so the first click opens it at once: the module stays
+  // out of the main bundle (the build's boot file names it), and a browser without modules still gets the fallback
+  function warmShare() {
+    if (warmed || EMBED || D.focus || document.documentElement.classList.contains("shared")) return;
+    warmed = true;
+    const idle = window.requestIdleCallback || (f => setTimeout(f, 800));
+    idle(() => shareApi().then(() => {
+      if (!window.__1msShareCss || document.querySelector("link[data-who-share]")) return;
+      const l = document.createElement("link");
+      l.rel = "preload"; l.as = "style"; l.href = window.__1msShareCss; l.dataset.whoShare = "";
+      document.head.appendChild(l);
+    }).catch(() => {}));
+  }
   function shareApi() {
     if (shareP) return shareP;
     if (!("noModule" in document.createElement("script"))) return Promise.reject(new Error("no modules"));
@@ -2892,6 +2909,7 @@ import { exifOf } from "./exif.mjs";
     adProfile();
     if (!EMBED) { compare(); history(); seen(); versus(); }
     $("#rerun").disabled = false; $("#share").disabled = false; $("#copyTxt").disabled = false; $("#dlJson").disabled = false; $("#printPg").disabled = false;
+    warmShare();
     if (EMBED && !failed) post(embedResult());
   }
 

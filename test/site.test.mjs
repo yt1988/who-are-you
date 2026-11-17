@@ -153,7 +153,8 @@ test("the script parses on the browsers an in-app browser still runs", async () 
   const boot = assets.find(f => /^share-boot\.[0-9a-f]+\.js$/.test(f));
   assert.ok(boot, "the share dialog's module boot is built");
   assert.match(js, new RegExp("/assets/" + boot.replace(/\./g, "\\.")), "the page script names the boot");
-  assert.match(await read("public/assets/" + boot), /^import\*as m from"\/assets\/share\/share\.js\?v=\d+";window\.__1msShare=m;\n$/, "the boot imports the dialog and leaves it on the page");
+  // (the stylesheet's address rides along, so the page can warm it before the first opening)
+  assert.match(await read("public/assets/" + boot), /^import\*as m from"\/assets\/share\/share\.js\?v=(\d+)";window\.__1msShare=m;window\.__1msShareCss="\/assets\/share\/share\.css\?v=\1";\n$/, "the boot imports the dialog, its stylesheet's address and leaves it on the page");
   const help = assets.find(f => /^h\.en\.[0-9a-f]+\.js$/.test(f));
   assert.match(await read("public/assets/" + help), /^window\.L1MS_HELP=/, "the questions are a classic script");
 });
