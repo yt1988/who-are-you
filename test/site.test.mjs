@@ -103,7 +103,7 @@ test("every topic page is its own page in every language", async () => {
     assert.match(h, new RegExp(`<link rel="canonical" href="https://who.1ms.dog/${p}">`), where + ": canonical to itself");
     assert.equal((h.match(/<link rel="alternate" hreflang=/g) || []).length, LANGS.length + 1, where + ": hreflang to every language and x-default");
     assert.notEqual(h.match(/<title>[^<]*/)[0], main.match(/<title>[^<]*/)[0], where + ": its own title");
-    assert.match(h, new RegExp(`og:image" content="https://who.1ms.dog/og/${page}-${lang.toLowerCase()}.png"`), where + ": its own preview");
+    assert.match(h, new RegExp(`og:image" content="https://who.1ms.dog/og/${page}-${lang.toLowerCase()}\\.png\\?v=${SNIFFERS.length}"`), where + ": its own preview");
     assert.equal((h.match(/<li data-f="/g) || []).length, PAGES[page].rows.length, where + ": focus rows");
     assert.ok(sitemap.includes(`<loc>https://who.1ms.dog/${p}</loc>`), where + ": in the sitemap");
   }

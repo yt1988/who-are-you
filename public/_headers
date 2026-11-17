@@ -31,7 +31,7 @@
 /flags/*
   Cache-Control: public, max-age=2592000
 /og/*
-  Cache-Control: public, max-age=604800
+  Cache-Control: no-cache
 /llms.txt
   Access-Control-Allow-Origin: *
   Content-Type: text/plain; charset=utf-8

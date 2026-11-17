@@ -124,7 +124,8 @@ export async function build({ check = false } = {}) {
       // a topic page has its own title, description, H1, body text and questions; everything else is the main page's
       const d = page ? { ...base, ...TEXT[page][lang] } : base;
       const T = k => { if (!(k in d)) throw new Error(`i18n/${lang}.mjs has no "${k}"`); return d[k]; };
-      const url = SITE + path(slug, page), docs = T("docs"), og = `${SITE}/og/${page ? page + "-" : ""}${lang.toLowerCase()}.png`;
+      // (the count rides in the query: a preview cached before the reading count changed is a preview of an older site)
+      const url = SITE + path(slug, page), docs = T("docs"), og = `${SITE}/og/${page ? page + "-" : ""}${lang.toLowerCase()}.png?v=${SNIFFERS.length}`;
       const alts = langs.map(([l, sl]) => `<link rel="alternate" hreflang="${l}" href="${SITE + path(sl, page)}">`).join("\n") + `\n<link rel="alternate" hreflang="x-default" href="${SITE + path("", page)}">`;
       const graph = [
         { "@type": "WebApplication", name: (page ? T("h1") : T("app_name")) + " · 1ms.dog", url, applicationCategory: "UtilitiesApplication", operatingSystem: "Any",
@@ -304,7 +305,7 @@ export async function build({ check = false } = {}) {
 /flags/*
   Cache-Control: public, max-age=2592000
 /og/*
-  Cache-Control: public, max-age=604800
+  Cache-Control: no-cache
 /llms.txt
   Access-Control-Allow-Origin: *
   Content-Type: text/plain; charset=utf-8

@@ -3,7 +3,7 @@
 // public/og/<page>-<lang>.png for each topic page (src/pages.mjs), and public/og/r<tier>-<lang>.png for shared results (the Worker picks one by how many checks give the sharer away).
 // The headline and subtitle come from the page's strings; the rings are the page's fingerprint picture; the colored
 // bars are the disguise check. Run when the headline or the look changes, and commit the output. Uses system fonts
-// for the text (Windows: Segoe UI, Microsoft YaHei, Microsoft JhengHei, Yu Gothic UI, Malgun Gothic).
+// for the text: Windows' names first, then macOS's (PingFang, Hiragino, Apple SD Gothic Neo), then Linux's Noto CJK.
 // Usage: node scripts/og.mjs
 import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
 import { Resvg } from "@resvg/resvg-js";
@@ -11,9 +11,10 @@ import { SNIFFERS } from "../src/sniffers.mjs";
 import { PAGES, TEXT } from "../src/pages.mjs";
 
 const pub = new URL("../public/", import.meta.url), src = new URL("../src/", import.meta.url);
-const render = svg => new Resvg(svg, { fitTo: { mode: "width", value: 1200 }, font: { loadSystemFonts: true, defaultFontFamily: "Segoe UI" } }).render().asPng();
+const render = svg => new Resvg(svg, { fitTo: { mode: "width", value: 1200 }, font: { loadSystemFonts: true, defaultFontFamily: "Arial" } }).render().asPng();
 const logo = Buffer.from(await readFile(new URL("assets/logo-dark.svg", pub))).toString("base64");
-const FONTS = { "zh-CN": "Microsoft YaHei", "zh-TW": "Microsoft JhengHei", ja: "Yu Gothic UI", ko: "Malgun Gothic" };
+const FONTS = { "zh-CN": "'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC'", "zh-TW": "'Microsoft JhengHei', 'PingFang TC', 'Noto Sans CJK TC'",
+  ja: "'Yu Gothic UI', 'Hiragino Sans', 'Noto Sans CJK JP'", ko: "'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans CJK KR'" };
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const LIME = "#a3e635", OK = "#3ecf8e", WARN = "#f5c524", BAD = "#f56565";
 
@@ -36,7 +37,7 @@ function rings(cx, cy, scale) {
 // tier: the result previews of shared links (0 nothing gives the sharer away, 1 a few things, 2 many); none: the page
 const TIER_BARS = [[OK, OK, OK, OK, OK, OK, OK, OK, OK], [OK, WARN, OK, OK, WARN, OK, OK, WARN, OK], [OK, BAD, WARN, BAD, WARN, BAD, OK, WARN, BAD]];
 function card(lang, d, tier) {
-  const ff = `${FONTS[lang] ? `'${FONTS[lang]}', ` : ""}'Segoe UI', 'Microsoft YaHei', sans-serif`;
+  const ff = `${FONTS[lang] ? FONTS[lang] + ", " : ""}'Segoe UI', 'Helvetica Neue', 'Arial', 'Noto Sans', sans-serif`;
   const title = tier == null ? d.h1 : d["og_r" + tier], sub = tier == null ? d.og_sub : d.card_me, chip = d.eyebrow.replace("{n}", SNIFFERS.length);
   const cjk = /[　-鿿가-힯]/.test(title), max = cjk ? 9 : 18;
   // wrap the headline at a space (or in the middle for CJK) when it is long

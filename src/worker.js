@@ -10,6 +10,7 @@
 // No address and no request is logged; the counter keeps numbers per value, no record of a single visit. Every other
 // path is a bare 404 (the 1ms.dog shell shows its own page for those).
 import { decode, findings, tier, SLUG, parsePath } from "./share.mjs";
+import { SNIFFERS } from "./sniffers.mjs";
 import { Tally } from "./tally.mjs";
 import { regionName } from "./regions.mjs";
 import { framePage } from "./frame.mjs";
@@ -94,7 +95,7 @@ async function result(request, env, { code, lang: dir }, url) {
   const n = findings(P);
   const title = n ? fill(plural(d, lang, "r_title", n), { n }) : d.r_title_clean;
   const desc = fill(d.r_desc, { nat: nat || "?", os: P.os || "?", browser: P.browser || "?" });
-  const img = `${url.origin}/og/r${tier(n)}-${lang.toLowerCase()}.png`;
+  const img = `${url.origin}/og/r${tier(n)}-${lang.toLowerCase()}.png?v=${SNIFFERS.length}`;
   const res = new HTMLRewriter()
     .on("html", { element(el) { el.removeAttribute("data-root"); } })   // no redirect to a saved language: it would drop the portrait
     .on("title", { element(el) { el.setInnerContent(title + " · " + d.app_name); } })
