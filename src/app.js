@@ -2747,7 +2747,7 @@ import { exifOf } from "./exif.mjs";
   function warmShare() {
     if (warmed || EMBED || D.focus || document.documentElement.classList.contains("shared")) return;
     warmed = true;
-    const idle = window.requestIdleCallback || (f => setTimeout(f, 800));
+    const idle = window.requestIdleCallback ? (f => window.requestIdleCallback(f, { timeout: 2500 })) : (f => setTimeout(f, 800));
     idle(() => shareApi().then(() => {
       if (!window.__1msShareCss || document.querySelector("link[data-who-share]")) return;
       const l = document.createElement("link");
@@ -2818,6 +2818,8 @@ import { exifOf } from "./exif.mjs";
     // A topic page runs what its own check and rows need (src/pages.mjs "needs") beside the local readings every check
     // rests on; the main page runs every sniffer
     const NEED = D.focus ? new Set(D.focus.needs || []) : null, on = k => !NEED || NEED.has(k);
+    // the dialog is fetched while the run still has seconds to go, so the first click on Share opens at once
+    if (!NEED) warmShare();
     if (!NEED) setTimeout(() => { if (g === gen && !R.end) stuck(); }, STUCK_MS);
     for (const r of Object.values(PR)) { r.classList.add("wait"); r.classList.remove("na"); r.querySelector(".pa").textContent = "…"; delete r.dataset.why;
       const n = r.querySelector(".pnote"); if (n) { n.textContent = ""; n.classList.remove("lie"); } }
