@@ -2040,11 +2040,24 @@ import { exifOf } from "./exif.mjs";
       if (show && ck) b.setAttribute("data-ms-report", t("rp_one", { c: t("c_" + id), v: ((r.querySelector(".ck-v") || {}).textContent || "").trim() }));
     });
   }
+  // A report opened from one check's row: the dialog's one-tap candidates are the page's reading list, whose first
+  // entry is the graphics card, so choosing one wrote "the time zone check says X, it should be: graphics card Y"
+  // (1ms-shell#131). A check report gets no candidates and the visitor types; the page-level entries keep them.
+  // The host's own click handler opens the dialog on the bubble phase, so this capture listener records the context
+  // first; another report entry clears it, and msReport consumes it once.
+  let checkReport = null;
+  document.addEventListener("click", e => {
+    const b = e.target && e.target.closest && e.target.closest("[data-ms-report]");
+    if (!b) return;
+    const r = b.classList.contains("ck-rp") && b.closest(".ckr");
+    checkReport = r ? r.dataset.c : null;
+  }, true);
   if (typeof window.msOpenReport === "function" && !EMBED) {
     for (const [id, k] of RP_ENTRIES) $(id).setAttribute("data-ms-report", t(k));
     syncCheckReports();
     window.msReport = () => {
       if (!R || !R.ck || $("#rerun").disabled) return null;
+      const one = checkReport; checkReport = null;
       const c = (R.srv && R.srv.cf) || {}, gr = grade(R.ck, COUNTED.filter(id => R.ck[id])), hi = R.hi || {};
       // the screen as it is now, in physical pixels with the CSS size and ratio (the most reported reading)
       const sc = screen.width ? physicalScreen(screen.width, screen.height, devicePixelRatio || 1).join("×") + " (" + screen.width + "×" + screen.height + " @" + (devicePixelRatio || 1) + "x)" : R.screen;
@@ -2055,13 +2068,14 @@ import { exifOf } from "./exif.mjs";
         tz: R.tz, langs: R.langs, rtt: [R.rttB == null ? null : Math.round(R.rttB), c.clientTcpRtt || null], http: c.httpProtocol || null } };
       // what a visitor most often says is wrong, as "label: value" to pick from when they write nothing else: the graphics
       // card, the time zone check, the screen, the language check, the system, the system languages, the browser, then
-      // any other check that gave them away (the reports so far, most frequent first)
+      // any other check that gave them away (the reports so far, most frequent first). Only for a page-level report:
+      // one opened from a check's own row is about that check, and a page-wide candidate contradicts it
       const sep = /^(zh|ja)/.test(LANG) ? "：" : ": ", flagged = id => R.ck[id] && (R.ck[id][0] === "bad" || R.ck[id][0] === "warn");
       const reading = (id, v) => v ? [t("s_" + id), v] : null, check = id => flagged(id) ? [t("c_" + id), CK[id].querySelector(".ck-v").textContent] : null;
-      const picks = [reading("gpu", R.gpuSoft ? R.gpuRaw : R.gpu || R.gpuRaw), check("tz"), reading("screen", sc), check("lang"), reading("os", R.osTxt), check("syslang"),
+      const picks = one ? undefined : [reading("gpu", R.gpuSoft ? R.gpuRaw : R.gpu || R.gpuRaw), check("tz"), reading("screen", sc), check("lang"), reading("os", R.osTxt), check("syslang"),
         reading("browser", R.browser), ...CHECKS.filter(id => !["tz", "lang", "syslang"].includes(id)).map(check)]
         .filter(Boolean).slice(0, 8).map(([k, v]) => (k + sep + v).slice(0, 60));
-      return { summary, data, picks };
+      return one ? { summary, data } : { summary, data, picks };
     };
   }
 

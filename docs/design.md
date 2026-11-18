@@ -579,3 +579,13 @@ arrives) belongs to the shell, not this repo.
 The card loses no words: the two paragraphs are selected, not cut; each check's label shrinks to its column with the
 component's `fit` rather than an ellipsis; the tags line now shrinks too instead of clipping. `npm run smoke:quick`
 fails if the dialog's link row or actions fall below the fold at 1280×900.
+
+## 2026-11-18 — a check's report offers no page-wide candidates
+
+The per-check 「这项看着不对」 entries opened the host's report dialog with the page's one-tap candidates (the
+graphics card first), so choosing one wrote "the time zone check says X, it should be: graphics card Y" — two empty
+reports arrived that way (1ms-shell#129's body; #120 the same entry; #131). A report opened from a check row
+now carries no candidates, and the visitor types what is wrong; the page-level entries keep the list. The page records
+which entry was clicked in a capture listener (the host opens the dialog on the bubble phase) and `msReport` consumes
+it once; any other report entry clears it. Verified against a stand-in host: the time-zone row's report has no `picks`,
+`#rpRead` still has all eight with the graphics card first.
