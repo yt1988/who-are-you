@@ -133,3 +133,8 @@ scripts/smoke.mjs  browser smoke test
 probe/             the probe server (Go)
 docs/design.md     what is read and how, tested conclusions, research
 ```
+
+## 提交说明
+
+- 用英文，一句话说清改了什么。
+- 引用站内 issue 时只写 `#<数字>`，不要写 `yt1988/<私有仓库>#<数字>`，也不要写出私有仓库的名字；公开仓库的历史里不该出现内部仓库。
