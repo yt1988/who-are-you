@@ -281,6 +281,146 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://who.1ms.dog/fingerprint/"/>
   </url>
   <url>
+    <loc>https://who.1ms.dog/server-log/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://who.1ms.dog/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://who.1ms.dog/zh-cn/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://who.1ms.dog/zh-tw/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://who.1ms.dog/ja/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://who.1ms.dog/ko/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://who.1ms.dog/es/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://who.1ms.dog/fr/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://who.1ms.dog/de/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://who.1ms.dog/pt/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://who.1ms.dog/ru/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://who.1ms.dog/server-log/"/>
+  </url>
+  <url>
+    <loc>https://who.1ms.dog/zh-cn/server-log/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://who.1ms.dog/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://who.1ms.dog/zh-cn/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://who.1ms.dog/zh-tw/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://who.1ms.dog/ja/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://who.1ms.dog/ko/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://who.1ms.dog/es/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://who.1ms.dog/fr/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://who.1ms.dog/de/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://who.1ms.dog/pt/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://who.1ms.dog/ru/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://who.1ms.dog/server-log/"/>
+  </url>
+  <url>
+    <loc>https://who.1ms.dog/zh-tw/server-log/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://who.1ms.dog/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://who.1ms.dog/zh-cn/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://who.1ms.dog/zh-tw/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://who.1ms.dog/ja/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://who.1ms.dog/ko/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://who.1ms.dog/es/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://who.1ms.dog/fr/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://who.1ms.dog/de/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://who.1ms.dog/pt/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://who.1ms.dog/ru/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://who.1ms.dog/server-log/"/>
+  </url>
+  <url>
+    <loc>https://who.1ms.dog/ja/server-log/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://who.1ms.dog/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://who.1ms.dog/zh-cn/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://who.1ms.dog/zh-tw/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://who.1ms.dog/ja/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://who.1ms.dog/ko/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://who.1ms.dog/es/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://who.1ms.dog/fr/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://who.1ms.dog/de/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://who.1ms.dog/pt/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://who.1ms.dog/ru/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://who.1ms.dog/server-log/"/>
+  </url>
+  <url>
+    <loc>https://who.1ms.dog/ko/server-log/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://who.1ms.dog/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://who.1ms.dog/zh-cn/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://who.1ms.dog/zh-tw/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://who.1ms.dog/ja/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://who.1ms.dog/ko/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://who.1ms.dog/es/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://who.1ms.dog/fr/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://who.1ms.dog/de/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://who.1ms.dog/pt/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://who.1ms.dog/ru/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://who.1ms.dog/server-log/"/>
+  </url>
+  <url>
+    <loc>https://who.1ms.dog/es/server-log/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://who.1ms.dog/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://who.1ms.dog/zh-cn/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://who.1ms.dog/zh-tw/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://who.1ms.dog/ja/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://who.1ms.dog/ko/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://who.1ms.dog/es/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://who.1ms.dog/fr/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://who.1ms.dog/de/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://who.1ms.dog/pt/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://who.1ms.dog/ru/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://who.1ms.dog/server-log/"/>
+  </url>
+  <url>
+    <loc>https://who.1ms.dog/fr/server-log/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://who.1ms.dog/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://who.1ms.dog/zh-cn/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://who.1ms.dog/zh-tw/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://who.1ms.dog/ja/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://who.1ms.dog/ko/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://who.1ms.dog/es/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://who.1ms.dog/fr/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://who.1ms.dog/de/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://who.1ms.dog/pt/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://who.1ms.dog/ru/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://who.1ms.dog/server-log/"/>
+  </url>
+  <url>
+    <loc>https://who.1ms.dog/de/server-log/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://who.1ms.dog/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://who.1ms.dog/zh-cn/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://who.1ms.dog/zh-tw/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://who.1ms.dog/ja/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://who.1ms.dog/ko/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://who.1ms.dog/es/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://who.1ms.dog/fr/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://who.1ms.dog/de/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://who.1ms.dog/pt/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://who.1ms.dog/ru/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://who.1ms.dog/server-log/"/>
+  </url>
+  <url>
+    <loc>https://who.1ms.dog/pt/server-log/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://who.1ms.dog/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://who.1ms.dog/zh-cn/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://who.1ms.dog/zh-tw/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://who.1ms.dog/ja/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://who.1ms.dog/ko/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://who.1ms.dog/es/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://who.1ms.dog/fr/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://who.1ms.dog/de/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://who.1ms.dog/pt/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://who.1ms.dog/ru/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://who.1ms.dog/server-log/"/>
+  </url>
+  <url>
+    <loc>https://who.1ms.dog/ru/server-log/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://who.1ms.dog/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://who.1ms.dog/zh-cn/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://who.1ms.dog/zh-tw/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://who.1ms.dog/ja/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://who.1ms.dog/ko/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://who.1ms.dog/es/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://who.1ms.dog/fr/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://who.1ms.dog/de/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://who.1ms.dog/pt/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://who.1ms.dog/ru/server-log/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://who.1ms.dog/server-log/"/>
+  </url>
+  <url>
     <loc>https://who.1ms.dog/dns-leak/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://who.1ms.dog/dns-leak/"/>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://who.1ms.dog/zh-cn/dns-leak/"/>

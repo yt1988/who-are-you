@@ -580,6 +580,21 @@ The card loses no words: the two paragraphs are selected, not cut; each check's 
 component's `fit` rather than an ellipsis; the tags line now shrinks too instead of clipping. `npm run smoke:quick`
 fails if the dialog's link row or actions fall below the fold at 1280×900.
 
+## 2026-11-19 — the fingerprint page's layout, and the defender's view
+
+The fingerprint page's intro had grown into a wall of text, and the column beside the result was mostly empty. Its
+three-layer explanation now sits under a short lede as three rows — network and edge, protocol, page script — with one
+caveat line, built from a new optional `explain` block a topic page may carry; the details stay in the help. Measured
+at 1280 and 390 px: the left column is scannable and no longer a paragraph, and the phone stacks label over text.
+
+A new topic page `/server-log/` ("You in a server log") shows the other side: one access-log line built from this
+visit's readings, and this visit against the last one's record in this browser — every fingerprint part marked same or
+changed, with a verdict worded as a candidate ("most likely the same machine or environment"), never a person. It
+reads `who:last` (written by the main page) and stores or sends nothing new; the exit IP is not part of that record,
+so the last visit never shows one. Its questions cover what a log holds, how a honeypot links visits, and the three
+attribution levels; automation, an AI agent and an attack stay three judgments. The page joins the topic list and gets
+its own OG images.
+
 ## 2026-11-19 — where a reading stops, said in the copy
 
 An external write-up of this page went through the public source and listed the boundary of each signal: a TTL alone,

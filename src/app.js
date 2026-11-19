@@ -2825,6 +2825,36 @@ import { exifOf } from "./exif.mjs";
   const sharedCode = (parsePath(location.pathname) || {}).code || (/^#p=/.test(location.hash) ? location.hash.slice(3) : null);
 
   /* ---------- a run ---------- */
+  // The server-log page: one access-log line from this visit, and this visit against the previous one's record in this
+  // browser. It reads only — the record itself was written by the main page, and nothing here is stored or sent. The
+  // wording for the verdict comes from the page's own text, carried on #demo's data attributes.
+  function demo() {
+    const log = $("#dgLog"); if (!log) return;
+    const c = (R.srv && R.srv.cf) || {}, h = (R.srv && R.srv.h) || {}, parts = R.fpParts || {}, D = $("#demo").dataset;
+    const fmt = at => { try { return new Intl.DateTimeFormat(LANG, { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date(at)); } catch (e) { return new Date(at).toLocaleString(); } };
+    const now = fmt(Date.now()), ip = (R.srv && R.srv.ip) || "–";
+    log.textContent = [
+      `${now}   ${ip}   GET ${location.pathname}   200${c.clientTcpRtt != null ? "   RTT " + c.clientTcpRtt + " ms" : ""}`,
+      `UA: ${[R.osTxt, R.browser].filter(Boolean).join(" · ") || "–"}`,
+      `Accept-Language: ${h["accept-language"] || "–"}`,
+      `${[c.tlsVersion, c.httpProtocol].filter(Boolean).join(" · ") || "–"}   colo ${c.colo || "–"}`,
+      `fingerprint: ${R.fp ? R.fp.slice(0, 9) : "–"}`,
+    ].join("\n");
+    $("#dgNow").textContent = [now, c.city || "", R.browser || ""].filter(Boolean).join(" · ");
+    let last = null; try { last = JSON.parse(store.get(K.last) || "null"); } catch (e) {}
+    const has = !!(last && last.at && last.parts && Object.keys(last.parts).length && Object.keys(parts).length);
+    $("#demo").classList.toggle("first", !has);
+    if (!has) { $("#dgLast").textContent = D.none; $("#dgParts").innerHTML = ""; $("#dgVerdict").textContent = ""; return; }
+    $("#dgLast").textContent = [fmt(last.at), last.where || "", last.br || ""].filter(Boolean).join(" · ");
+    const keys = Object.keys(parts);
+    let same = 0;
+    $("#dgParts").innerHTML = keys.map(k => {
+      const eq = last.parts[k] === parts[k]; if (eq) same++;
+      return `<li><span>${esc(rowName(k))}</span><b>${esc(parts[k])}</b><b>${esc(last.parts[k])}</b><i class="${eq ? "ok" : "bad"}">${eq ? "=" : "≠"}</i></li>`;
+    }).join("");
+    $("#dgVerdict").textContent = same === keys.length ? D.same : same >= Math.ceil(keys.length / 2) ? D.some : D.diff;
+  }
+
   async function run() {
     const g = ++gen;
     R = { t0: performance.now() }; done = new Set(); unsup = new Set(); introReady = false; ppQueued = false; PARTIAL = false;
@@ -2917,7 +2947,7 @@ import { exifOf } from "./exif.mjs";
     for (const id of Object.keys(PR)) if (!done.has(id) && (!NEED || FR[id])) na(id);
     judge(true);
     // a topic page ends at its verdict: no portrait, no comparison with the last visit, nothing counted
-    if (NEED) { focusFix(); R.end = true; $("#rerun").disabled = false; return; }
+    if (NEED) { focusFix(); R.end = true; $("#rerun").disabled = false; if ($("#demo")) demo(); return; }
     readings(portrait(), R.ck);
     paintTarget(); osTips(); todo(); focusFix();
     R.end = true;

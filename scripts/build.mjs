@@ -185,6 +185,21 @@ export async function build({ check = false } = {}) {
       // A topic page opens with its own H1, body text and the one result it is about; the portrait follows under
       // its own heading. The main page has no focus panel.
       const P = PAGES[page];
+      // a page about what a server's log can hold (server-log) adds a demonstration under the result
+      const DM = d.demo, demo = !DM ? "" : `<section class="demo card" id="demo" data-none="${esc(DM.none)}" data-same="${esc(DM.same)}" data-some="${esc(DM.some)}" data-diff="${esc(DM.diff)}">
+      <div class="demo-head"><p class="demo-tag">${esc(DM.kicker)}</p><h2>${esc(DM.h2)}</h2><p class="demo-sub">${esc(DM.sub)}</p></div>
+      <div class="demo-grid">
+        <div class="demo-log"><h3>${esc(DM.log_h)}</h3><pre id="dgLog"></pre><p class="hint">${esc(DM.log_note)}</p></div>
+        <div class="demo-visits"><h3>${esc(DM.visits_h)}</h3>
+          <div class="dv-pair"><div class="dv"><b>${esc(DM.now)}</b><span id="dgNow"><i class="skl"></i></span></div>
+            <div class="dv"><b>${esc(DM.last)}</b><span id="dgLast"><i class="skl"></i></span></div></div>
+          <div class="dv-head"><span></span><span>${esc(DM.now)}</span><span>${esc(DM.last)}</span><span></span></div>
+          <ul class="dv-parts" id="dgParts"></ul>
+          <p class="dv-verdict" id="dgVerdict"><i class="skl"></i></p>
+          <p class="hint">${esc(DM.note)}</p>
+        </div>
+      </div>
+    </section>`;
       const focus = !page ? "" : P.stats ? `<section class="cp" id="crowd" data-page="${page}">
       <div class="cp-head card"><div class="cp-t"><h1>${esc(T("h1"))}</h1><p>${esc(T("intro"))}</p><a class="btn primary cp-try" href="${path(slug)}">${esc(T("cr_try"))}</a></div>
         <div class="cp-n"><span class="cp-i"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 7.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM1 14c.4-2.6 2.2-4 4.5-4s4.1 1.4 4.5 4M11 7.5a2 2 0 1 0 0-4M12 10c1.6.3 2.7 1.6 3 4"/></svg></span><b id="crN"><i class="skl"></i></b><span>${esc(T("cr_n_l"))}</span></div></div>
@@ -195,7 +210,7 @@ export async function build({ check = false } = {}) {
       </div>
       <div class="cp-foot"><p class="cp-note"><span class="cp-i"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg></span>${esc(T("cr_note"))}</p></div>
     </section>` : `<section class="focus card" id="focus" data-page="${page}">
-      <div class="focus-t"><h1>${esc(T("h1"))}</h1><p>${esc(T("intro"))}</p></div>
+      <div class="focus-t"><h1>${esc(T("h1"))}</h1><p>${esc(T("intro"))}</p>${d.explain ? `<div class="focus-layers"><p class="focus-layers-h">${esc(d.explain.h)}</p><ol>${d.explain.items.map(([b, s]) => `<li><b>${esc(b)}</b><span>${esc(s)}</span></li>`).join("")}</ol></div>${d.explain.note ? `<p class="focus-limits">${esc(d.explain.note)}</p>` : ""}` : ""}</div>
       <div class="focus-r"><h2>${esc(T("focus_h"))}</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         ${P.check ? `<div class="focus-fix" id="focusFix" hidden><p>${esc(T("fix"))}</p><ul></ul></div>` : ""}
@@ -203,7 +218,7 @@ export async function build({ check = false } = {}) {
         ${P.go ? `<a class="focus-go" id="focusGo" target="_blank" rel="noopener" hidden>${esc(T("go_" + P.go))}${EXT}</a>` : ""}
         <a class="btn ink focus-all" href="${path(slug)}">${esc(T("go_all").replace("{n}", SNIFFERS.length))}</a>
       </div>
-    </section>`;
+    </section>${demo}`;
       const heroTitle = page ? `<h2 class="h1">${esc(base.h1)}</h2>` : `<h1>${esc(T("h1"))}</h1>`;
       // the other pages of this tool, in this language: the topic pages, and the main page from a topic page
       const topics = pageList.filter(p => p !== page).map(p => `<a href="${path(slug, p)}">${esc(p ? TEXT[p][lang].h1 : base.h1)}</a>`).join("");
