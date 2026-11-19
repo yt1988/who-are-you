@@ -580,7 +580,25 @@ The card loses no words: the two paragraphs are selected, not cut; each check's 
 component's `fit` rather than an ellipsis; the tags line now shrinks too instead of clipping. `npm run smoke:quick`
 fails if the dialog's link row or actions fall below the fold at 1280×900.
 
-## 2026-11-18 — a check's report offers no page-wide candidates
+## 2026-11-19 — where a reading stops, said in the copy
+
+An external write-up of this page went through the public source and listed the boundary of each signal: a TTL alone,
+MTU estimates, whose stack a proxy leaves, TLS termination, the round-trip difference as a heuristic, fonts and
+languages as configuration rather than nationality, the hardware ID as a configuration hash rather than a serial, the
+limits of iframes and `[native code]`, and closed-set agent classifiers. Most of the page's wording already followed
+that; four strings did not, and are fixed in all ten languages:
+
+- the clean verdict said the readings were "the real you" — now "this is how a site reads you from these readings";
+- the round-trip tip said a proxy *always* adds the extra leg — now usually, and a clear gap is what makes sites
+  suspect one;
+- `hw_why` now says the ID is not a serial number: the same model and setup can match, and a new screen or font
+  changes it;
+- the automation tip now separates automation traces, an AI agent at the controls and an attack, and says this check
+  cannot judge the last.
+
+The fingerprint topic page also gained the answers it was missing — where the readings come from (network and edge,
+the protocol probe, the page's script), what each one can prove, and what a site log or a honeypot could do with them
+— and its intro now states the three layers and the rule that a reading proves only what it measured.
 
 The per-check 「这项看着不对」 entries opened the host's report dialog with the page's one-tap candidates (the
 graphics card first), so choosing one wrote "the time zone check says X, it should be: graphics card Y" — two empty
