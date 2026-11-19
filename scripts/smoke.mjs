@@ -203,6 +203,27 @@ for (const broken of [false, true]) {
   await page.close();
 }
 
+// WebGL blocked or stood in for by an extension: getContext("webgl") answers an object that is not a context. The GPU
+// rows must say so and the rest of the run must finish (17 front-end errors, `t.getExtension is not a function`)
+console.log("webgl: a stand-in context");
+{
+  const { page, errors } = await open(`${base}/?lang=en`, () => {
+    const orig = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (type, ...rest) {
+      return /^(experimental-)?webgl/.test(String(type)) ? {} : orig.call(this, type, ...rest);
+    };
+  });
+  await page.waitForFunction(() => !document.querySelector("#rerun").disabled, { timeout: 30000 }).catch(() => fail("webgl", "the run never finished"));
+  const r = await page.evaluate(() => ({
+    rows: Object.fromEntries(["gpu", "webgl", "glx", "glimg"].map(id => [id, (document.querySelector(`.pr[data-s="${id}"] .pa`) || {}).textContent || ""])),
+    waiting: document.querySelectorAll(".bl.wait").length,
+  }));
+  for (const e of errors) fail("webgl", "script error: " + e);
+  for (const [id, v] of Object.entries(r.rows)) if (!v.trim() || v === "…") fail("webgl", `the ${id} row is empty ("${v}")`);
+  if (r.waiting) fail("webgl", `${r.waiting} blanks still waiting`);
+  await page.close();
+}
+
 // the topic pages: their focus panel fills with the verdict and every row it repeats
 // (a sample: every topic in Chinese and English, and one topic in every language; their texts in every language are the
 // unit tests', and the page script is the same in all of them)

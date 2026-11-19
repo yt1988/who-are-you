@@ -605,6 +605,18 @@ so the last visit never shows one. Its questions cover what a log holds, how a h
 attribution levels; automation, an AI agent and an attack stay three judgments. The page joins the topic list and gets
 its own OG images.
 
+## 2026-11-19 — a WebGL context that isn't one
+
+A browser with WebGL blocked, or an extension standing in for it, can answer `getContext("webgl")` with an object that
+has no `getExtension`; calling it threw 17 times in a week. Because `gpu()` runs before the guarded tasks, that throw
+took the rest of the run with it. The GPU reading now checks `getExtension` and `getParameter` (and the extension list
+and shader-precision call where used), treats such a context as no WebGL — the rows say the browser doesn't provide it
+— and carries on. The triangle readback and the WebGPU limits check their methods too, and the other reads that a
+rewritten browser object can sit behind are feature-checked before they are called (battery, gamepads, media devices,
+permissions, keyboard layout, voices, XR, passkeys, DRM); `navigator.languages` is read as an array-like rather than
+spread, as `navigator.plugins` already was. `npm run smoke:quick` now replaces `getContext("webgl")` with an empty
+object and requires the run to finish with those rows filled.
+
 ## 2026-11-19 — where a reading stops, said in the copy
 
 An external write-up of this page went through the public source and listed the boundary of each signal: a TTL alone,

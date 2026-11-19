@@ -340,7 +340,15 @@ import { exifOf } from "./exif.mjs";
 
   // language, region and formats
   function locale() {
-    const langs = navigator.languages && navigator.languages.length ? [...navigator.languages] : [navigator.language].filter(Boolean);
+    // (read as an array-like, not spread: an anti-detect browser can put a plain object behind navigator.languages,
+    // and a throw here is before every guarded task — 2026-11-19)
+    let langs = [];
+    try {
+      const L = navigator.languages;
+      if (Array.isArray(L)) langs = L.map(String).filter(Boolean);
+      else if (L && typeof L.length === "number") langs = Array.prototype.slice.call(L).map(String).filter(Boolean);
+      if (!langs.length && navigator.language) langs = [String(navigator.language)];
+    } catch (e) { langs = []; }
     R.langs = langs;
     txt("langs", langs.join(", ") || "–");
     const ro = Intl.DateTimeFormat().resolvedOptions();
@@ -375,7 +383,7 @@ import { exifOf } from "./exif.mjs";
   }
 
   async function keyboard() {
-    if (!navigator.keyboard || !navigator.keyboard.getLayoutMap) return na("kbd");
+    if (!navigator.keyboard || typeof navigator.keyboard.getLayoutMap !== "function") return na("kbd");
     const map = await within(navigator.keyboard.getLayoutMap(), 1500, null);
     const k = kbdLayout(map);
     R.kbd = k;
@@ -383,7 +391,7 @@ import { exifOf } from "./exif.mjs";
   }
 
   async function voices() {
-    if (!window.speechSynthesis) return na("voices");
+    if (!window.speechSynthesis || typeof speechSynthesis.getVoices !== "function") return na("voices");
     let v = speechSynthesis.getVoices();
     if (!v.length) v = await within(new Promise(r => speechSynthesis.addEventListener("voiceschanged", () => r(speechSynthesis.getVoices()), { once: true })), 1500, []);
     if (!v.length) return na("voices", "v_none");
@@ -394,7 +402,7 @@ import { exifOf } from "./exif.mjs";
 
   function winByFonts() {
     const c = document.createElement("canvas").getContext("2d");
-    if (!c) return null;
+    if (!c || typeof c.measureText !== "function") return null;
     const W = "mmmmmmmmmlli1WO@", base = ["monospace", "sans-serif", "serif"];
     const w = f => { c.font = "72px " + f; return c.measureText(W).width; }, b = base.map(w);
     const has = f => base.some((g, i) => w(`"${f}", ${g}`) !== b[i]);
@@ -454,11 +462,19 @@ import { exifOf } from "./exif.mjs";
 
   function gpu() {
     const cv = document.createElement("canvas");
-    const gl = cv.getContext("webgl") || cv.getContext("experimental-webgl");
-    if (!gl) { R.gpuRaw = null; na("gpu"); na("webgl"); na("glx"); return null; }
-    const ext = gl.getExtension("WEBGL_debug_renderer_info");
-    const ren = ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
-    const ven = ext ? gl.getParameter(ext.UNMASKED_VENDOR_WEBGL) : gl.getParameter(gl.VENDOR);
+    // (a browser with WebGL blocked, or an extension standing in for the canvas, can answer getContext() with
+    // something that is not a WebGL context: calling getExtension on it threw 17 times in a week, and took the rest of
+    // that run with it. Check the methods, not only that a context came back — 2026-11-19)
+    let gl = null;
+    try { gl = cv.getContext("webgl") || cv.getContext("experimental-webgl"); } catch (e) { gl = null; }
+    const fn = (o, m) => !!o && typeof o[m] === "function";
+    if (!gl || !fn(gl, "getExtension") || !fn(gl, "getParameter")) { R.gpuRaw = null; na("gpu"); na("webgl"); na("glx"); return null; }
+    const param = k => { try { return gl.getParameter(k); } catch (e) { return null; } };
+    let ext = null; try { ext = gl.getExtension("WEBGL_debug_renderer_info"); } catch (e) {}
+    let ren = ext ? param(ext.UNMASKED_RENDERER_WEBGL) : param(gl.RENDERER);
+    let ven = ext ? param(ext.UNMASKED_VENDOR_WEBGL) : param(gl.VENDOR);
+    if (typeof ren !== "string") ren = "";
+    if (typeof ven !== "string") ven = "";
     R.gpuVen = ven;
     // a software renderer means the browser isn't using the card at all (remote desktop, a virtual machine, no driver,
     // hardware acceleration off): say so rather than pass it off as one
@@ -470,7 +486,8 @@ import { exifOf } from "./exif.mjs";
     R.gpuStandIn = standIn;
     // pages draw on a laptop's integrated card; asked for high performance, the browser may use the discrete one
     try {
-      const hg = document.createElement("canvas").getContext("webgl", { powerPreference: "high-performance" }), he = hg && hg.getExtension("WEBGL_debug_renderer_info");
+      const hg = document.createElement("canvas").getContext("webgl", { powerPreference: "high-performance" });
+      const he = hg && fn(hg, "getExtension") && fn(hg, "getParameter") ? hg.getExtension("WEBGL_debug_renderer_info") : null;
       R.gpuHiRaw = he ? hg.getParameter(he.UNMASKED_RENDERER_WEBGL) : null; R.gpuHi = gpuName(R.gpuHiRaw);
     } catch (e) { R.gpuHi = null; }
     const dg = discreteGpu(R.gpu, R.gpuHi, null);
@@ -478,18 +495,19 @@ import { exifOf } from "./exif.mjs";
       { why: (/or similar$/.test(ren || "") ? t("gpu_like_why") + "\n" : "") + [ven, ren, R.gpuHiRaw && R.gpuHiRaw !== ren ? R.gpuHiRaw : ""].filter(Boolean).join(" · ") });
     // the name is only the one string the browser chose to hand over: say so under it
     if (!standIn) note("gpu", t("gpu_note"), t("gpu_note_short"));
-    const gl2 = !!document.createElement("canvas").getContext("webgl2");
+    let gl2 = false; try { gl2 = !!document.createElement("canvas").getContext("webgl2"); } catch (e) {}
     // the shader precision each stage reports: a value of the driver's own, and one a stand-in renderer usually gets
     // wrong (high float: 23 bits and a range of 127 on nearly every desktop card; 0 where a stage has no high float)
     const prec = sh => { try { const p = gl.getShaderPrecisionFormat(sh, gl.HIGH_FLOAT); return p && p.precision ? p : null; } catch (e) { return null; } };
     const pv = prec(gl.VERTEX_SHADER), pf = prec(gl.FRAGMENT_SHADER), pa = pv ? pv.precision : "–", pb = pf ? pf.precision : "–";
-    txt("glx", t("glx_v", { v: gl2 ? "WebGL 2" : "WebGL 1", tex: gl.getParameter(gl.MAX_TEXTURE_SIZE), n: (gl.getSupportedExtensions() || []).length }) +
+    const exts = (() => { try { return fn(gl, "getSupportedExtensions") ? (gl.getSupportedExtensions() || []) : []; } catch (e) { return []; } })();
+    txt("glx", t("glx_v", { v: gl2 ? "WebGL 2" : "WebGL 1", tex: param(gl.MAX_TEXTURE_SIZE) ?? "–", n: exts.length }) +
       (pv || pf ? " · " + t("glx_shader", { a: pa, b: pb }) : ""),
       pv || pf ? { why: t("glx_shader_why", { a: pa, b: pb, r: Math.max(pv ? pv.rangeMax : 0, pf ? pf.rangeMax : 0) }) } : undefined);
     // everything WebGL reports about the card and driver, for the WebGL fingerprint
     const P = ["MAX_TEXTURE_SIZE", "MAX_RENDERBUFFER_SIZE", "MAX_VIEWPORT_DIMS", "MAX_VERTEX_ATTRIBS", "MAX_VERTEX_UNIFORM_VECTORS", "MAX_FRAGMENT_UNIFORM_VECTORS",
       "MAX_VARYING_VECTORS", "MAX_COMBINED_TEXTURE_IMAGE_UNITS", "ALIASED_LINE_WIDTH_RANGE", "ALIASED_POINT_SIZE_RANGE", "SHADING_LANGUAGE_VERSION", "VERSION"];
-    return [ven, ren, ...P.map(p => String(gl.getParameter(gl[p]))), pa, pb, (gl.getSupportedExtensions() || []).join(",")].join("|");
+    return [ven, ren, ...P.map(p => String(param(gl[p]))), pa, pb, exts.join(",")].join("|");
   }
 
   // A virtual machine or a remote desktop, from the renderer string alone: a hint, with other causes (acceleration
@@ -531,7 +549,7 @@ import { exifOf } from "./exif.mjs";
   // A game controller the page can see, with no permission: the browser names the pad and its mapping once a button
   // has been pressed (Firefox waits for that interaction on purpose, so this needs a button of our own)
   function gamepad() {
-    if (!navigator.getGamepads) return na("gamepad");
+    if (typeof navigator.getGamepads !== "function") return na("gamepad");
     row("gamepad", `<button type="button" class="pa-go gp-go">${esc(t("gp_btn"))}</button>`, { why: t("gp_why") });
     $('.pr[data-s="gamepad"] .gp-go').onclick = async e => {
       e.target.disabled = true; e.target.textContent = t("gp_wait");
@@ -547,7 +565,7 @@ import { exifOf } from "./exif.mjs";
   // Whether the browser could present VR or AR here, no headset asked and no permission: an XR device a site can see
   async function xr() {
     const X = navigator.xr;
-    if (!X || !X.isSessionSupported) return na("xr");
+    if (!X || typeof X.isSessionSupported !== "function") return na("xr");
     const modes = [];
     for (const [m, n] of [["immersive-vr", "VR"], ["immersive-ar", "AR"]]) {
       if (await within(X.isSessionSupported(m), 1200, false)) modes.push(n);
@@ -558,13 +576,13 @@ import { exifOf } from "./exif.mjs";
   // Windows Hello, Touch ID or a fingerprint reader the browser can use for passkeys: asked, never used
   async function biometric() {
     const PK = window.PublicKeyCredential;
-    if (!PK || !PK.isUserVerifyingPlatformAuthenticatorAvailable) return na("bio");
+    if (!PK || typeof PK.isUserVerifyingPlatformAuthenticatorAvailable !== "function") return na("bio");
     const ok = await within(PK.isUserVerifyingPlatformAuthenticatorAvailable(), 1500, null);
     if (ok == null) return na("bio");
     // what else the browser says it can do with passkeys (Chromium 133, Safari 18): keep them on this device, sign in
     // with a phone's QR code, offer them in the sign-in box's autofill
     let caps = null;
-    if (PK.getClientCapabilities) caps = await within(PK.getClientCapabilities().catch(() => null), 2500, null);
+    if (typeof PK.getClientCapabilities === "function") { try { caps = await within(PK.getClientCapabilities(), 2500, null); } catch (e) { caps = null; } }
     const more = caps ? [["passkeyPlatformAuthenticator", "bio_pk"], ["hybridTransport", "bio_hy"], ["conditionalGet", "bio_cg"]].filter(([k]) => caps[k]).map(([, s]) => t(s)) : [];
     txt("bio", [t(ok ? "v_yes" : "v_no"), ...more].join(" · "));
   }
@@ -696,7 +714,7 @@ import { exifOf } from "./exif.mjs";
   }
 
   async function battery() {
-    if (!navigator.getBattery) return na("battery");
+    if (typeof navigator.getBattery !== "function") return na("battery");
     const b = await within(navigator.getBattery(), 1500, null);
     // a reading that isn't one (a NaN level from a rewritten or a broken API) is a failed read, not a battery: it
     // says nothing about the device (1ms-shell#88)
@@ -709,7 +727,7 @@ import { exifOf } from "./exif.mjs";
   }
 
   async function media() {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) return na("media");
+    if (!navigator.mediaDevices || typeof navigator.mediaDevices.enumerateDevices !== "function") return na("media");
     const l = await within(navigator.mediaDevices.enumerateDevices(), 1500, null);
     if (!l) return na("media");
     const n = k => l.filter(d => d.kind === k).length;
@@ -905,28 +923,32 @@ import { exifOf } from "./exif.mjs";
   // a triangle shaded by the card, read back pixel by pixel
   async function glImage() {
     const cv = document.createElement("canvas"); cv.width = cv.height = 64;
-    const gl = cv.getContext("webgl", { preserveDrawingBuffer: true });
-    if (!gl) return na("glimg");
-    const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
-    const p = gl.createProgram();
-    gl.attachShader(p, sh(gl.VERTEX_SHADER, "attribute vec2 a;varying vec2 v;void main(){v=a;gl_Position=vec4(a,0.,1.);}"));
-    gl.attachShader(p, sh(gl.FRAGMENT_SHADER, "precision mediump float;varying vec2 v;void main(){gl_FragColor=vec4(sin(v.x*9.7)*.5+.5,cos(v.y*7.3)*.5+.5,fract(v.x*v.y*37.1),1.);}"));
-    gl.linkProgram(p); gl.useProgram(p);
-    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-.9, -.8, .85, -.7, -.1, .95]), gl.STATIC_DRAW);
-    const loc = gl.getAttribLocation(p, "a"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
-    const px = new Uint8Array(64 * 64 * 4); gl.readPixels(0, 0, 64, 64, gl.RGBA, gl.UNSIGNED_BYTE, px);
-    const e = gl.getExtension("WEBGL_lose_context"); if (e) e.loseContext();
-    txt("glimg", await hhex(Array.from(px).join(",")), { why: t("gi_why") });
+    let gl = null; try { gl = cv.getContext("webgl", { preserveDrawingBuffer: true }); } catch (e) {}
+    if (!gl || typeof gl.createShader !== "function" || typeof gl.readPixels !== "function") return na("glimg");
+    try {
+      const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+      const p = gl.createProgram();
+      gl.attachShader(p, sh(gl.VERTEX_SHADER, "attribute vec2 a;varying vec2 v;void main(){v=a;gl_Position=vec4(a,0.,1.);}"));
+      gl.attachShader(p, sh(gl.FRAGMENT_SHADER, "precision mediump float;varying vec2 v;void main(){gl_FragColor=vec4(sin(v.x*9.7)*.5+.5,cos(v.y*7.3)*.5+.5,fract(v.x*v.y*37.1),1.);}"));
+      gl.linkProgram(p); gl.useProgram(p);
+      gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-.9, -.8, .85, -.7, -.1, .95]), gl.STATIC_DRAW);
+      const loc = gl.getAttribLocation(p, "a"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      const px = new Uint8Array(64 * 64 * 4); gl.readPixels(0, 0, 64, 64, gl.RGBA, gl.UNSIGNED_BYTE, px);
+      const e = gl.getExtension("WEBGL_lose_context"); if (e) e.loseContext();
+      txt("glimg", await hhex(Array.from(px).join(",")), { why: t("gi_why") });
+    } catch (e) { na("glimg"); }
   }
   async function gpuLimits() {
-    if (!navigator.gpu) return na("gpulim");
-    const a = await within(navigator.gpu.requestAdapter().catch(() => null), 2000, null);
+    if (!navigator.gpu || typeof navigator.gpu.requestAdapter !== "function") return na("gpulim");
+    let a = null; try { a = await within(navigator.gpu.requestAdapter(), 2000, null); } catch (e) { a = null; }
     if (!a) return na("gpulim", "v_empty");
-    const lim = []; for (const k in a.limits) lim.push(k + "=" + a.limits[k]);
-    const f = [...a.features].sort();
-    txt("gpulim", t("gl_v", { n: f.length }) + " · " + await hhex(lim.sort().join(",") + "|" + f.join(",")), { why: t("gpl_why") + (f.length ? "\n" + f.join(" · ") : "") });
+    try {
+      const lim = []; for (const k in a.limits) lim.push(k + "=" + a.limits[k]);
+      const f = [...(a.features || [])].sort();
+      txt("gpulim", t("gl_v", { n: f.length }) + " · " + await hhex(lim.sort().join(",") + "|" + f.join(",")), { why: t("gpl_why") + (f.length ? "\n" + f.join(" · ") : "") });
+    } catch (e) { na("gpulim", "v_fail"); }
   }
   function rtcCodecs() {
     const cap = k => { try { return (RTCRtpSender.getCapabilities(k) || {}).codecs || []; } catch (e) { return []; } };
@@ -1219,7 +1241,7 @@ import { exifOf } from "./exif.mjs";
     "Comic Sans MS", "Arial", "Times New Roman", "Courier New", "Verdana", "Georgia"];
   function fonts() {
     const c = document.createElement("canvas").getContext("2d");
-    if (!c) { R.fonts = []; na("fonts"); return; }
+    if (!c || typeof c.measureText !== "function") { R.fonts = []; na("fonts"); return; }
     const W = "mmmmmmmmmlli你是谁あア한1WO@", base = ["monospace", "sans-serif", "serif"];
     const w = f => { c.font = "72px " + f; return c.measureText(W).width; };
     const b = base.map(w);
@@ -1653,7 +1675,7 @@ import { exifOf } from "./exif.mjs";
 
   // DRM systems the browser can use; Firefox asks the visitor before it turns DRM on, so it isn't asked there
   async function drm() {
-    if (!navigator.requestMediaKeySystemAccess || /Firefox\//.test(navigator.userAgent)) return na("drm");
+    if (typeof navigator.requestMediaKeySystemAccess !== "function" || /Firefox\//.test(navigator.userAgent)) return na("drm");
     const cfg = [{ initDataTypes: ["cenc"], videoCapabilities: [{ contentType: 'video/mp4; codecs="avc1.42E01E"' }] }];
     const L = [["Widevine", "com.widevine.alpha"], ["PlayReady", "com.microsoft.playready.recommendation"], ["FairPlay", "com.apple.fps"], ["ClearKey", "org.w3.clearkey"]];
     const r = await Promise.all(L.map(([n, ks]) => within(navigator.requestMediaKeySystemAccess(ks, cfg).then(() => n, () => null), 2000, null)));
@@ -1665,7 +1687,7 @@ import { exifOf } from "./exif.mjs";
   // reject it, so the list is the same everywhere and each name stands or falls on its own. The ones still asking
   // are left out (a fresh browser would otherwise print two dozen "ask"), unless nothing has been decided yet
   async function perms() {
-    if (!navigator.permissions) return na("perms");
+    if (!navigator.permissions || typeof navigator.permissions.query !== "function") return na("perms");
     const L = [["geolocation", "perm_geo"], ["notifications", "perm_notif"], ["camera", "perm_cam"], ["microphone", "perm_mic"],
       ["clipboard-read", "perm_clip_r"], ["clipboard-write", "perm_clip_w"], ["midi", "perm_midi"], ["push", "perm_push"],
       ["persistent-storage", "perm_store"], ["storage-access", "perm_sa"], ["local-fonts", "perm_fonts"], ["window-management", "perm_win"],
