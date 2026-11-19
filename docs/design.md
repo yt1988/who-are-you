@@ -667,7 +667,9 @@ world.
 The card deliberately does **not** repeat the disguise checks: the owner pointed out that its first draft listed the
 same three findings and fixes as the right-hand panel, a second copy of one list. The checks, "fix these first" and
 every per-row fix stay the single source on the right; the card carries only what they cannot: the population
-percentile, the index's three parts, confidence and the thirty-day trajectory, with one link to the panel.
+percentile, the index's three parts, confidence and the thirty-day trajectory, with one link to the panel. A line under
+it says what the two numbers judge: the panel grades whether the readings contradict each other, the card how visible
+the visitor is in the crowd and whether that stays true.
 
 Counting: `POST /api/seen` also accepts a 10-point `ix` bucket, stored in the same counts table and returned as a
 histogram. The page posts it alone after the first answer, when the rarity it needs is known (once a day per browser,

@@ -274,7 +274,7 @@ export default {
   ],
 
   // Verfolgbarkeit: das Urteil unter dem Porträt (Porträt zuerst, 2026-11-19)
-  tv_k: "Verfolgbarkeit", tv_note: "Geschätzt aus den anonymen Zählungen dieser Website, kein Anteil der ganzen Welt.", tv_of: "/ 100", tv_better: "Weniger erkennbar als {p}% der Besucher", tv_worse: "Erkennbarer als {p}% der Besucher", tv_wait: "Die Stichprobe zur Verfolgbarkeit wächst noch ({n} Läufe); sieh dir an, wie häufig dein Fingerabdruck ist",
+  tv_k: "Verfolgbarkeit", tv_note: "Geschätzt aus den anonymen Zählungen dieser Website, kein Anteil der ganzen Welt.", tv_rel: "Der Tarnungs-Check bewertet, ob sich die Messwerte widersprechen; hier geht es darum, wie auffällig du in der Menge bist und ob du erkennbar bleibst.", tv_of: "/ 100", tv_better: "Weniger erkennbar als {p}% der Besucher", tv_worse: "Erkennbarer als {p}% der Besucher", tv_wait: "Die Stichprobe zur Verfolgbarkeit wächst noch ({n} Läufe); sieh dir an, wie häufig dein Fingerabdruck ist",
   tv_conf: "Sicherheit: {c}", tv_hi: "hoch", tv_mid: "mittel", tv_lo: "niedrig",
   tv_rar: "Seltenheit", tv_rar_v: "Dein Fingerabdruck kam in {total} Checks {k}-mal vor", tv_stab: "Stabilität", tv_stab_v: "{a} von {b} Teilen wie beim letzten Besuch",
   tv_bread: "Lesbarkeit", tv_bread_v: "{a} von {b} Messwerten gelesen", tv_na: "diesmal nicht gelesen", tv_fix: "So behebst du es", tv_hist: "Letztes Mal {a} → diesmal {b}", tv_hist_fixed: "Letztes Mal {a} → diesmal {b} · {n} behoben", tv_hist_one: "Diesmal {a}; ein weiterer Test zeigt die Veränderung",

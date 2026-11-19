@@ -274,7 +274,7 @@ export default {
   ],
 
   // rastreabilidad: el veredicto bajo el retrato (retrato primero, 2026-11-19)
-  tv_k: "Rastreabilidad", tv_note: "Estimado con los recuentos anónimos de este sitio, no es una proporción de todo el mundo.", tv_of: "/ 100", tv_better: "Menos identificable que el {p}% de los visitantes", tv_worse: "Más identificable que el {p}% de los visitantes", tv_wait: "La muestra de rastreabilidad aún crece ({n} pruebas); por ahora, mira lo común que es tu huella",
+  tv_k: "Rastreabilidad", tv_note: "Estimado con los recuentos anónimos de este sitio, no es una proporción de todo el mundo.", tv_rel: "El test de disfraz valora si las lecturas se contradicen; esto mide cuánto destacas entre la gente y si sigues siendo reconocible.", tv_of: "/ 100", tv_better: "Menos identificable que el {p}% de los visitantes", tv_worse: "Más identificable que el {p}% de los visitantes", tv_wait: "La muestra de rastreabilidad aún crece ({n} pruebas); por ahora, mira lo común que es tu huella",
   tv_conf: "Confianza: {c}", tv_hi: "alta", tv_mid: "media", tv_lo: "baja",
   tv_rar: "Rareza", tv_rar_v: "Tu huella apareció {k} veces en {total} pruebas", tv_stab: "Estabilidad", tv_stab_v: "{a} de {b} partes coinciden con la última visita",
   tv_bread: "Legibilidad", tv_bread_v: "{a} de {b} lecturas respondidas", tv_na: "no se leyó esta vez", tv_fix: "Cómo se arregla", tv_hist: "La última vez {a} → esta vez {b}", tv_hist_fixed: "La última vez {a} → esta vez {b} · {n} corregidas", tv_hist_one: "{a} esta vez; repite la prueba para ver el cambio",

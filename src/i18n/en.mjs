@@ -275,7 +275,7 @@ export default {
   ],
 
   // trackability: the verdict under the portrait (portrait-first, the owner's choice, 2026-11-19)
-  tv_k: "Trackability", tv_note: "Estimated from this site's anonymous counts, not a share of the whole world.", tv_of: "/ 100", tv_better: "Less identifiable than {p}% of visitors", tv_worse: "More identifiable than {p}% of visitors", tv_wait: "The trackability sample is still growing ({n} counted runs); for now, how common your fingerprint is",
+  tv_k: "Trackability", tv_note: "Estimated from this site's anonymous counts, not a share of the whole world.", tv_rel: "The disguise check grades whether the readings contradict each other; this judges how visible you are in the crowd and whether you stay recognisable.", tv_of: "/ 100", tv_better: "Less identifiable than {p}% of visitors", tv_worse: "More identifiable than {p}% of visitors", tv_wait: "The trackability sample is still growing ({n} counted runs); for now, how common your fingerprint is",
   tv_conf: "Confidence: {c}", tv_hi: "high", tv_mid: "medium", tv_lo: "low",
   tv_rar: "Rarity", tv_rar_v: "Your fingerprint appeared {k} times in {total} checks", tv_stab: "Stability", tv_stab_v: "{a} of {b} parts matched the last visit",
   tv_bread: "Readable", tv_bread_v: "{a} of {b} readings answered", tv_na: "not read this time", tv_fix: "How to fix", tv_hist: "Last time {a} → this time {b}", tv_hist_fixed: "Last time {a} → this time {b} · {n} fixed", tv_hist_one: "{a} this time; run it again to see the change",

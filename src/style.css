@@ -344,7 +344,7 @@ html.shared .tally, html.shared .idc-u, html[data-who-embed] .tally, html[data-w
 .tv-kpis em { display: block; color: var(--muted); font-size: 11.5px; font-style: normal; margin-top: 4px; }
 .tv-kpis em .skl { width: 8ch; }
 .tv-hist { margin: 0; color: var(--muted); font-size: 12px; min-height: 1.5em; }
-.tv-note { margin: 0; color: var(--muted); font-size: 11.5px; line-height: 1.5; }
+.tv-note, .tv-rel { margin: 0; color: var(--muted); font-size: 11.5px; line-height: 1.5; }
 .tv-a { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
 @media (max-width: 720px) { .tv-kpis { grid-template-columns: 1fr; } .tv-c { margin-left: 0; flex-basis: 100%; } }
 .btn.sm { height: 30px; padding: 0 12px; font-size: 13px; border-radius: 9px; }
