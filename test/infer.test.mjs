@@ -249,10 +249,6 @@ test("disguise checks", () => {
   assert.equal(cleanSeen({ add: true, t: { os: "Windows 11" }, dur: "forever" }).dur, undefined);
   assert.deepEqual(cleanSeen({ dur: "stuck", add: true }), { add: false, t: {}, ck: {}, dur: "stuck" });
   assert.equal(cleanSeen({ dur: "nope" }), null);
-  // the trackability bucket: a known 10-point bucket rides along, alone or with the traits; anything else is dropped
-  assert.equal(cleanSeen({ ix: "20-29" }).ix, "20-29");
-  assert.equal(cleanSeen({ add: true, t: { os: "Windows 11" }, ix: "90-100" }).ix, "90-100");
-  assert.equal(cleanSeen({ ix: "7-9" }), null);
   assert.equal(durOf(2999), "0-3"); assert.equal(durOf(4000), "3-5"); assert.equal(durOf(61000), "60+");
   assert.equal(cleanSeen({ t: { ip: "1.2.3.4" } }), null);
   assert.equal(rarity(1, 5000), "uniq");

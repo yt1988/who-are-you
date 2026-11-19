@@ -5,7 +5,6 @@
 // and an object that is evicted or redeployed loses no more than that.
 import { DurableObject } from "cloudflare:workers";
 import { cleanSeen } from "./traits.mjs";
-import { BUCKETS } from "./standing.mjs";
 
 const KEEP_DAYS = 90, FLUSH_MS = 10000;
 // the traits whose commonest values the stats page lists, and how many checks a value needs to be listed
@@ -48,17 +47,13 @@ export class Tally extends DurableObject {
     }
     // (every run's time, a repeat visit's too: it is about the page, not the visitor)
     if (seen.dur) this.bump(this.pendingCk, d + "\0dur\0" + seen.dur);
-    // the run's trackability bucket, once a day (the page sends it alone after rarity has answered)
-    if (seen.ix) this.bump(this.pending, "ix\0" + seen.ix);
-    if (seen.add || seen.dur || seen.ix) {
+    if (seen.add || seen.dur) {
       if (Date.now() - this.flushed >= FLUSH_MS) this.flush();
       else if (!this.armed) { this.armed = true; await this.ctx.storage.setAlarm(Date.now() + FLUSH_MS); }
     }
     const n = {};
     for (const [f, v] of Object.entries(seen.t)) n[f] = this.count(f, v);
-    const ix = {};
-    for (const b of BUCKETS) ix[b] = this.count("ix", b);
-    return Response.json({ total: this.count("", "total"), n, ix });
+    return Response.json({ total: this.count("", "total"), n });
   }
 
   async alarm() { this.armed = false; this.flush(); }

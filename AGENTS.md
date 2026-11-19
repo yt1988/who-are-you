@@ -53,7 +53,6 @@ npm run dev          # wrangler dev on http://localhost:8795
 | Topic pages, the build, the share format | `npm run smoke`: the above plus every topic page |
 | A button, a link, a row's control | `npm run touch [<lang>]`: every tap target at 390 px, none under 24 by 24 CSS px (WCAG 2.5.8) |
 | The meaning of readings (`src/infer.mjs`, `src/models.mjs`) | add a case to `test/infer.test.mjs` or `test/models.test.mjs` |
-| The trackability score (`src/standing.mjs`) | add a case to `test/standing.test.mjs` |
 | `probe/` | `go vet ./... && go build` in `probe/`, then on a server (below) |
 
 A change visible on the page is also checked in a real browser at phone and desktop width, light and dark, for layout
@@ -124,7 +123,6 @@ src/worker.js      /api/me, share previews
 src/tally.mjs      anonymous counts (Durable Object)
 src/sniffers.mjs   every reading's row, the portrait's blanks, the checks
 src/infer.mjs      what the readings mean (unit tested)
-src/standing.mjs   the trackability standing under the portrait (unit tested)
 src/models.mjs     device models (unit tested)
 src/app.js         the page script
 src/page.html      the page; src/style.css its styles

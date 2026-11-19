@@ -82,14 +82,11 @@ await pool(LANGS, N, async ([lang, slug], base) => {
   const { page, errors } = await open(`${base}/${slug ? slug + "/" : ""}`);
   // done when the rerun button is enabled again (the run, WebRTC included, is over)
   await page.waitForFunction(() => !document.querySelector("#rerun").disabled, { timeout: 30000 }).catch(() => fail(lang, "the run never finished"));
-  // the standing under the portrait paints after the anonymous counts answer (or fail); it has to fill either way
-  await page.waitForFunction(() => /\d/.test(document.querySelector("#tvN").textContent), { timeout: 8000 }).catch(() => fail(lang, "the standing never filled"));
   const r = await page.evaluate(() => ({
     rows: [...document.querySelectorAll(".pr[data-s]")].map(x => [x.dataset.s, x.querySelector(".pa").textContent]),
     waiting: document.querySelectorAll(".bl.wait").length, blanks: document.querySelectorAll(".bl[data-b]").length,
     story: document.querySelector("#story").textContent, checks: [...document.querySelectorAll(".ckr")].map(x => [x.dataset.c, x.className]),
     num: document.querySelector("#mNum").textContent, fp: document.querySelector("#fpId").textContent, ret: document.querySelector("#fpRet").textContent,
-    tv: document.querySelector("#tvN").textContent.trim(), tvK: [...document.querySelectorAll("#tvK b")].map(x => x.textContent.trim()),
   }));
   for (const e of errors) fail(lang, "script error: " + e);
   if (r.rows.length !== SNIFFERS.length) fail(lang, `${r.rows.length} rows, expected ${SNIFFERS.length}`);
@@ -101,8 +98,6 @@ await pool(LANGS, N, async ([lang, slug], base) => {
   if (r.checks.length !== CHECKS.length + PROTO.length) fail(lang, `${r.checks.length} checks, expected ${CHECKS.length + PROTO.length}`);
   if (!/^\d+$/.test(r.num)) fail(lang, `count "${r.num}"`);
   if (!r.fp.trim() || !r.ret.trim()) fail(lang, "ID card not filled");
-  if (!/^\d+$/.test(r.tv)) fail(lang, `standing "${r.tv}"`);
-  if (r.tvK.length !== 3 || r.tvK.some(v => !v || v === "…")) fail(lang, `standing parts not filled (${r.tvK.join(", ")})`);
 
   if (lang === "zh-CN") {
     // share (1ms.dog's share dialog), then open the link as someone else would
