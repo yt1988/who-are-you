@@ -57,8 +57,8 @@ export const TEXT = {
       seo_desc: "免费浏览器指纹检测：看看你的 Canvas、WebGL、音频和字体指纹，以及网站不用 Cookie 就能算出的指纹 ID；你的浏览器有没有打乱它，上次来过之后有没有被认出来。检测在你的浏览器里进行，不存 IP，只累计匿名计数，用来告诉你有多少人和你一样。",
       seo_kw: "浏览器指纹检测, 浏览器指纹, Canvas 指纹, WebGL 指纹, 音频指纹, 指纹浏览器检测, 防指纹, 指纹追踪",
       h1: "浏览器指纹检测", og_sub: "不用 Cookie，网站也能给你算出一个 ID",
-      intro: "网站不用 Cookie 也能认出你。你的系统怎么画文字和图形、怎么处理声音、装了哪些字体，合起来就是一个 ID：换网站、开无痕、开 VPN 都不变。下面是你的指纹、它由哪几部分组成，以及你的浏览器有没有把它打乱。",
-      explain: { h: "读数来自三个地方", items: [["网络与边缘", "IP、网络归属、地理和时延：接收这次连接的一侧先看到这些。"], ["协议", "TCP、TLS 和 HTTP/2 的开头：本站的独立探针在自己的连接上读，页面脚本改不了。"], ["页面脚本", "画布、WebGL、音频、字体、屏幕和设置：关掉 JavaScript 就没有这些。"]], note: "越靠前的越不依赖 JavaScript。每一项只证明它测到的东西；边界和例外见右上角的「?」。" },
+      intro: "网站不用 Cookie 也能认出你。你的系统怎么画文字和图形、怎么处理声音、装了哪些字体，合起来就是一个 ID：换网站、开无痕、开 VPN 都不变。这里是你的指纹、它由哪几部分组成，以及你的浏览器有没有把它打乱。",
+      explain: { h: "读数来自三个地方", items: [["网络与边缘", "IP、网络归属、地理和时延：接收这次连接的一侧先看到这些。"], ["协议", "TCP、TLS 和 HTTP/2 的开头：本站的独立探针在自己的连接上读，页面脚本改不了。"], ["页面脚本", "画布、WebGL、音频、字体、屏幕和设置：关掉 JavaScript 就没有这些。"]], note: "越靠前的越不依赖 JavaScript。每一项只证明它测到的东西；边界和例外见「?」帮助。" },
       focus_h: "你的指纹",
       docs: [
         ["浏览器指纹是什么？", "是电脑和电脑之间的细微差别：显卡和驱动画 Canvas、WebGL 的结果，处理声音时的取整误差，装了哪些字体，再加上屏幕、语言和时区。单看每一项都很普通，合在一起往往就独一无二。网站把它们算成一串固定的编码，也就是指纹 ID；跑同一段脚本的网站，算出来的你都是同一个 ID。"],
@@ -75,8 +75,8 @@ export const TEXT = {
       seo_desc: "免費瀏覽器指紋檢測：看看你的 Canvas、WebGL、音訊和字型指紋，以及網站不用 Cookie 就能算出的指紋 ID；你的瀏覽器有沒有把它打亂，上次來過之後有沒有被認出來。檢測在你的瀏覽器裡進行，不存 IP，只累計匿名計數，用來告訴你有多少人和你一樣。",
       seo_kw: "瀏覽器指紋檢測, 瀏覽器指紋, Canvas 指紋, WebGL 指紋, 音訊指紋, 指紋瀏覽器, 防指紋, 指紋追蹤",
       h1: "瀏覽器指紋檢測", og_sub: "不用 Cookie，網站也能替你算出一個 ID",
-      intro: "網站不用 Cookie 也認得出你。你的系統怎麼畫文字和圖形、怎麼處理聲音、裝了哪些字型，合起來就是一個 ID：換網站、開無痕、開 VPN 都不會變。下面是你的指紋、它由哪幾部分組成，以及你的瀏覽器有沒有把它打亂。",
-      explain: { h: "讀數來自三個地方", items: [["網路與邊緣", "IP、網路歸屬、地理和延遲：接收這次連線的一側先看到這些。"], ["協定", "TCP、TLS 和 HTTP/2 的開頭：本站的獨立探針在自己的連線上讀，頁面腳本改不了。"], ["頁面腳本", "畫布、WebGL、音訊、字型、螢幕和設定：關掉 JavaScript 就沒有這些。"]], note: "越靠前的越不依賴 JavaScript。每一項只證明它測到的東西；邊界和例外見右上角的「?」。" },
+      intro: "網站不用 Cookie 也認得出你。你的系統怎麼畫文字和圖形、怎麼處理聲音、裝了哪些字型，合起來就是一個 ID：換網站、開無痕、開 VPN 都不會變。這裡是你的指紋、它由哪幾部分組成，以及你的瀏覽器有沒有把它打亂。",
+      explain: { h: "讀數來自三個地方", items: [["網路與邊緣", "IP、網路歸屬、地理和延遲：接收這次連線的一側先看到這些。"], ["協定", "TCP、TLS 和 HTTP/2 的開頭：本站的獨立探針在自己的連線上讀，頁面腳本改不了。"], ["頁面腳本", "畫布、WebGL、音訊、字型、螢幕和設定：關掉 JavaScript 就沒有這些。"]], note: "越靠前的越不依賴 JavaScript。每一項只證明它測到的東西；邊界和例外見「?」幫助。" },
       focus_h: "你的指紋",
       docs: [
         ["瀏覽器指紋是什麼？", "是電腦和電腦之間的細微差異：顯示卡和驅動程式畫 Canvas、WebGL 的結果，處理聲音時的捨入誤差，裝了哪些字型，再加上螢幕、語言和時區。單看每一項都很普通，合在一起往往就獨一無二。網站把它們算成一串固定的編碼，也就是指紋 ID；執行同一段腳本的網站，算出來的你都是同一個 ID。"],
@@ -94,7 +94,7 @@ export const TEXT = {
       seo_kw: "ブラウザフィンガープリント, フィンガープリント 確認, Canvas フィンガープリント, WebGL フィンガープリント, オーディオ フィンガープリント, 追跡 防止, アンチフィンガープリント",
       h1: "ブラウザフィンガープリント検査", og_sub: "Cookie がなくても、サイトはあなたの ID を割り出せる",
       intro: "サイトは Cookie がなくてもあなたを見分けられます。文字や図形の描き方、音の処理、入っているフォントを合わせると 1 つの ID になり、サイトを変えても、プライベートウィンドウでも、VPN を使っても変わりません。あなたの ID とその中身、ブラウザがそれをかき混ぜているかを示します。",
-      explain: { h: "読み取りは 3 か所から", items: [["ネットワークとエッジ", "IP、回線の持ち主、地理、遅延。接続を受ける側が最初に見ます。"], ["プロトコル", "TCP・TLS・HTTP/2 の先頭。当サイトの独立したプローブが自分の接続で読み、ページのスクリプトでは変えられません。"], ["ページのスクリプト", "Canvas、WebGL、音声、フォント、画面、設定。JavaScript を切るとありません。"]], note: "前の層ほど JavaScript に依存しません。各項目が証明できるのは測ったことだけです。境界と例外は右上の「?」に。" },
+      explain: { h: "読み取りは 3 か所から", items: [["ネットワークとエッジ", "IP、回線の持ち主、地理、遅延。接続を受ける側が最初に見ます。"], ["プロトコル", "TCP・TLS・HTTP/2 の先頭。当サイトの独立したプローブが自分の接続で読み、ページのスクリプトでは変えられません。"], ["ページのスクリプト", "Canvas、WebGL、音声、フォント、画面、設定。JavaScript を切るとありません。"]], note: "前の層ほど JavaScript に依存しません。各項目が証明できるのは測ったことだけです。境界と例外は「?」のヘルプに。" },
       focus_h: "あなたのフィンガープリント",
       docs: [
         ["ブラウザフィンガープリントとは何ですか？", "端末ごとの小さな違いの集まりです。GPU とドライバーによる Canvas や WebGL の描画結果、音声処理の丸め方、インストール済みのフォント、それに画面・言語・タイムゾーン。一つひとつはありふれていても、合わせると唯一になることがよくあります。サイトはこれをまとめて 1 つの ID にします。同じスクリプトを使うサイトなら、どこでもあなたに同じ ID が付きます。"],
@@ -112,7 +112,7 @@ export const TEXT = {
       seo_kw: "브라우저 지문 검사, 브라우저 핑거프린팅, 캔버스 지문, WebGL 지문, 오디오 지문, 지문 검사, 핑거프린팅 방지, 추적 방지",
       h1: "브라우저 지문 검사", og_sub: "쿠키 없이도 사이트가 계산하는 내 ID",
       intro: "사이트는 쿠키가 없어도 나를 알아볼 수 있어요. 시스템이 글자와 도형을 그리는 방식, 소리를 처리하는 방식, 설치된 글꼴을 합치면 하나의 ID가 되고, 이 ID는 사이트를 바꿔도, 시크릿 창에서도, VPN을 켜도 그대로예요. 내 ID와 그 구성, 그리고 브라우저가 이를 뒤섞는지 보여 드려요. ",
-      explain: { h: "읽기값은 세 곳에서", items: [["네트워크와 엣지", "IP, 통신사, 위치, 지연. 연결을 받는 쪽이 먼저 봐요."], ["프로토콜", "TCP·TLS·HTTP/2의 시작 부분. 사이트의 독립 프로브가 자기 연결에서 읽고, 페이지 스크립트로는 바꿀 수 없어요."], ["페이지 스크립트", "Canvas, WebGL, 오디오, 글꼴, 화면, 설정. JavaScript를 끄면 없어요."]], note: "앞의 층일수록 JavaScript에 덜 기대요. 각 항목은 측정한 것만 증명하고, 경계와 예외는 오른쪽 위 '?'에 있어요." },
+      explain: { h: "읽기값은 세 곳에서", items: [["네트워크와 엣지", "IP, 통신사, 위치, 지연. 연결을 받는 쪽이 먼저 봐요."], ["프로토콜", "TCP·TLS·HTTP/2의 시작 부분. 사이트의 독립 프로브가 자기 연결에서 읽고, 페이지 스크립트로는 바꿀 수 없어요."], ["페이지 스크립트", "Canvas, WebGL, 오디오, 글꼴, 화면, 설정. JavaScript를 끄면 없어요."]], note: "앞의 층일수록 JavaScript에 덜 기대요. 각 항목은 측정한 것만 증명하고, 경계와 예외는 '?' 도움말에 있어요." },
       focus_h: "내 지문",
       docs: [
         ["브라우저 지문이 뭔가요?", "컴퓨터마다 조금씩 다른 점들의 묶음이에요. 그래픽 카드와 드라이버가 Canvas나 WebGL 장면을 그린 결과, 오디오 처리 과정의 반올림, 설치된 글꼴, 여기에 화면, 언어, 시간대까지요. 하나하나는 흔해도 합치면 유일한 경우가 많아요. 사이트는 이것을 고정된 코드(해시)로 만들어 ID로 쓰고, 같은 스크립트를 쓰는 사이트는 모두 나에게서 같은 ID를 얻어요."],
@@ -130,7 +130,7 @@ export const TEXT = {
       seo_kw: "test huella digital navegador, browser fingerprint, huella canvas, huella WebGL, huella de audio, fingerprinting, anti fingerprinting, rastreo sin cookies",
       h1: "Test de huella del navegador", og_sub: "El ID que cualquier web calcula para ti, sin cookies",
       intro: "Las webs no necesitan cookies para reconocerte. Cómo dibuja tu sistema el texto y las formas, cómo procesa el sonido y qué fuentes tiene se suman en un ID que no cambia entre webs, en ventanas privadas ni con VPN. Aquí tienes el tuyo, de qué está hecho y si tu navegador lo mezcla. ",
-      explain: { h: "Las lecturas vienen de tres sitios", items: [["Red y borde", "IP, operador, ubicación y latencia: el lado que recibe esta conexión los ve primero."], ["Protocolo", "El inicio de TCP, TLS y HTTP/2: la sonda propia del sitio los lee en su propia conexión; un script de la página no puede cambiarlos."], ["Script de la página", "Canvas, WebGL, audio, fuentes, pantalla y ajustes: nada de esto sin JavaScript."]], note: "Cuanto más temprana es la capa, menos depende de JavaScript. Cada lectura solo demuestra lo que mide; los límites y excepciones están en el «?» de arriba." },
+      explain: { h: "Las lecturas vienen de tres sitios", items: [["Red y borde", "IP, operador, ubicación y latencia: el lado que recibe esta conexión los ve primero."], ["Protocolo", "El inicio de TCP, TLS y HTTP/2: la sonda propia del sitio los lee en su propia conexión; un script de la página no puede cambiarlos."], ["Script de la página", "Canvas, WebGL, audio, fuentes, pantalla y ajustes: nada de esto sin JavaScript."]], note: "Cuanto más temprana es la capa, menos depende de JavaScript. Cada lectura solo demuestra lo que mide; los límites y excepciones están en la ayuda «?»." },
       focus_h: "Tu huella",
       docs: [
         ["¿Qué es la huella del navegador?", "Un conjunto de pequeñas diferencias entre equipos: cómo la tarjeta gráfica y su controlador dibujan un canvas o una escena WebGL, cómo se redondea el audio, qué fuentes hay instaladas, más la pantalla, el idioma y la zona horaria. Cada dato por separado es común; juntos suelen ser únicos. Una web los convierte en un código fijo (un hash) que usa como ID, y todas las webs que usan el mismo script obtienen el mismo ID tuyo."],
@@ -148,7 +148,7 @@ export const TEXT = {
       seo_kw: "test empreinte navigateur, empreinte digitale navigateur, browser fingerprint, empreinte canvas, empreinte WebGL, empreinte audio, anti fingerprinting, pistage sans cookies",
       h1: "Test d’empreinte du navigateur", og_sub: "L’ID que tout site calcule pour vous, sans cookies",
       intro: "Un site n’a pas besoin de cookies pour vous reconnaître. La façon dont votre système dessine le texte et les formes, traite le son, et les polices qu’il contient suffisent à former un ID. Il reste le même d’un site à l’autre, en navigation privée et derrière un VPN. Voici le vôtre, ce qui le compose, et si votre navigateur le brouille. ",
-      explain: { h: "Les mesures viennent de trois endroits", items: [["Réseau et périphérie", "IP, opérateur, localisation et latence : le côté qui reçoit cette connexion les voit en premier."], ["Protocole", "Le début de TCP, TLS et HTTP/2 : la sonde du site les lit sur sa propre connexion ; un script de la page ne peut pas les changer."], ["Script de la page", "Canvas, WebGL, audio, polices, écran et réglages : rien de tout cela sans JavaScript."]], note: "Plus la couche est précoce, moins elle dépend de JavaScript. Chaque mesure ne prouve que ce qu’elle mesure ; les limites et exceptions sont dans le « ? » en haut." },
+      explain: { h: "Les mesures viennent de trois endroits", items: [["Réseau et périphérie", "IP, opérateur, localisation et latence : le côté qui reçoit cette connexion les voit en premier."], ["Protocole", "Le début de TCP, TLS et HTTP/2 : la sonde du site les lit sur sa propre connexion ; un script de la page ne peut pas les changer."], ["Script de la page", "Canvas, WebGL, audio, polices, écran et réglages : rien de tout cela sans JavaScript."]], note: "Plus la couche est précoce, moins elle dépend de JavaScript. Chaque mesure ne prouve que ce qu’elle mesure ; les limites et exceptions sont dans l’aide « ? »." },
       focus_h: "Votre empreinte",
       docs: [
         ["Qu’est-ce qu’une empreinte de navigateur ?", "Un ensemble de petites différences entre appareils : la façon dont la carte graphique et son pilote dessinent un canvas ou une scène WebGL, la manière dont le son est arrondi, les polices installées, plus l’écran, la langue et le fuseau horaire. Chaque détail pris seul est banal ; ensemble, ils sont souvent uniques. Un site les combine en un code fixe qui sert d’ID, et tous les sites qui utilisent le même script obtiennent le même ID pour vous."],
@@ -166,7 +166,7 @@ export const TEXT = {
       seo_kw: "Browser Fingerprint Test, Browser-Fingerabdruck, Canvas Fingerprint, WebGL Fingerprint, Audio Fingerprint, Fingerprinting verhindern, Tracking ohne Cookies",
       h1: "Browser-Fingerprint-Test", og_sub: "Die ID, die jede Website ohne Cookies für dich berechnet",
       intro: "Websites brauchen keine Cookies, um dich wiederzuerkennen. Wie dein System Text und Formen zeichnet, wie es Ton verarbeitet und welche Schriften es hat, ergibt zusammen eine ID. Sie bleibt gleich, egal auf welcher Website, im privaten Fenster und hinter einem VPN. Hier siehst du deine, woraus sie besteht und ob dein Browser sie verwürfelt. ",
-      explain: { h: "Die Messwerte kommen aus drei Quellen", items: [["Netz und Edge", "IP, Netz, Ort und Latenz: Die Seite, die diese Verbindung annimmt, sieht sie zuerst."], ["Protokoll", "Der Anfang von TCP, TLS und HTTP/2: Die eigene Probe dieser Seite liest ihn in ihrer eigenen Verbindung; ein Seitenskript kann das nicht ändern."], ["Seitenskript", "Canvas, WebGL, Audio, Schriften, Bildschirm und Einstellungen: ohne JavaScript gibt es das nicht."]], note: "Je früher die Schicht, desto weniger braucht sie JavaScript. Jeder Messwert beweist nur, was er misst; Grenzen und Ausnahmen stehen im „?“ oben." },
+      explain: { h: "Die Messwerte kommen aus drei Quellen", items: [["Netz und Edge", "IP, Netz, Ort und Latenz: Die Seite, die diese Verbindung annimmt, sieht sie zuerst."], ["Protokoll", "Der Anfang von TCP, TLS und HTTP/2: Die eigene Probe dieser Seite liest ihn in ihrer eigenen Verbindung; ein Seitenskript kann das nicht ändern."], ["Seitenskript", "Canvas, WebGL, Audio, Schriften, Bildschirm und Einstellungen: ohne JavaScript gibt es das nicht."]], note: "Je früher die Schicht, desto weniger braucht sie JavaScript. Jeder Messwert beweist nur, was er misst; Grenzen und Ausnahmen stehen in der „?“-Hilfe." },
       focus_h: "Dein Fingerabdruck",
       docs: [
         ["Was ist ein Browser-Fingerabdruck?", "Eine Reihe kleiner Unterschiede zwischen Geräten: wie Grafikkarte und Treiber ein Canvas oder eine WebGL-Szene zeichnen, wie die Audioverarbeitung Töne rundet, welche Schriften installiert sind, dazu Bildschirm, Sprache und Zeitzone. Jedes Detail für sich ist alltäglich, zusammen sind sie oft einmalig. Eine Website rechnet daraus einen festen Code als ID, und jede Website mit demselben Skript bekommt für dich dieselbe ID."],
@@ -184,7 +184,7 @@ export const TEXT = {
       seo_kw: "teste impressão digital navegador, browser fingerprint, fingerprint canvas, fingerprint WebGL, fingerprint de áudio, anti fingerprinting, rastreamento sem cookies",
       h1: "Teste de impressão digital do navegador", og_sub: "O ID que qualquer site calcula para você, sem cookies",
       intro: "Os sites não precisam de cookies para te reconhecer. O jeito como seu sistema desenha texto e formas, processa som e quais fontes ele tem somam um ID que não muda entre sites, em janela anônima nem com VPN. Aqui está o seu, do que ele é feito e se o seu navegador o embaralha. ",
-      explain: { h: "As leituras vêm de três lugares", items: [["Rede e borda", "IP, operadora, localização e latência: o lado que recebe esta conexão vê isso primeiro."], ["Protocolo", "O início de TCP, TLS e HTTP/2: a sonda do site lê na própria conexão; um script da página não consegue mudar."], ["Script da página", "Canvas, WebGL, áudio, fontes, tela e ajustes: nada disso sem JavaScript."]], note: "Quanto mais cedo a camada, menos ela depende de JavaScript. Cada leitura só prova o que mede; os limites e exceções estão no «?» acima." },
+      explain: { h: "As leituras vêm de três lugares", items: [["Rede e borda", "IP, operadora, localização e latência: o lado que recebe esta conexão vê isso primeiro."], ["Protocolo", "O início de TCP, TLS e HTTP/2: a sonda do site lê na própria conexão; um script da página não consegue mudar."], ["Script da página", "Canvas, WebGL, áudio, fontes, tela e ajustes: nada disso sem JavaScript."]], note: "Quanto mais cedo a camada, menos ela depende de JavaScript. Cada leitura só prova o que mede; os limites e exceções estão na ajuda «?»." },
       focus_h: "Sua impressão digital",
       docs: [
         ["O que é a impressão digital do navegador?", "Um conjunto de pequenas diferenças entre computadores: como a placa de vídeo e o driver desenham um canvas ou uma cena WebGL, como o áudio é arredondado, quais fontes estão instaladas, mais tela, idioma e fuso horário. Cada item sozinho é comum; juntos, costumam ser únicos. Um site transforma tudo isso num código fixo (um hash) e usa como ID, e todo site que roda o mesmo script obtém o mesmo ID seu."],
@@ -202,7 +202,7 @@ export const TEXT = {
       seo_kw: "проверка отпечатка браузера, отпечаток браузера, browser fingerprint, canvas fingerprint, WebGL отпечаток, аудио отпечаток, защита от фингерпринтинга, слежка без cookie",
       h1: "Проверка отпечатка браузера", og_sub: "ID, который любой сайт вычисляет для вас без cookie",
       intro: "Сайтам не нужны cookie, чтобы вас узнать. То, как ваша система рисует текст и фигуры, обрабатывает звук, и какие в ней шрифты, складывается в ID. Он не меняется ни на другом сайте, ни в режиме инкогнито, ни через VPN. Здесь — ваш ID, из чего он состоит и перемешивает ли его ваш браузер. ",
-      explain: { h: "Измерения приходят из трёх мест", items: [["Сеть и пограничный узел", "IP, сеть, география и задержка: сторона, принимающая это соединение, видит их первой."], ["Протокол", "Начало TCP, TLS и HTTP/2: собственный зонд сайта читает его в своём соединении; скрипт страницы это не изменит."], ["Скрипт страницы", "Canvas, WebGL, аудио, шрифты, экран и настройки: без JavaScript этого нет."]], note: "Чем раньше слой, тем меньше он зависит от JavaScript. Каждое измерение доказывает только то, что измеряет; границы и исключения — в «?» сверху." },
+      explain: { h: "Измерения приходят из трёх мест", items: [["Сеть и пограничный узел", "IP, сеть, география и задержка: сторона, принимающая это соединение, видит их первой."], ["Протокол", "Начало TCP, TLS и HTTP/2: собственный зонд сайта читает его в своём соединении; скрипт страницы это не изменит."], ["Скрипт страницы", "Canvas, WebGL, аудио, шрифты, экран и настройки: без JavaScript этого нет."]], note: "Чем раньше слой, тем меньше он зависит от JavaScript. Каждое измерение доказывает только то, что измеряет; границы и исключения — в справке «?»." },
       focus_h: "Ваш отпечаток",
       docs: [
         ["Что такое отпечаток браузера?", "Набор мелких различий между устройствами: как видеокарта и драйвер рисуют canvas или сцену WebGL, как округляется звук, какие установлены шрифты, плюс экран, язык и часовой пояс. По отдельности всё это обычно, вместе — часто уникально. Сайт сводит это в постоянный код, который служит ID, и каждый сайт с тем же скриптом получает для вас один и тот же ID."],
@@ -242,14 +242,14 @@ export const TEXT = {
       seo_desc: "一次访问在网站日志里长什么样，蜜罐怎么用指纹、存储留痕和缓存编号把几次访问串起来；能看到什么、不能看到什么（身份、意图、攻击都不在其中）。",
       seo_kw: "网站日志, 蜜罐, 浏览器指纹, 指纹关联, 访问日志, 设备指纹, honeypot fingerprinting",
       h1: "网站日志里的你", og_sub: "两次访问，网站怎么把「同一套环境」串起来",
-      intro: "一次访问，服务器会记下一行日志；把几次访问放在一起，有些读数还能指向同一个环境。下面是这次访问在日志里的样子、它和上次的哪些读数一样，以及这些关联能说明什么、不能说明什么。",
+      intro: "一次访问，服务器会记下一行日志；把几次访问放在一起，有些读数还能指向同一个环境。这里是这次访问在日志里的样子、它和上次的哪些读数一样，以及这些关联能说明什么、不能说明什么。",
       focus_h: "能跨访问留下的读数",
       docs: [
         ["网站日志里通常有什么？", "一行访问记录里，服务器本来就会写：时间、IP、请求方法和路径、状态码、浏览器自报的 UA、来源页、Accept-Language，以及连接本身的信息（TLS 版本、HTTP/2、边缘节点、往返时延）。更细的设备读数（屏幕、显卡、字体、指纹）要页面脚本跑了才有，日志里不会自己出现。"],
         ["蜜罐怎么把几次访问串起来？", "把每次访问的出口、指纹、存储留痕和缓存编号放进同一张表，再按时间、路径和这些读数找候选：如果两次访问的硬件编号、屏幕、字体和 Canvas 都一样，它们可能来自同一个环境。关联只是候选，需要独立证据复核；出口 IP 会换，Cookie 会清，但这些读数不一定变。"],
         ["这些关联能说明什么、不能说明什么？", "能说明：哪些读数在几次访问之间没有变、这次用了哪套设备和网络、哪些访问可能属于同一套环境。不能说明：你是谁、在哪个账号后面、意图是什么，更不是「有没有攻击」。同款同配置的另一台机器可能算出一样的编号；指纹变了也不等于换了一个人。自动化特征、由 AI 控制、做了攻击是三件事，这个页面和蜜罐都只能判断前两件的一部分。"],
       ],
-      demo: { kicker: "防守方视角", h2: "两次访问，网站怎么把你串起来", sub: "下面用这次访问和上一次的本地记录演示；页面本身不记录、不上传。",
+      demo: { kicker: "防守方视角", h2: "两次访问，网站怎么把你串起来", sub: "这里用这次访问和上一次的本地记录演示；页面本身不记录、不上传。",
         log_h: "一次访问，日志里是这样", log_note: "地址、请求头、协议和时延都来自这一次连接；指纹片段来自页面脚本。",
         visits_h: "这次和上次：哪些读数没有变", now: "这次", last: "上次",
         none: "这是第一次，浏览器里还没有上次的读数。先去首页测一次，再回来就能看到对照。",
@@ -263,14 +263,14 @@ export const TEXT = {
       seo_desc: "一次造訪在網站日誌裡長什麼樣子，蜜罐怎麼用指紋、儲存留痕和快取編號把幾次造訪串起來；能看到什麼、不能看到什麼（身分、意圖、攻擊都不在其中）。",
       seo_kw: "網站日誌, 蜜罐, 瀏覽器指紋, 指紋關聯, 存取日誌, 裝置指紋, honeypot fingerprinting",
       h1: "網站日誌裡的你", og_sub: "兩次造訪，網站怎麼把「同一套環境」串起來",
-      intro: "一次造訪，伺服器會記下一行日誌；把幾次造訪放在一起，有些讀數還能指向同一個環境。下面是這次造訪在日誌裡的樣子、它和上次的哪些讀數一樣，以及這些關聯能說明什麼、不能說明什麼。",
+      intro: "一次造訪，伺服器會記下一行日誌；把幾次造訪放在一起，有些讀數還能指向同一個環境。這裡是這次造訪在日誌裡的樣子、它和上次的哪些讀數一樣，以及這些關聯能說明什麼、不能說明什麼。",
       focus_h: "能跨造訪留下的讀數",
       docs: [
         ["網站日誌裡通常有什麼？", "一行存取記錄裡，伺服器本來就會寫：時間、IP、請求方法和路徑、狀態碼、瀏覽器自報的 UA、來源頁、Accept-Language，以及連線本身的資訊（TLS 版本、HTTP/2、邊緣節點、往返延遲）。更細的裝置讀數（螢幕、顯示卡、字型、指紋）要頁面腳本跑了才有，日誌裡不會自己出現。"],
         ["蜜罐怎麼把幾次造訪串起來？", "把每次造訪的出口、指紋、儲存留痕和快取編號放進同一張表，再按時間、路徑和這些讀數找候選：如果兩次造訪的硬體編號、螢幕、字型和 Canvas 都一樣，它們可能來自同一個環境。關聯只是候選，需要獨立證據複核；出口 IP 會換、Cookie 會清，但這些讀數不一定變。"],
         ["這些關聯能說明什麼、不能說明什麼？", "能說明：哪些讀數在幾次造訪之間沒有變、這次用了哪套裝置和網路、哪些造訪可能屬於同一套環境。不能說明：你是誰、在哪個帳號後面、意圖是什麼，更不是「有沒有攻擊」。同款同設定的另一台機器可能算出同樣的編號；指紋變了也不等於換了一個人。自動化特徵、由 AI 控制、做了攻擊是三件事，這個頁面和蜜罐都只能判斷前兩件的一部分。"],
       ],
-      demo: { kicker: "防守方視角", h2: "兩次造訪，網站怎麼把你串起來", sub: "下面用這次造訪和上一次的本機記錄示範；頁面本身不記錄、不上傳。",
+      demo: { kicker: "防守方視角", h2: "兩次造訪，網站怎麼把你串起來", sub: "這裡用這次造訪和上一次的本機記錄示範；頁面本身不記錄、不上傳。",
         log_h: "一次造訪，日誌裡是這樣", log_note: "位址、請求標頭、協定和延遲都來自這一次連線；指紋片段來自頁面腳本。",
         visits_h: "這次和上次：哪些讀數沒有變", now: "這次", last: "上次",
         none: "這是第一次，瀏覽器裡還沒有上次的讀數。先去首頁測一次，再回來就能看到對照。",
@@ -603,7 +603,7 @@ export const TEXT = {
       "seo_kw": "WebRTC 泄露检测, WebRTC 泄漏检测, WebRTC 泄露, WebRTC IP 泄露, VPN WebRTC 泄漏, WebRTC 检测, 真实 IP 泄露, 关闭 WebRTC, WebRTC leak test",
       "h1": "WebRTC 泄露检测",
       "og_sub": "WebRTC 会不会暴露你的真实 IP？",
-      "intro": "浏览器里的视频通话靠的是 WebRTC，任何网页都能直接启动它，不用你同意。它会通过 UDP 去问 STUN 服务器（专门告诉你「外面看到的你是哪个地址」的服务器），而很多 VPN 和代理不转发 UDP。下面是 WebRTC 暴露出来的地址，以及它和网站看到的地址的对比。",
+      "intro": "浏览器里的视频通话靠的是 WebRTC，任何网页都能直接启动它，不用你同意。它会通过 UDP 去问 STUN 服务器（专门告诉你「外面看到的你是哪个地址」的服务器），而很多 VPN 和代理不转发 UDP。这里是 WebRTC 暴露出来的地址，以及它和网站看到的地址的对比。",
       "focus_h": "你的 WebRTC 地址",
       "docs": [
         [
@@ -630,7 +630,7 @@ export const TEXT = {
       "seo_kw": "WebRTC 外洩檢測, WebRTC 洩漏檢測, WebRTC 外洩, WebRTC IP 洩漏, VPN WebRTC 外洩, WebRTC 檢測, 真實 IP 外洩, 關閉 WebRTC, WebRTC leak test",
       "h1": "WebRTC 外洩檢測",
       "og_sub": "WebRTC 會不會暴露你的真實 IP？",
-      "intro": "瀏覽器裡的視訊通話靠的是 WebRTC，任何網頁都能直接啟動它，不需要你同意。它會透過 UDP 去問 STUN 伺服器（專門告訴你「外面看到的你是哪個位址」的伺服器），而很多 VPN 和代理不轉送 UDP。下面是 WebRTC 暴露出來的位址，以及它和網站看到的位址的比對。",
+      "intro": "瀏覽器裡的視訊通話靠的是 WebRTC，任何網頁都能直接啟動它，不需要你同意。它會透過 UDP 去問 STUN 伺服器（專門告訴你「外面看到的你是哪個位址」的伺服器），而很多 VPN 和代理不轉送 UDP。這裡是 WebRTC 暴露出來的位址，以及它和網站看到的位址的比對。",
       "focus_h": "你的 WebRTC 位址",
       "docs": [
         [
@@ -871,7 +871,7 @@ export const TEXT = {
       "seo_kw": "浏览器环境检测, 指纹浏览器检测, 浏览器指纹检测, 多开环境检测, UA 伪装检测, 环境一致性检测, AdsPower 检测, 跨境电商环境检测",
       "h1": "浏览器环境检测",
       "og_sub": "你的浏览器前后说法一致吗？",
-      "intro": "做风控的网站不只看 IP，还会核对浏览器说的每一件事能不能对上：UA 说是 Safari，引擎却是 Chromium；语言只在 JS 里改了，请求头里还是原样；两个接口报的时区不一样……每一处都是破绽。下面是这个浏览器的各种说法，以及它自相矛盾的地方。",
+      "intro": "做风控的网站不只看 IP，还会核对浏览器说的每一件事能不能对上：UA 说是 Safari，引擎却是 Chromium；语言只在 JS 里改了，请求头里还是原样；两个接口报的时区不一样……每一处都是破绽。这里是这个浏览器的各种说法，以及它自相矛盾的地方。",
       "focus_h": "篡改检测",
       "docs": [
         [
@@ -894,7 +894,7 @@ export const TEXT = {
       "seo_kw": "瀏覽器環境檢測, 指紋瀏覽器檢測, 瀏覽器指紋檢測, 多開環境檢測, UA 偽裝檢測, 環境一致性檢測, AdsPower 檢測",
       "h1": "瀏覽器環境檢測",
       "og_sub": "你的瀏覽器前後說法一致嗎？",
-      "intro": "做風險控管的網站不只看 IP，還會核對瀏覽器說的每一件事對不對得上：UA 說是 Safari，引擎卻是 Chromium；語言只在 JS 裡改了，請求標頭還是原樣；兩個介面回報的時區不一樣……每一處都是破綻。下面是這個瀏覽器的各種說法，以及它自相矛盾的地方。",
+      "intro": "做風險控管的網站不只看 IP，還會核對瀏覽器說的每一件事對不對得上：UA 說是 Safari，引擎卻是 Chromium；語言只在 JS 裡改了，請求標頭還是原樣；兩個介面回報的時區不一樣……每一處都是破綻。這裡是這個瀏覽器的各種說法，以及它自相矛盾的地方。",
       "focus_h": "竄改檢測",
       "docs": [
         [
@@ -1103,7 +1103,7 @@ export const TEXT = {
       "seo_kw": "时区检测, 时区与 IP 不一致, 浏览器时区, VPN 时区, 我的时区, 系统时区检测, 时区泄露",
       "h1": "时区检测",
       "og_sub": "你的时钟和 IP 对得上吗？",
-      "intro": "任何网页都能直接读到你系统的时区，不用你授权；任何网站也大致知道你的 IP 在哪。两者对不上，比如 IP 在日本、时钟却是北京时间，就是网站识别 VPN 和代理时最先看的破绽之一。下面把两者并排列出来。",
+      "intro": "任何网页都能直接读到你系统的时区，不用你授权；任何网站也大致知道你的 IP 在哪。两者对不上，比如 IP 在日本、时钟却是北京时间，就是网站识别 VPN 和代理时最先看的破绽之一。这里把两者并排列出来。",
       "focus_h": "你的时区和 IP",
       "docs": [
         [
@@ -1126,7 +1126,7 @@ export const TEXT = {
       "seo_kw": "時區檢測, 時區與 IP 不一致, 瀏覽器時區, VPN 時區, 我的時區, 系統時區檢測, 時區外洩",
       "h1": "時區檢測",
       "og_sub": "你的時鐘和 IP 對得上嗎？",
-      "intro": "任何網頁都能直接讀到你系統的時區，不需要你授權；任何網站也大概知道你的 IP 在哪裡。兩者對不上，例如 IP 在日本、時鐘卻是台北時間，就是網站辨識 VPN 和代理時最先看的破綻之一。下面把兩者並排列出來。",
+      "intro": "任何網頁都能直接讀到你系統的時區，不需要你授權；任何網站也大概知道你的 IP 在哪裡。兩者對不上，例如 IP 在日本、時鐘卻是台北時間，就是網站辨識 VPN 和代理時最先看的破綻之一。這裡把兩者並排列出來。",
       "focus_h": "你的時區和 IP",
       "docs": [
         [
@@ -1335,7 +1335,7 @@ export const TEXT = {
       "seo_kw": "代理检测, 代理 IP 检测, 是否使用代理, VPN 检测, 延迟检测代理, 机房 IP 检测, 家宽 IP 检测, 住宅 IP 检测, 节点检测",
       "h1": "代理检测",
       "og_sub": "网站看得出中间隔着代理吗？",
-      "intro": "代理能藏住 IP，藏不住多出来的那段路。Cloudflare 在它自己那条连接上测往返时间，而那条连接的另一头其实是代理；你的浏览器测的则是全程。浏览器测出来的比 Cloudflare 长很多，就说明中间还隔着一段，不管 IP 看起来多干净。下面是这两个数字，以及网站常看的其他破绽。",
+      "intro": "代理能藏住 IP，藏不住多出来的那段路。Cloudflare 在它自己那条连接上测往返时间，而那条连接的另一头其实是代理；你的浏览器测的则是全程。浏览器测出来的比 Cloudflare 长很多，就说明中间还隔着一段，不管 IP 看起来多干净。这里是这两个数字，以及网站常看的其他破绽。",
       "focus_h": "你的往返延迟",
       "docs": [
         [
@@ -1358,7 +1358,7 @@ export const TEXT = {
       "seo_kw": "代理偵測, 代理 IP 檢測, 是否使用代理, VPN 偵測, 延遲偵測代理, 機房 IP 檢測, 住宅 IP 檢測",
       "h1": "代理偵測",
       "og_sub": "網站看得出中間隔著代理嗎？",
-      "intro": "代理藏得住 IP，藏不住多出來的那段路。Cloudflare 在它自己那條連線上測往返時間，而那條連線的另一頭其實是代理；你的瀏覽器測的則是全程。瀏覽器測到的比 Cloudflare 長很多，就代表中間還隔著一段，不管 IP 看起來多乾淨。下面是這兩個數字，以及網站常看的其他破綻。",
+      "intro": "代理藏得住 IP，藏不住多出來的那段路。Cloudflare 在它自己那條連線上測往返時間，而那條連線的另一頭其實是代理；你的瀏覽器測的則是全程。瀏覽器測到的比 Cloudflare 長很多，就代表中間還隔著一段，不管 IP 看起來多乾淨。這裡是這兩個數字，以及網站常看的其他破綻。",
       "focus_h": "你的往返延遲",
       "docs": [
         [
@@ -1567,7 +1567,7 @@ export const TEXT = {
       "seo_kw": "浏览器语言检测, Accept-Language 检测, 浏览器语言, navigator.languages, 语言与 IP 不一致, 区域设置检测",
       "h1": "浏览器语言检测",
       "og_sub": "网站以为你说什么语言？",
-      "intro": "浏览器每次发请求，都会顺带说明你看得懂哪些语言；任何网页也能在 JavaScript 里读到同一份列表，再加上区域设置、键盘布局，以及系统装了哪些朗读语音和字体。网站会拿这些和 IP 所在地对照。下面是你的。",
+      "intro": "浏览器每次发请求，都会顺带说明你看得懂哪些语言；任何网页也能在 JavaScript 里读到同一份列表，再加上区域设置、键盘布局，以及系统装了哪些朗读语音和字体。网站会拿这些和 IP 所在地对照。这里是你的。",
       "focus_h": "你的语言和 IP",
       "docs": [
         [
@@ -1590,7 +1590,7 @@ export const TEXT = {
       "seo_kw": "瀏覽器語言檢測, Accept-Language 檢測, 瀏覽器語言, navigator.languages, 語言與 IP 不一致, 地區設定檢測",
       "h1": "瀏覽器語言檢測",
       "og_sub": "網站以為你說什麼語言？",
-      "intro": "瀏覽器每次發出請求，都會順便說明你看得懂哪些語言；任何網頁也能在 JavaScript 裡讀到同一份清單，再加上地區設定、鍵盤配置，以及系統裝了哪些朗讀語音和字型。網站會拿這些和 IP 所在地比對。下面是你的。",
+      "intro": "瀏覽器每次發出請求，都會順便說明你看得懂哪些語言；任何網頁也能在 JavaScript 裡讀到同一份清單，再加上地區設定、鍵盤配置，以及系統裝了哪些朗讀語音和字型。網站會拿這些和 IP 所在地比對。這裡是你的。",
       "focus_h": "你的語言和 IP",
       "docs": [
         [
@@ -1799,7 +1799,7 @@ export const TEXT = {
       "seo_kw": "Canvas 指纹检测, Canvas 指纹, WebGL 指纹, 音频指纹, Canvas 防指纹, Canvas 噪声, 指纹识别",
       "h1": "Canvas 指纹检测",
       "og_sub": "电脑怎么画图，就暴露了它是哪一台",
-      "intro": "让两台电脑画同样的文字和图形，像素会有细微差别：显卡、驱动、字体、抗锯齿都会留下痕迹。网站把这张图算成一串固定的编码，就是指纹。下面是你的，以及浏览器有没有把它们打乱。",
+      "intro": "让两台电脑画同样的文字和图形，像素会有细微差别：显卡、驱动、字体、抗锯齿都会留下痕迹。网站把这张图算成一串固定的编码，就是指纹。这里是你的，以及浏览器有没有把它们打乱。",
       "focus_h": "你的 Canvas 指纹",
       "docs": [
         [
@@ -1822,7 +1822,7 @@ export const TEXT = {
       "seo_kw": "Canvas 指紋檢測, Canvas 指紋, WebGL 指紋, 音訊指紋, Canvas 防指紋, Canvas 雜訊, 指紋辨識",
       "h1": "Canvas 指紋檢測",
       "og_sub": "電腦怎麼畫圖，就洩漏了它是哪一台",
-      "intro": "讓兩台電腦畫同樣的文字和圖形，像素會有細微差異：顯示卡、驅動程式、字型、反鋸齒都會留下痕跡。網站把這張圖算成一串固定的編碼，就是指紋。下面是你的，以及瀏覽器有沒有把它們打亂。",
+      "intro": "讓兩台電腦畫同樣的文字和圖形，像素會有細微差異：顯示卡、驅動程式、字型、反鋸齒都會留下痕跡。網站把這張圖算成一串固定的編碼，就是指紋。這裡是你的，以及瀏覽器有沒有把它們打亂。",
       "focus_h": "你的 Canvas 指紋",
       "docs": [
         [
@@ -2031,7 +2031,7 @@ export const TEXT = {
       "seo_kw": "UA 检测, User-Agent 检测, 我的 UA, UA 查询, Client Hints, Sec-CH-UA, UA 伪装检测, 浏览器 UA",
       "h1": "UA 检测",
       "og_sub": "网站以为你用什么浏览器和系统？",
-      "intro": "浏览器每次发请求，都会报上自己是什么浏览器、跑在什么系统上：一次写在 User-Agent（UA）字符串里，Chromium 系的浏览器还会在 Client Hints 里再报一次。网页可以拿它们和 JS 引擎、显卡交叉核对。下面是你的 UA 怎么说，以及其他信息认不认。",
+      "intro": "浏览器每次发请求，都会报上自己是什么浏览器、跑在什么系统上：一次写在 User-Agent（UA）字符串里，Chromium 系的浏览器还会在 Client Hints 里再报一次。网页可以拿它们和 JS 引擎、显卡交叉核对。这里是你的 UA 怎么说，以及其他信息认不认。",
       "focus_h": "你的 UA 和真实系统",
       "docs": [
         [
@@ -2054,7 +2054,7 @@ export const TEXT = {
       "seo_kw": "UA 檢測, User-Agent 檢測, 我的 UA, UA 查詢, Client Hints, Sec-CH-UA, UA 偽裝檢測, 瀏覽器 UA",
       "h1": "UA 檢測",
       "og_sub": "網站以為你用什麼瀏覽器和系統？",
-      "intro": "瀏覽器每次發出請求，都會報上自己是什麼瀏覽器、跑在什麼系統上：一次寫在 User-Agent（UA）字串裡，Chromium 系的瀏覽器還會在 Client Hints 裡再報一次。網頁可以拿它們和 JS 引擎、顯示卡交叉比對。下面是你的 UA 怎麼說，以及其他資訊認不認。",
+      "intro": "瀏覽器每次發出請求，都會報上自己是什麼瀏覽器、跑在什麼系統上：一次寫在 User-Agent（UA）字串裡，Chromium 系的瀏覽器還會在 Client Hints 裡再報一次。網頁可以拿它們和 JS 引擎、顯示卡交叉比對。這裡是你的 UA 怎麼說，以及其他資訊認不認。",
       "focus_h": "你的 UA 和真實系統",
       "docs": [
         [
@@ -2263,7 +2263,7 @@ export const TEXT = {
       "seo_kw": "浏览器扩展检测, 插件检测, 网站能看到我的插件吗, 扩展指纹, 广告拦截检测, 钱包插件检测, 沉浸式翻译检测",
       "h1": "浏览器扩展检测",
       "og_sub": "网站能看到你装了哪些插件？",
-      "intro": "很多插件得改动网页才能干活：钱包往页面里塞对象，深色模式加属性，翻译插件插入元素，杀毒软件的网页防护加进自己的脚本。这些痕迹任何网站都读得到，而且很能说明你是什么人。下面是本页找到的。",
+      "intro": "很多插件得改动网页才能干活：钱包往页面里塞对象，深色模式加属性，翻译插件插入元素，杀毒软件的网页防护加进自己的脚本。这些痕迹任何网站都读得到，而且很能说明你是什么人。这里是本页找到的。",
       "focus_h": "改写网页的插件",
       "docs": [
         [
@@ -2286,7 +2286,7 @@ export const TEXT = {
       "seo_kw": "瀏覽器擴充功能檢測, 擴充功能檢測, 外掛檢測, 網站看得到我的擴充功能嗎, 擴充功能指紋, 廣告封鎖檢測, 錢包擴充功能檢測",
       "h1": "瀏覽器擴充功能檢測",
       "og_sub": "網站看得到你裝了哪些擴充功能？",
-      "intro": "很多擴充功能要改動網頁才能運作：錢包在頁面裡加入物件，深色模式加上屬性，翻譯工具插入元素，防毒軟體的網頁防護加進自己的腳本。這些痕跡任何網站都讀得到，而且很能說明你是什麼樣的人。下面是本頁找到的。",
+      "intro": "很多擴充功能要改動網頁才能運作：錢包在頁面裡加入物件，深色模式加上屬性，翻譯工具插入元素，防毒軟體的網頁防護加進自己的腳本。這些痕跡任何網站都讀得到，而且很能說明你是什麼樣的人。這裡是本頁找到的。",
       "focus_h": "改寫網頁的擴充功能",
       "docs": [
         [
@@ -2616,7 +2616,7 @@ export const TEXT = {
       seo_desc: "免费 iCloud 专用代理（Private Relay）检测：看你的地址是不是中继出口、属于哪家网络、显示在哪个地区，以及 WebRTC 有没有绕过它漏出真实地址。检测在你的浏览器里进行，不存 IP，只累计匿名计数。",
       seo_kw: "iCloud 专用代理检测, iCloud Private Relay, 专用代理 IP, Private Relay 检测, Safari 专用代理",
       h1: "iCloud 专用代理检测", og_sub: "中继开着吗？还漏了什么？",
-      intro: "iCloud 专用代理让 Safari 的流量先后经过两个中继，网站看到的是 Cloudflare、Akamai 或 Fastly 的出口，不是你的地址。但网站仍然看得出这是中继，也知道你大概在哪。下面是你的中继在网站眼里的样子。",
+      intro: "iCloud 专用代理让 Safari 的流量先后经过两个中继，网站看到的是 Cloudflare、Akamai 或 Fastly 的出口，不是你的地址。但网站仍然看得出这是中继，也知道你大概在哪。这里是你的中继在网站眼里的样子。",
       focus_h: "你的中继",
       docs: [
         ["网站看得出我在用专用代理吗？", "看得出。苹果公开了它所有出口的地址列表，这个页面就是拿你的地址去对照的。网站看到的是中继出口，不是你自己的地址，但通常还能看到你附近的城市或地区：苹果有意保留这一点，好让本地内容照常显示。"],
@@ -2629,7 +2629,7 @@ export const TEXT = {
       seo_desc: "免費 iCloud 私密轉送（Private Relay）檢測：看你的位址是不是轉送的出口、屬於哪家網路、顯示在哪個地區，以及 WebRTC 有沒有繞過它漏出真實位址。檢測在你的瀏覽器裡進行，不存 IP，只累計匿名計數。",
       seo_kw: "iCloud 私密轉送檢測, iCloud Private Relay, 私密轉送 IP, Private Relay 檢測, Safari 私密轉送",
       h1: "iCloud 私密轉送檢測", og_sub: "轉送開著嗎？還漏了什麼？",
-      intro: "iCloud 私密轉送讓 Safari 的流量先後經過兩個中繼站，網站看到的是 Cloudflare、Akamai 或 Fastly 的出口，不是你的位址。但網站還是看得出這是中繼，也知道你大概在哪裡。下面是你的轉送在網站眼中的樣子。",
+      intro: "iCloud 私密轉送讓 Safari 的流量先後經過兩個中繼站，網站看到的是 Cloudflare、Akamai 或 Fastly 的出口，不是你的位址。但網站還是看得出這是中繼，也知道你大概在哪裡。這裡是你的轉送在網站眼中的樣子。",
       focus_h: "你的私密轉送",
       docs: [
         ["網站看得出我在用私密轉送嗎？", "看得出來。Apple 公開了所有出口的位址清單，這個頁面就是拿你的位址去比對。網站看到的是轉送出口，不是你自己的位址，但通常還看得到你附近的城市或地區：Apple 刻意保留這一點，讓在地內容照常顯示。"],
@@ -2748,7 +2748,7 @@ export const TEXT = {
       seo_desc: "免费 Cloudflare WARP 检测：看你的流量有没有经过 WARP，网站看到的地址和网络，连到的 Cloudflare 机房，以及用的密钥交换方式。检测在你的浏览器里进行，不存 IP，只累计匿名计数。",
       seo_kw: "Cloudflare WARP 检测, WARP 是否开启, WARP 检测, 1.1.1.1 WARP, WARP IP",
       h1: "Cloudflare WARP 检测", og_sub: "WARP 开着吗？网站看到了什么？",
-      intro: "WARP 是 Cloudflare 的 1.1.1.1 App 里的 VPN，会把你的流量送进 Cloudflare 的网络。任何接入 Cloudflare 的网站，都能读到访客是不是经 WARP 来的。下面是你的结果，以及网站看到的地址和网络。",
+      intro: "WARP 是 Cloudflare 的 1.1.1.1 App 里的 VPN，会把你的流量送进 Cloudflare 的网络。任何接入 Cloudflare 的网站，都能读到访客是不是经 WARP 来的。这里是你的结果，以及网站看到的地址和网络。",
       focus_h: "你的 WARP",
       docs: [
         ["网站怎么知道我在用 WARP？", "接入 Cloudflare 的网站可以读 Cloudflare 的 trace（一份连接信息），经 WARP 来的流量会显示 warp=on。就算不看这个，WARP 的地址也属于 Cloudflare 自己的网络（AS13335），网站会把它当成机房 IP，而不是家宽。"],
@@ -2761,7 +2761,7 @@ export const TEXT = {
       seo_desc: "免費 Cloudflare WARP 檢測：看你的流量有沒有經過 WARP，網站看到的位址和網路，連到的 Cloudflare 機房，以及使用的金鑰交換方式。檢測在你的瀏覽器裡進行，不存 IP，只累計匿名計數。",
       seo_kw: "Cloudflare WARP 檢測, WARP 是否開啟, WARP 檢測, 1.1.1.1 WARP, WARP IP",
       h1: "Cloudflare WARP 檢測", og_sub: "WARP 開著嗎？網站看到了什麼？",
-      intro: "WARP 是 Cloudflare 的 1.1.1.1 App 裡的 VPN，會把你的流量送進 Cloudflare 的網路。任何接入 Cloudflare 的網站，都讀得到訪客是不是透過 WARP 來的。下面是你的結果，以及網站看到的位址和網路。",
+      intro: "WARP 是 Cloudflare 的 1.1.1.1 App 裡的 VPN，會把你的流量送進 Cloudflare 的網路。任何接入 Cloudflare 的網站，都讀得到訪客是不是透過 WARP 來的。這裡是你的結果，以及網站看到的位址和網路。",
       focus_h: "你的 WARP",
       docs: [
         ["網站怎麼知道我在用 WARP？", "接入 Cloudflare 的網站可以讀 Cloudflare 的 trace（一份連線資訊），透過 WARP 來的流量會顯示 warp=on。就算不看這個，WARP 的位址也屬於 Cloudflare 自己的網路（AS13335），網站會把它當成機房 IP，而不是住宅 IP。"],
@@ -2880,7 +2880,7 @@ export const TEXT = {
       seo_desc: "免费连接协议检测：看你的浏览器有没有用上 HTTP/3，有没有用 ECH 隐藏你访问的网站名，有没有协商后量子密钥（X25519MLKEM768）；缺了哪一项，又说明你的网络或代理出了什么问题。检测在你的浏览器里进行，不存 IP，只累计匿名计数。",
       seo_kw: "HTTP/3 检测, ECH 检测, Encrypted Client Hello, 后量子加密检测, X25519MLKEM768, QUIC 检测, TLS 检测",
       h1: "HTTP/3、ECH 和后量子加密检测", og_sub: "你的连接够新吗？卡在了哪里？",
-      intro: "新版浏览器在畅通的网络上，会用 UDP 跑 HTTP/3，用 ECH 把你要去的网站名加密，再协商一把将来量子计算机也破解不了的密钥。少了哪一项，往往是路上的某个东西造成的。下面是你的连接情况。",
+      intro: "新版浏览器在畅通的网络上，会用 UDP 跑 HTTP/3，用 ECH 把你要去的网站名加密，再协商一把将来量子计算机也破解不了的密钥。少了哪一项，往往是路上的某个东西造成的。这里是你的连接情况。",
       focus_h: "你的连接",
       docs: [
         ["为什么没用上 HTTP/3？", "HTTP/3 走 UDP 443 端口。浏览器要先通过普通的 TCP 连接收到网站的第一次回应，才知道它支持 HTTP/3，所以第一次访问可能还没切过去。但如果 UDP 哪儿都出不去，就是网络或代理把它拦了，或者压根不转发 UDP。很多代理配置只转发 TCP。"],
@@ -2893,7 +2893,7 @@ export const TEXT = {
       seo_desc: "免費連線協定檢測：看你的瀏覽器有沒有用上 HTTP/3，有沒有用 ECH 隱藏你造訪的網站名稱，有沒有協商後量子金鑰（X25519MLKEM768）；缺了哪一項，又代表你的網路或代理出了什麼問題。檢測在你的瀏覽器裡進行，不存 IP，只累計匿名計數。",
       seo_kw: "HTTP/3 檢測, ECH 檢測, Encrypted Client Hello, 後量子加密檢測, X25519MLKEM768, QUIC 檢測, TLS 檢測",
       h1: "HTTP/3、ECH 與後量子加密檢測", og_sub: "你的連線夠新嗎？卡在哪裡？",
-      intro: "新版瀏覽器在暢通的網路上，會用 UDP 跑 HTTP/3，用 ECH 把你要去的網站名稱加密，再協商一把未來量子電腦也破解不了的金鑰。少了哪一項，往往是路上的某個東西造成的。下面是你的連線狀況。",
+      intro: "新版瀏覽器在暢通的網路上，會用 UDP 跑 HTTP/3，用 ECH 把你要去的網站名稱加密，再協商一把未來量子電腦也破解不了的金鑰。少了哪一項，往往是路上的某個東西造成的。這裡是你的連線狀況。",
       focus_h: "你的連線",
       docs: [
         ["為什麼沒用上 HTTP/3？", "HTTP/3 走 UDP 443 連接埠。瀏覽器要先透過一般的 TCP 連線收到網站的第一次回應，才知道它支援 HTTP/3，所以第一次造訪可能還沒切過去。但如果 UDP 哪裡都出不去，就是網路或代理把它擋了，或根本不轉送 UDP。很多代理設定只轉送 TCP。"],
@@ -3411,7 +3411,7 @@ export const TEXT = {
       seo_kw: "VPN 泄漏检测, DNS 泄漏, WebRTC 泄漏, IP 泄漏, VPN 检测, Tor 出口节点, 代理检测",
       h1: "VPN 泄漏检测",
       og_sub: "DNS、WebRTC，以及不同网站看到的出口",
-      intro: "VPN 藏起了网站看到的地址，但别处还可能漏：DNS 查询走出隧道、WebRTC 找到本地地址，或者不同目标走了不同的线路。下面这次访问会露出什么，哪些口子是真的开着。",
+      intro: "VPN 藏起了网站看到的地址，但别处还可能漏：DNS 查询走出隧道、WebRTC 找到本地地址，或者不同目标走了不同的线路。这一页看这次访问会露出什么，哪些口子是真的开着。",
       focus_h: "你的 VPN 泄漏情况",
       docs: [
         ["VPN 泄漏检测查什么？", "查 VPN 常见的几个漏点：DNS 查询由哪国的服务器解析（和 IP 对不上，说明查询可能走了隧道外）、WebRTC 报出的地址、不同网站看到的出口是否不同、IPv6 有没有绕过隧道，以及这个地址是不是公开的 Tor 出口。每一项单独说，不合并成一个结论。"],
@@ -3426,7 +3426,7 @@ export const TEXT = {
       seo_kw: "VPN 洩漏檢測, DNS 洩漏, WebRTC 洩漏, IP 洩漏, VPN 檢測, Tor 出口節點, 代理檢測",
       h1: "VPN 洩漏檢測",
       og_sub: "DNS、WebRTC，以及不同網站看到的出口",
-      intro: "VPN 藏起了網站看到的位址，但別處還可能漏：DNS 查詢走出通道、WebRTC 找到本機位址，或者不同目標走了不同的線路。下面是這次造訪會露出什麼，哪些口子是真的開著。",
+      intro: "VPN 藏起了網站看到的位址，但別處還可能漏：DNS 查詢走出通道、WebRTC 找到本機位址，或者不同目標走了不同的線路。這裡是這次造訪會露出什麼，哪些口子是真的開著。",
       focus_h: "你的 VPN 洩漏情況",
       docs: [
         ["VPN 洩漏檢測查什麼？", "查 VPN 常見的幾個漏點：DNS 查詢由哪國的伺服器解析（和 IP 對不上，說明查詢可能走了通道外）、WebRTC 報出的位址、不同網站看到的出口是否不同、IPv6 有沒有繞過通道，以及這個位址是不是公開的 Tor 出口。每一項單獨說，不合并成一個結論。"],
@@ -3563,7 +3563,7 @@ export const TEXT = {
       seo_kw: "WebGPU 检测, WebGPU 指纹, 显卡指纹, 适配器信息, WebGPU 支持, 显卡检测",
       h1: "WebGPU 检测",
       og_sub: "适配器、它的上限，以及它给指纹添了什么",
-      intro: "WebGPU 给了网站一个看显卡的新窗口：厂商、架构、各项上限和特性。Chrome 和 Edge 默认开放，Safari 和 Firefox 现在也支持，细节各有不同。下面这个浏览器交出了什么，和 WebGL 说的是不是同一张卡。",
+      intro: "WebGPU 给了网站一个看显卡的新窗口：厂商、架构、各项上限和特性。Chrome 和 Edge 默认开放，Safari 和 Firefox 现在也支持，细节各有不同。看看这个浏览器交出了什么，和 WebGL 说的是不是同一张卡。",
       focus_h: "你的 WebGPU",
       docs: [
         ["WebGPU 是什么？", "新的网页图形接口，比 WebGL 更接近现代显卡的能力：计算着色器、显存和队列的细粒度控制。网站通过 navigator.gpu 请求适配器，拿到厂商、架构、描述、上限和特性列表。"],
@@ -3578,7 +3578,7 @@ export const TEXT = {
       seo_kw: "WebGPU 檢測, WebGPU 指紋, 顯示卡指紋, 適配器資訊, WebGPU 支援, 顯示卡檢測",
       h1: "WebGPU 檢測",
       og_sub: "適配器、它的上限，以及它替指紋添了什麼",
-      intro: "WebGPU 給了網站一個看顯示卡的新窗口：廠商、架構、各項上限和特性。Chrome 和 Edge 預設開放，Safari 和 Firefox 現在也支援，細節各有不同。下面這個瀏覽器交出了什麼，和 WebGL 說的是不是同一張卡。",
+      intro: "WebGPU 給了網站一個看顯示卡的新窗口：廠商、架構、各項上限和特性。Chrome 和 Edge 預設開放，Safari 和 Firefox 現在也支援，細節各有不同。看看這個瀏覽器交出了什麼，和 WebGL 說的是不是同一張卡。",
       focus_h: "你的 WebGPU",
       docs: [
         ["WebGPU 是什麼？", "新的網頁圖形介面，比 WebGL 更接近現代顯示卡的能力：計算著色器、視訊記憶體和佇列的細緻控制。網站透過 navigator.gpu 請求適配器，拿到廠商、架構、描述、上限和特性清單。"],

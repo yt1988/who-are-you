@@ -1925,7 +1925,7 @@ import { exifOf } from "./exif.mjs";
     const b = behind(P);
     blank("fresh", esc(b == null ? t("fr_na") : b <= 2 ? t("fr_new") : tn("fr_old", b, { n: b })), BLANKS.fresh, P.browser || "");
     blank("when", esc(whenOf(P)));
-    blank("power", esc(!P.bat ? t("pw_na") : P.bat === "ac" ? t("pw_ac") : t(P.bat[0] === "c" ? t("pw_chg") : t("pw_bat", { p: P.bat.slice(1) }))));
+    blank("power", esc(!P.bat ? t("pw_na") : P.bat === "ac" ? t("pw_ac") : t(P.bat[0] === "c" ? "pw_chg" : "pw_bat", { p: P.bat.slice(1) })));
     const pf = [P.fs && P.fs !== 16 && t("pf_font", { n: P.fs }), P.rm && t("pf_motion"), P.hc && t("pf_contrast")].filter(Boolean);
     blank("prefs", esc(P.fs == null && P.rm == null ? t("pf_na") : pf.length ? list(pf) : t("pf_none")));
     if (ck) labels(P, ck, tier);

@@ -273,6 +273,10 @@ The sentences beside the readings follow these rules (the reports in `1ms-shell`
   fonts alone may have come with Office.
 - The portrait's prose carries no inline basis annotations ("(by IP)"): the source lives on hover or tap and in the
   reading's own row, where a reader who wants it looks.
+- The page never points "below" or "on the right": the same result sits beside the text on a wide screen and under it
+  on a phone, so the copy says "here", "this page" or "this list". Directions inside another app's own UI (WeChat's
+  ··· at the top right, a setting to move a language to the top of a list) keep the real direction, because there it
+  is true.
 
 ## Tested, and why not
 
