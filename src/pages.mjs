@@ -451,7 +451,7 @@ export const TEXT = {
       focus_h: "你的 DNS 解析器",
       docs: [
         ["什么是 DNS 泄露？", "浏览器连网站之前，要先让 DNS 解析器把网址换成 IP 地址。如果这一步没走 VPN 或代理，查询就发给了本地运营商的 DNS 解析器。结果是：运营商能看到你访问的每个网站；网站把 DNS 解析器和你的 IP 一对比，也能看出你在用 VPN，以及你实际在哪。"],
-        ["这个检测怎么找到我的 DNS 解析器？", "页面会去查 edns.ip-api.com 下面一个随机的、从没人查过的域名。没有缓存能直接回答，你的 DNS 解析器只能去问 ip-api 负责这个域名的服务器，于是 ip-api 就知道了它的地址和运营商；如果查询里带上了你所在的网段（ECS），也会一起报出来。检测再拿 DNS 解析器所在的国家和你 IP 的国家比较。"],
+        ["这个检测怎么找到我的 DNS 解析器？", "页面会去查 以 edns.ip-api.com 结尾的一个随机域名，从没人查过。没有缓存能直接回答，你的 DNS 解析器只能去问 ip-api 负责这个域名的服务器，于是 ip-api 就知道了它的地址和运营商；如果查询里带上了你所在的网段（ECS），也会一起报出来。检测再拿 DNS 解析器所在的国家和你 IP 的国家比较。"],
         ["DNS 泄露怎么修？", "Clash / Mihomo：打开 DNS，把 enhanced-mode 设成 fake-ip，或者开 TUN 模式，让所有查询都经过它。V2Ray / Xray 客户端：让 DNS 也走代理（或者设一个走代理的 DoH 服务器）。浏览器里打开「安全 DNS」（DoH，加密的 DNS）也能让查询绕开运营商。改完再测一次。"],
         ["显示的 DNS 解析器是 Cloudflare 或 Google，但城市不一样，算泄露吗？", "一般不算。1.1.1.1、8.8.8.8 这类公共 DNS 由离请求最近的机房来回答，所以城市可能和 VPN 出口不同。真正会暴露你的，是本地运营商的 DNS 解析器，或者 IP 在国外、DNS 解析器却在国内。"],
       ],
@@ -465,7 +465,7 @@ export const TEXT = {
       focus_h: "你的 DNS 解析器",
       docs: [
         ["什麼是 DNS 外洩？", "瀏覽器連到網站之前，要先請 DNS 解析器把網址換成 IP 位址。如果這一步沒走 VPN 或代理，查詢就會送到當地電信業者的 DNS 解析器。結果是：電信業者看得到你造訪的每個網站；網站把 DNS 解析器和你的 IP 一比對，也看得出你在用 VPN，以及你實際在哪裡。"],
-        ["這個檢測怎麼找到我的 DNS 解析器？", "頁面會去查 edns.ip-api.com 底下一個隨機、從來沒人查過的網域。沒有快取能直接回答，你的 DNS 解析器只能去問 ip-api 負責這個網域的伺服器，於是 ip-api 就知道了它的位址和電信業者；如果查詢裡附上了你所在的網段（ECS），也會一併回報。檢測再拿 DNS 解析器所在的國家和你 IP 的國家比較。"],
+        ["這個檢測怎麼找到我的 DNS 解析器？", "頁面會去查 以 edns.ip-api.com 結尾的一個隨機網域，從來沒人查過。沒有快取能直接回答，你的 DNS 解析器只能去問 ip-api 負責這個網域的伺服器，於是 ip-api 就知道了它的位址和電信業者；如果查詢裡附上了你所在的網段（ECS），也會一併回報。檢測再拿 DNS 解析器所在的國家和你 IP 的國家比較。"],
         ["DNS 外洩怎麼修？", "Clash / Mihomo：開啟 DNS，把 enhanced-mode 設成 fake-ip，或開啟 TUN 模式，讓所有查詢都經過它。V2Ray / Xray 用戶端：讓 DNS 也走代理（或設定一台走代理的 DoH 伺服器）。在瀏覽器開啟「安全 DNS」（DoH，加密的 DNS）也能讓查詢避開電信業者。改完再測一次。"],
         ["顯示的 DNS 解析器是 Cloudflare 或 Google，但城市不一樣，算外洩嗎？", "通常不算。1.1.1.1、8.8.8.8 這類公共 DNS 會由離請求最近的機房回應，所以城市可能和 VPN 出口不同。真正會讓你露餡的，是當地電信業者的 DNS 解析器，或是 IP 在國外、DNS 解析器卻在國內。"],
       ],
@@ -479,7 +479,7 @@ export const TEXT = {
       focus_h: "あなたの DNS リゾルバー",
       docs: [
         ["DNS リークとは何ですか？", "ブラウザがサイトにつなぐ前に、DNS リゾルバーがサイト名をアドレスに変換します。この問い合わせが VPN やプロキシを通らないと、手元のプロバイダーの DNS リゾルバーに届きます。するとプロバイダーには訪れたサイトがすべて見え、DNS リゾルバーと IP を比べるサイトには、VPN を使っていることと本当の居場所が分かってしまいます。"],
-        ["どうやって DNS リゾルバーを見つけるのですか？", "ページは edns.ip-api.com の下にある、誰も問い合わせたことのないランダムな名前を引きます。キャッシュでは答えられないので、あなたの DNS リゾルバーは ip-api のネームサーバーに聞くしかありません。ネームサーバーはその DNS リゾルバーのアドレスとネットワーク、さらに DNS リゾルバーが付けていればクライアントのサブネット（ECS）を報告します。テストはその国と IP の国を比べます。"],
+        ["どうやって DNS リゾルバーを見つけるのですか？", "ページは edns.ip-api.com のサブドメインで、誰も問い合わせたことのないランダムな名前を引きます。キャッシュでは答えられないので、あなたの DNS リゾルバーは ip-api のネームサーバーに聞くしかありません。ネームサーバーはその DNS リゾルバーのアドレスとネットワーク、さらに DNS リゾルバーが付けていればクライアントのサブネット（ECS）を報告します。テストはその国と IP の国を比べます。"],
         ["DNS リークはどう直しますか？", "Clash / Mihomo：DNS を有効にして enhanced-mode を fake-ip にするか、TUN モードですべての問い合わせを通します。V2Ray / Xray：DNS もプロキシ経由にします（プロキシを通る DoH サーバーを設定）。ブラウザの「セキュア DNS」（DoH）でも、プロバイダーへの問い合わせを避けられます。直したら、もう一度テストしてください。"],
         ["DNS リゾルバーが別の都市の Cloudflare や Google です。これは漏れ？", "たいていは違います。1.1.1.1 や 8.8.8.8 のような公開 DNS は問い合わせにいちばん近いデータセンターから答えるので、都市が VPN の出口と違うことがあります。正体がばれるのは、自宅のプロバイダーの DNS リゾルバーが使われている場合や、IP は海外なのに DNS リゾルバーが自国にある場合です。"],
       ],
@@ -493,7 +493,7 @@ export const TEXT = {
       focus_h: "내 DNS 리졸버",
       docs: [
         ["DNS 유출이 뭔가요?", "브라우저가 사이트에 접속하기 전에, DNS 리졸버가 사이트 이름을 주소로 바꿔 줘요. 이 조회가 VPN이나 프록시를 거치지 않으면 내 통신사의 DNS 리졸버로 가요. 그러면 통신사는 내가 방문하는 사이트를 모두 볼 수 있고, DNS 리졸버와 IP를 비교하는 사이트는 VPN을 쓴다는 것과 실제 위치까지 알 수 있어요."],
-        ["이 테스트는 내 DNS 리졸버를 어떻게 찾나요?", "페이지는 edns.ip-api.com 아래에서 한 번도 조회된 적 없는 무작위 이름을 조회해요. 캐시에 답이 없으니 내 DNS 리졸버는 ip-api의 네임서버에 직접 물어야 하고, 그 네임서버가 DNS 리졸버의 주소와 네트워크를 알려 줘요. DNS 리졸버가 내 서브넷 정보(ECS)를 함께 보내면 그것도 알려 줘요. 테스트는 DNS 리졸버의 국가를 내 IP의 국가와 비교해요."],
+        ["이 테스트는 내 DNS 리졸버를 어떻게 찾나요?", "페이지는 edns.ip-api.com의 하위 도메인에서 한 번도 조회된 적 없는 무작위 이름을 조회해요. 캐시에 답이 없으니 내 DNS 리졸버는 ip-api의 네임서버에 직접 물어야 하고, 그 네임서버가 DNS 리졸버의 주소와 네트워크를 알려 줘요. DNS 리졸버가 내 서브넷 정보(ECS)를 함께 보내면 그것도 알려 줘요. 테스트는 DNS 리졸버의 국가를 내 IP의 국가와 비교해요."],
         ["DNS 유출은 어떻게 고치나요?", "Clash / Mihomo: DNS를 켜고 enhanced-mode를 fake-ip로 하거나, TUN 모드를 켜서 모든 조회가 거치게 하세요. V2Ray / Xray 클라이언트: DNS도 프록시로 보내세요(또는 프록시를 거치는 DoH 서버를 설정하세요). 브라우저의 보안 DNS(DoH)를 켜도 조회가 통신사로 가지 않아요. 바꾼 뒤 이 테스트를 다시 해 보세요."],
         ["DNS 리졸버가 다른 도시의 Cloudflare나 Google로 나와요. 유출인가요?", "대개 아니에요. 1.1.1.1, 8.8.8.8 같은 공용 DNS는 요청과 가장 가까운 데이터센터에서 답하기 때문에, 도시가 VPN 출구와 다를 수 있어요. 문제가 되는 건 집 통신사가 운영하는 DNS 리졸버이거나, IP는 해외인데 DNS 리졸버는 내 나라에 있는 경우예요."],
       ],
@@ -2276,7 +2276,7 @@ export const TEXT = {
         ],
         [
           "和「环境被篡改」有什么关系？",
-          "改 UA、语言、时区，或者给算指纹用的画图函数包一层的插件，会改写网站读到的信息。最上面那项检测查的就是这个。"
+          "改 UA、语言、时区，或者给算指纹用的画图函数包一层的插件，会改写网站读到的信息。「环境被篡改」那项检测查的就是这个。"
         ]
       ]
     },
@@ -2299,7 +2299,7 @@ export const TEXT = {
         ],
         [
           "和「環境被竄改」有什麼關係？",
-          "改 UA、語言、時區，或替算指紋用的繪圖函式包一層的擴充功能，會改寫網站讀到的資訊。最上面那項檢測查的就是這個。"
+          "改 UA、語言、時區，或替算指紋用的繪圖函式包一層的擴充功能，會改寫網站讀到的資訊。「環境被竄改」那項檢測查的就是這個。"
         ]
       ]
     },
@@ -2322,7 +2322,7 @@ export const TEXT = {
         ],
         [
           "書き換えチェックとはどう関係しますか？",
-          "UA・言語・タイムゾーンを変えたり、フィンガープリントに使われる描画の関数を包んだりする拡張機能は、サイトが読む値を書き換えます。上のチェックはそれを探しています。"
+          "UA・言語・タイムゾーンを変えたり、フィンガープリントに使われる描画の関数を包んだりする拡張機能は、サイトが読む値を書き換えます。「環境の書き換え」のチェックがそれを探しています。"
         ]
       ]
     },
@@ -2345,7 +2345,7 @@ export const TEXT = {
         ],
         [
           "조작 여부 검사와는 무슨 관계인가요?",
-          "UA, 언어, 시간대를 바꾸거나 지문에 쓰이는 그리기 함수를 감싸는 확장 프로그램은 사이트가 읽는 값을 바꿔요. 맨 위의 검사가 바로 그걸 찾아요."
+          "UA, 언어, 시간대를 바꾸거나 지문에 쓰이는 그리기 함수를 감싸는 확장 프로그램은 사이트가 읽는 값을 바꿔요. 「조작된 환경」 검사가 바로 그걸 찾아요."
         ]
       ]
     },
@@ -2368,7 +2368,7 @@ export const TEXT = {
         ],
         [
           "Was hat die Manipulationsprüfung damit zu tun?",
-          "Erweiterungen, die User-Agent, Sprache oder Zeitzone ändern oder die Zeichenfunktionen für Fingerabdrücke umhüllen, schreiben um, was Websites lesen. Genau danach sucht die Prüfung oben auf der Seite."
+          "Erweiterungen, die User-Agent, Sprache oder Zeitzone ändern oder die Zeichenfunktionen für Fingerabdrücke umhüllen, schreiben um, was Websites lesen. Genau danach sucht die Prüfung „Manipulierte Umgebung“."
         ]
       ]
     },
@@ -2414,7 +2414,7 @@ export const TEXT = {
         ],
         [
           "¿Qué tiene que ver el test de manipulación?",
-          "Las extensiones que cambian tu user agent, tu idioma o tu zona horaria, o que envuelven las funciones de dibujo que usan las huellas, reescriben lo que leen las webs. Eso es lo que busca la prueba de arriba."
+          "Las extensiones que cambian tu user agent, tu idioma o tu zona horaria, o que envuelven las funciones de dibujo que usan las huellas, reescriben lo que leen las webs. Eso es lo que busca la prueba «Entorno manipulado»."
         ]
       ]
     },
