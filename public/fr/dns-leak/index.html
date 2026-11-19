@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="Votre DNS passe-t-il à côté du VPN ?">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Test de fuite DNS · 1ms.dog","url":"https://who.1ms.dog/fr/dns-leak/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Test gratuit de fuite DNS : trouvez le serveur DNS qui cherche réellement l’adresse des sites pour vous, son pays et son réseau, et comparez-le à l’IP que voient les sites. S’ils ne correspondent pas, votre VPN ou votre proxy laisse fuir le DNS. Avec les corrections pour Clash, V2Ray et le navigateur.","inLanguage":"fr","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -71,13 +71,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="dns-leak">
-      <div class="focus-t"><h1>Test de fuite DNS</h1><p>Votre VPN peut transporter votre trafic alors que vos requêtes DNS partent encore chez votre fournisseur d’accès. Celui qui gère ces serveurs voit alors où vous êtes vraiment. Ce test demande une adresse que personne n’a jamais demandée, puis interroge le serveur qui fait autorité sur ce nom pour savoir qui a posé la question : c’est votre résolveur DNS. Vous voyez son pays et son réseau, comparés à l’adresse que voient les sites.</p></div>
+      <div class="focus-t"><h1>Test de fuite DNS</h1><p class="focus-lede">Votre VPN peut transporter votre trafic alors que vos requêtes DNS partent encore chez votre fournisseur d’accès. Celui qui gère ces serveurs voit alors où vous êtes vraiment.</p><p>Ce test demande une adresse que personne n’a jamais demandée, puis interroge le serveur qui fait autorité sur ce nom pour savoir qui a posé la question : c’est votre résolveur DNS. Vous voyez son pays et son réseau, comparés à l’adresse que voient les sites.</p><a class="btn ink focus-all" href="/fr/">Voir votre portrait complet (134 signaux)</a></div>
       <div class="focus-r"><h2>Votre résolveur DNS</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>Comment corriger</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="dns"><span>Résolveur DNS</span><b>…</b></li><li data-f="ip"><span>Adresse IP</span><b>…</b></li><li data-f="ex_cn"><span>Site en Chine continentale</span><b>…</b></li><li data-f="ex_intl"><span>Service IP hors de Chine</span><b>…</b></li><li data-f="stack"><span>IPv4 et IPv6</span><b>…</b></li></ul>
         <a class="focus-go" id="focusGo" target="_blank" rel="noopener" hidden>Test DNS<svg class="ext" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2.5h4.5V7M13.5 2.5 7.5 8.5M12 10v3.5H2.5V4H6"/></svg></a>
-        <a class="btn ink focus-all" href="/fr/">Voir votre portrait complet (134 signaux)</a>
       </div>
     </section>
     <section class="hero card">

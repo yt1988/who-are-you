@@ -95,10 +95,19 @@ html[lang="ru"] { --story-p1: 6; }
 .bl .flag { vertical-align: -1px; }
 
 /* A topic page's focus panel: its H1 and body text on the left, the one result it is about on the right */
-.focus { padding: 26px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px; align-items: start;
+.focus { padding: 26px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px; align-items: stretch;
   background: radial-gradient(120% 90% at 0% 0%, var(--ink-soft), transparent 55%), var(--panel); }
 .focus h1 { font-size: clamp(26px, 3.4vw, 36px); line-height: 1.15; letter-spacing: -.025em; font-weight: 800; margin-bottom: 12px; }
-.focus-t p { color: var(--muted); font-size: 15px; line-height: 1.75; }
+/* the opening text: two readable blocks, not one wall; the first carries a little more weight */
+.focus-t { display: flex; flex-direction: column; }
+.focus-t p { color: var(--muted); font-size: 14.5px; line-height: 1.8; max-width: 62ch; margin: 0; }
+.focus-t p.focus-lede { font-size: 15.5px; color: var(--fg); }
+.focus-t p + p { margin-top: 8px; }
+.focus-t p:last-of-type { margin-bottom: 18px; }
+.focus-t .focus-all { margin-top: auto; align-self: flex-start; }
+/* (the explain block's own small type wins over the opening text's) */
+.focus-t .focus-layers-h { font-size: 12px; line-height: 1.5; }
+.focus-t p.focus-limits { font-size: 12.5px; line-height: 1.6; }
 /* a topic page that has more to say than a paragraph: three short rows under it, not a wall of text */
 .focus-layers { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line); }
 .focus-layers-h { color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin: 0 0 10px; }
@@ -200,6 +209,9 @@ main.topic > .hero, main.topic > .target, main.topic > .probes, main.topic > .vs
 .focus-r h2 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 8px; }
 .focus-v { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; min-height: 1.6em; margin-bottom: 10px; }
 .focus-v.st-ok b { color: var(--t1); } .focus-v.st-warn b { color: var(--t3); } .focus-v.st-bad b { color: var(--t5); }
+/* the verdict's mark is a dot, not the check row's "!" badge: the glyph copied in from the row is hidden */
+.focus-v .st { width: 12px; height: 12px; padding: 0; border-radius: 50%; flex: none; font-size: 0; background: var(--muted); box-shadow: none; }
+.focus-v.st-ok .st { background: var(--t1); } .focus-v.st-warn .st { background: var(--t3); } .focus-v.st-bad .st { background: var(--bad); }
 .focus-v b .skl { width: 12em; }
 .focus-rows { list-style: none; margin: 0; padding: 0; }
 .focus-rows li { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 10px; align-items: center; min-height: 36px; border-top: 1px solid var(--line); font-size: 13px; }

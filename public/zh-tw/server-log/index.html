@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="兩次造訪，網站怎麼把「同一套環境」串起來">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"網站日誌裡的你 · 1ms.dog","url":"https://who.1ms.dog/zh-tw/server-log/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"一次造訪在網站日誌裡長什麼樣子，蜜罐怎麼用指紋、儲存留痕和快取編號把幾次造訪串起來；能看到什麼、不能看到什麼（身分、意圖、攻擊都不在其中）。","inLanguage":"zh-TW","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -71,13 +71,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="server-log">
-      <div class="focus-t"><h1>網站日誌裡的你</h1><p>一次造訪，伺服器會記下一行日誌；把幾次造訪放在一起，有些讀數還能指向同一個環境。下面是這次造訪在日誌裡的樣子、它和上次的哪些讀數一樣，以及這些關聯能說明什麼、不能說明什麼。</p></div>
+      <div class="focus-t"><h1>網站日誌裡的你</h1><p class="focus-lede">一次造訪，伺服器會記下一行日誌；把幾次造訪放在一起，有些讀數還能指向同一個環境。</p><p>下面是這次造訪在日誌裡的樣子、它和上次的哪些讀數一樣，以及這些關聯能說明什麼、不能說明什麼。</p><a class="btn ink focus-all" href="/zh-tw/">看網站眼中的完整畫像（134 項）</a></div>
       <div class="focus-r"><h2>能跨造訪留下的讀數</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>怎麼改</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="hwid"><span>硬體編號（跨瀏覽器）</span><b>…</b></li><li data-f="fpid"><span>綜合指紋</span><b>…</b></li><li data-f="fonts"><span>已安裝字型</span><b>…</b></li><li data-f="traces"><span>儲存留痕</span><b>…</b></li><li data-f="etag"><span>快取編號（ETag）</span><b>…</b></li></ul>
         
-        <a class="btn ink focus-all" href="/zh-tw/">看網站眼中的完整畫像（134 項）</a>
       </div>
     </section><section class="demo card" id="demo" data-none="這是第一次，瀏覽器裡還沒有上次的讀數。先去首頁測一次，再回來就能看到對照。" data-same="所有指紋部件都一樣：很可能還是同一台機器、同一套環境。" data-some="多數指紋部件一樣：可能是同一套環境，也可能是同款機器。" data-diff="多數指紋部件變了：可能是另一台機器，或另一套設定。">
       <div class="demo-head"><p class="demo-tag">防守方視角</p><h2>兩次造訪，網站怎麼把你串起來</h2><p class="demo-sub">下面用這次造訪和上一次的本機記錄示範；頁面本身不記錄、不上傳。</p></div>

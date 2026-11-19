@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="Can sites tell there's a proxy in between?">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Proxy check · 1ms.dog","url":"https://who.1ms.dog/proxy-check/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Free proxy check: compares the round trip your browser measures with the one Cloudflare sees on its connection, and checks whether your IP belongs to a data center, plus your DNS and WebRTC addresses. A proxy adds a leg sites can measure, even on a clean residential IP.","inLanguage":"en","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -71,13 +71,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="proxy-check">
-      <div class="focus-t"><h1>Proxy check</h1><p>A proxy hides your IP, but not the extra leg of the trip. Cloudflare measures the round trip on its own connection, which ends at the proxy; your browser measures the whole way. When the browser's number is much bigger, something sits in between, however clean the IP looks. Here are both, with the other signs sites use.</p></div>
+      <div class="focus-t"><h1>Proxy check</h1><p class="focus-lede">A proxy hides your IP, but not the extra leg of the trip. Cloudflare measures the round trip on its own connection, which ends at the proxy; your browser measures the whole way.</p><p>When the browser's number is much bigger, something sits in between, however clean the IP looks. Here are both, with the other signs sites use.</p><a class="btn ink focus-all" href="/">See your full portrait (134 signals)</a></div>
       <div class="focus-r"><h2>Your round trip</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>How to fix</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="edge"><span>Nearest data center</span><b>…</b></li><li data-f="ip"><span>IP address</span><b>…</b></li><li data-f="isp"><span>Network (ASN)</span><b>…</b></li><li data-f="dns"><span>DNS resolver</span><b>…</b></li><li data-f="webrtc"><span>WebRTC addresses</span><b>…</b></li></ul>
         <a class="focus-go" id="focusGo" target="_blank" rel="noopener" hidden>EgressLens<svg class="ext" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2.5h4.5V7M13.5 2.5 7.5 8.5M12 10v3.5H2.5V4H6"/></svg></a>
-        <a class="btn ink focus-all" href="/">See your full portrait (134 signals)</a>
       </div>
     </section>
     <section class="hero card">

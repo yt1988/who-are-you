@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="O WebRTC mostra seu IP real?">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Teste de vazamento WebRTC · 1ms.dog","url":"https://who.1ms.dog/pt/webrtc-leak/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Teste grátis de vazamento WebRTC: os endereços IPv4 e IPv6 públicos e os endereços locais que o WebRTC entrega a qualquer site, comparados com o IP que sua VPN ou proxy mostra. Se forem diferentes, o WebRTC está vazando seu IP real. Com o passo a passo para corrigir no Chrome, Firefox, Brave e clientes de proxy.","inLanguage":"pt","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -71,13 +71,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="webrtc-leak">
-      <div class="focus-t"><h1>Teste de vazamento WebRTC</h1><p>As chamadas de vídeo no navegador usam WebRTC, e qualquer página pode iniciá-lo sem perguntar. Ele pergunta a um servidor STUN de qual endereço você veio, por UDP, e muitas VPNs e proxies não levam UDP. Aqui estão os endereços que o WebRTC revela, comparados com o endereço que os sites veem.</p></div>
+      <div class="focus-t"><h1>Teste de vazamento WebRTC</h1><p class="focus-lede">As chamadas de vídeo no navegador usam WebRTC, e qualquer página pode iniciá-lo sem perguntar.</p><p>Ele pergunta a um servidor STUN de qual endereço você veio, por UDP, e muitas VPNs e proxies não levam UDP. Aqui estão os endereços que o WebRTC revela, comparados com o endereço que os sites veem.</p><a class="btn ink focus-all" href="/pt/">Ver seu retrato completo (134 sinais)</a></div>
       <div class="focus-r"><h2>Seus endereços WebRTC</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>Como corrigir</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="webrtc"><span>Endereços WebRTC</span><b>…</b></li><li data-f="lan"><span>Endereço local</span><b>…</b></li><li data-f="ip"><span>Endereço IP</span><b>…</b></li><li data-f="stack"><span>IPv4 e IPv6</span><b>…</b></li></ul>
         <a class="focus-go" id="focusGo" target="_blank" rel="noopener" hidden>EgressLens<svg class="ext" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2.5h4.5V7M13.5 2.5 7.5 8.5M12 10v3.5H2.5V4H6"/></svg></a>
-        <a class="btn ink focus-all" href="/pt/">Ver seu retrato completo (134 sinais)</a>
       </div>
     </section>
     <section class="hero card">

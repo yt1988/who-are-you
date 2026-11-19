@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="Does your DNS go around your VPN?">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"DNS leak test · 1ms.dog","url":"https://who.1ms.dog/dns-leak/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Free DNS leak test: find the DNS resolver that actually looks up sites for you, see its country and network, and compare it with the IP sites see. If they don't match, your VPN or proxy leaks DNS. Includes fixes for Clash, V2Ray and the browser.","inLanguage":"en","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -71,13 +71,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="dns-leak">
-      <div class="focus-t"><h1>DNS leak test</h1><p>Your VPN may carry your traffic while your DNS lookups still go to your own internet provider. Whoever runs those servers can then see where you really are. This test looks up a name nobody has asked for before and asks the name server who asked: that's your resolver. You'll see its country and network next to the address sites see.</p></div>
+      <div class="focus-t"><h1>DNS leak test</h1><p class="focus-lede">Your VPN may carry your traffic while your DNS lookups still go to your own internet provider. Whoever runs those servers can then see where you really are.</p><p>This test looks up a name nobody has asked for before and asks the name server who asked: that's your resolver. You'll see its country and network next to the address sites see.</p><a class="btn ink focus-all" href="/">See your full portrait (134 signals)</a></div>
       <div class="focus-r"><h2>Your DNS resolver</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>How to fix</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="dns"><span>DNS resolver</span><b>…</b></li><li data-f="ip"><span>IP address</span><b>…</b></li><li data-f="ex_cn"><span>Site in mainland China</span><b>…</b></li><li data-f="ex_intl"><span>IP service abroad</span><b>…</b></li><li data-f="stack"><span>IPv4 and IPv6</span><b>…</b></li></ul>
         <a class="focus-go" id="focusGo" target="_blank" rel="noopener" hidden>DNS Test<svg class="ext" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2.5h4.5V7M13.5 2.5 7.5 8.5M12 10v3.5H2.5V4H6"/></svg></a>
-        <a class="btn ink focus-all" href="/">See your full portrait (134 signals)</a>
       </div>
     </section>
     <section class="hero card">

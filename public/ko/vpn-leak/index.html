@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="DNS, WebRTC, 사이트마다 다른 출구">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"VPN 누출 테스트 · 1ms.dog","url":"https://who.1ms.dog/ko/vpn-leak/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"무료 VPN 누출 테스트: DNS 리졸버, WebRTC, 사이트마다 보이는 출구가 실제 위치를 드러내는지, 주소가 VPN 제공업체나 Tor 출구인지, 연결 자체의 지문이 무엇을 말하는지 확인합니다. IP는 저장하지 않고 익명 집계만 합니다.","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -71,13 +71,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="vpn-leak">
-      <div class="focus-t"><h1>VPN 누출 테스트</h1><p>VPN은 사이트가 보는 주소를 숨기지만 다른 곳에서 샐 수 있습니다. DNS 질의가 터널 밖으로 나가거나, WebRTC가 로컬 주소를 찾거나, 대상마다 다른 경로로 나갈 수 있습니다. 이번 방문에서 무엇이 드러나는지, 어떤 누출이 실제로 열려 있는지 봅니다.</p></div>
+      <div class="focus-t"><h1>VPN 누출 테스트</h1><p class="focus-lede">VPN은 사이트가 보는 주소를 숨기지만 다른 곳에서 샐 수 있습니다. DNS 질의가 터널 밖으로 나가거나, WebRTC가 로컬 주소를 찾거나, 대상마다 다른 경로로 나갈 수 있습니다. 이번 방문에서 무엇이 드러나는지, 어떤 누출이 실제로 열려 있는지 봅니다.</p><a class="btn ink focus-all" href="/ko/">사이트가 보는 내 전체 모습 보기(134개 항목)</a></div>
       <div class="focus-r"><h2>VPN 누출 결과</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>해결 방법</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="ip"><span>IP 주소</span><b>…</b></li><li data-f="isp"><span>네트워크(ASN)</span><b>…</b></li><li data-f="tor"><span>Tor 노드</span><b>…</b></li><li data-f="dns"><span>DNS 리졸버</span><b>…</b></li><li data-f="webrtc"><span>WebRTC 주소</span><b>…</b></li><li data-f="lan"><span>내부 네트워크 주소</span><b>…</b></li><li data-f="v6mac"><span>IPv6로 새는 MAC</span><b>…</b></li><li data-f="stack"><span>IPv4와 IPv6</span><b>…</b></li></ul>
         <a class="focus-go" id="focusGo" target="_blank" rel="noopener" hidden>출구 IP 돋보기<svg class="ext" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2.5h4.5V7M13.5 2.5 7.5 8.5M12 10v3.5H2.5V4H6"/></svg></a>
-        <a class="btn ink focus-all" href="/ko/">사이트가 보는 내 전체 모습 보기(134개 항목)</a>
       </div>
     </section>
     <section class="hero card">

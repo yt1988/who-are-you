@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="How two visits get tied to one environment">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"You in a server log · 1ms.dog","url":"https://who.1ms.dog/server-log/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"What one visit looks like in a server's log, how a honeypot can link visits through fingerprints, stored traces and cache IDs — and what those links can and cannot say (not identity, intent or attack).","inLanguage":"en","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -71,13 +71,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="server-log">
-      <div class="focus-t"><h1>You in a server log</h1><p>A server writes one log line per visit; put a few visits together and some readings point to the same environment. Here is this visit as a log sees it, which readings it shares with the last one, and what that link can and cannot say.</p></div>
+      <div class="focus-t"><h1>You in a server log</h1><p class="focus-lede">A server writes one log line per visit; put a few visits together and some readings point to the same environment.</p><p>Here is this visit as a log sees it, which readings it shares with the last one, and what that link can and cannot say.</p><a class="btn ink focus-all" href="/">See your full portrait (134 signals)</a></div>
       <div class="focus-r"><h2>Readings that outlive a visit</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>How to fix</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="hwid"><span>Hardware ID (across browsers)</span><b>…</b></li><li data-f="fpid"><span>Combined fingerprint</span><b>…</b></li><li data-f="fonts"><span>Installed fonts</span><b>…</b></li><li data-f="traces"><span>Stored traces</span><b>…</b></li><li data-f="etag"><span>Cache ID (ETag)</span><b>…</b></li></ul>
         
-        <a class="btn ink focus-all" href="/">See your full portrait (134 signals)</a>
       </div>
     </section><section class="demo card" id="demo" data-none="This is the first visit; this browser has no earlier readings. Take the test on the main page once, then come back to see the comparison." data-same="Every fingerprint part is the same: most likely the same machine, or the same environment." data-some="Most fingerprint parts are the same: possibly the same environment, possibly the same model." data-diff="Most fingerprint parts changed: possibly another machine, or another setup.">
       <div class="demo-head"><p class="demo-tag">The defender's side</p><h2>How two visits get tied together</h2><p class="demo-sub">A demonstration from this visit and the last one's record in this browser; the page stores and sends nothing.</p></div>

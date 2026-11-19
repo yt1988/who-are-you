@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="你的 DNS 有沒有繞過 VPN？">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"DNS 外洩檢測 · 1ms.dog","url":"https://who.1ms.dog/zh-tw/dns-leak/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"免費 DNS 外洩檢測：找出真正幫你解析網址的 DNS 伺服器，看它在哪個國家、屬於哪家電信業者，再和網站看到的 IP 比對。兩邊對不上，就是 VPN 或代理漏掉了 DNS。附 Clash、V2Ray 和瀏覽器的修正方法。","inLanguage":"zh-TW","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -71,13 +71,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="dns-leak">
-      <div class="focus-t"><h1>DNS 外洩檢測</h1><p>VPN 幫你轉送了流量，DNS 查詢卻可能還是送到當地電信業者，等於告訴別人你真正在哪裡。這個檢測會去查一個從來沒人查過的網域，再問負責這個網域的伺服器：是誰來查的。這樣就知道你用的 DNS 解析器是哪一台、在哪個國家、屬於哪家電信業者，再拿它和網站看到的 IP 比對。</p></div>
+      <div class="focus-t"><h1>DNS 外洩檢測</h1><p class="focus-lede">VPN 幫你轉送了流量，DNS 查詢卻可能還是送到當地電信業者，等於告訴別人你真正在哪裡。這個檢測會去查一個從來沒人查過的網域，再問負責這個網域的伺服器：是誰來查的。</p><p>這樣就知道你用的 DNS 解析器是哪一台、在哪個國家、屬於哪家電信業者，再拿它和網站看到的 IP 比對。</p><a class="btn ink focus-all" href="/zh-tw/">看網站眼中的完整畫像（134 項）</a></div>
       <div class="focus-r"><h2>你的 DNS 解析器</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>怎麼改</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="dns"><span>DNS 解析器</span><b>…</b></li><li data-f="ip"><span>IP 位址</span><b>…</b></li><li data-f="ex_cn"><span>中國大陸網站</span><b>…</b></li><li data-f="ex_intl"><span>海外 IP 服務</span><b>…</b></li><li data-f="stack"><span>IPv4 與 IPv6</span><b>…</b></li></ul>
         <a class="focus-go" id="focusGo" target="_blank" rel="noopener" hidden>DNS 測試<svg class="ext" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2.5h4.5V7M13.5 2.5 7.5 8.5M12 10v3.5H2.5V4H6"/></svg></a>
-        <a class="btn ink focus-all" href="/zh-tw/">看網站眼中的完整畫像（134 項）</a>
       </div>
     </section>
     <section class="hero card">

@@ -587,6 +587,12 @@ three-layer explanation now sits under a short lede as three rows — network an
 caveat line, built from a new optional `explain` block a topic page may carry; the details stay in the help. Measured
 at 1280 and 390 px: the left column is scannable and no longer a paragraph, and the phone stacks label over text.
 
+Every topic page's opening text is now two blocks, split at a sentence (or semicolon) near its middle — one block
+when the text is a single short sentence — with a 62ch measure, more leading and a slightly stronger first block; one
+wall of text across the whole column read badly. The focus verdict's mark is a 12 px dot again (the check row's "!"
+glyph had been copied into it, unreadable at that size), and the "see the whole portrait" button sits at the foot of
+the text column, so a short intro no longer leaves the column's bottom empty.
+
 A new topic page `/server-log/` ("You in a server log") shows the other side: one access-log line built from this
 visit's readings, and this visit against the last one's record in this browser — every fingerprint part marked same or
 changed, with a verdict worded as a candidate ("most likely the same machine or environment"), never a person. It

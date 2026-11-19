@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="Cookie がなくても、サイトはあなたの ID を割り出せる">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"ブラウザフィンガープリント検査 · 1ms.dog","url":"https://who.1ms.dog/ja/fingerprint/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"無料のブラウザフィンガープリント検査：Canvas・WebGL・オーディオ・フォントのフィンガープリントと、どのサイトでも Cookie なしで割り出せる総合 ID を表示。ブラウザがそれをかき混ぜているか、前回の訪問から見分けられたかも分かります。IP は保存せず、残すのはそれぞれの値がどれだけありふれているかの匿名の集計だけです。","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -71,13 +71,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="fingerprint">
-      <div class="focus-t"><h1>ブラウザフィンガープリント検査</h1><p>サイトは Cookie がなくてもあなたを見分けられます。文字や図形の描き方、音の処理、入っているフォントを合わせると 1 つの ID になり、サイトを変えても、プライベートウィンドウでも、VPN を使っても変わりません。あなたの ID とその中身、ブラウザがそれをかき混ぜているかを示します。</p><div class="focus-layers"><p class="focus-layers-h">読み取りは 3 か所から</p><ol><li><b>ネットワークとエッジ</b><span>IP、回線の持ち主、地理、遅延。接続を受ける側が最初に見ます。</span></li><li><b>プロトコル</b><span>TCP・TLS・HTTP/2 の先頭。当サイトの独立したプローブが自分の接続で読み、ページのスクリプトでは変えられません。</span></li><li><b>ページのスクリプト</b><span>Canvas、WebGL、音声、フォント、画面、設定。JavaScript を切るとありません。</span></li></ol></div><p class="focus-limits">前の層ほど JavaScript に依存しません。各項目が証明できるのは測ったことだけです。境界と例外は右上の「?」に。</p></div>
+      <div class="focus-t"><h1>ブラウザフィンガープリント検査</h1><p class="focus-lede">サイトは Cookie がなくてもあなたを見分けられます。文字や図形の描き方、音の処理、入っているフォントを合わせると 1 つの ID になり、サイトを変えても、プライベートウィンドウでも、VPN を使っても変わりません。あなたの ID とその中身、ブラウザがそれをかき混ぜているかを示します。</p><div class="focus-layers"><p class="focus-layers-h">読み取りは 3 か所から</p><ol><li><b>ネットワークとエッジ</b><span>IP、回線の持ち主、地理、遅延。接続を受ける側が最初に見ます。</span></li><li><b>プロトコル</b><span>TCP・TLS・HTTP/2 の先頭。当サイトの独立したプローブが自分の接続で読み、ページのスクリプトでは変えられません。</span></li><li><b>ページのスクリプト</b><span>Canvas、WebGL、音声、フォント、画面、設定。JavaScript を切るとありません。</span></li></ol></div><p class="focus-limits">前の層ほど JavaScript に依存しません。各項目が証明できるのは測ったことだけです。境界と例外は右上の「?」に。</p><a class="btn ink focus-all" href="/ja/">サイトから見たあなたの全体像を見る（134 項目）</a></div>
       <div class="focus-r"><h2>あなたのフィンガープリント</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>直し方</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="fpid"><span>総合フィンガープリント</span><b>…</b></li><li data-f="canvas"><span>Canvas</span><b>…</b></li><li data-f="webgl"><span>WebGL</span><b>…</b></li><li data-f="audio"><span>オーディオ</span><b>…</b></li><li data-f="fontfp"><span>フォント一覧</span><b>…</b></li><li data-f="rand"><span>フィンガープリント対策</span><b>…</b></li><li data-f="traces"><span>保存の痕跡</span><b>…</b></li></ul>
         
-        <a class="btn ink focus-all" href="/ja/">サイトから見たあなたの全体像を見る（134 項目）</a>
       </div>
     </section>
     <section class="hero card">

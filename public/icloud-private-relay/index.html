@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="Is the relay on, and what does it still show?">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"iCloud Private Relay check · 1ms.dog","url":"https://who.1ms.dog/icloud-private-relay/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Free iCloud Private Relay check: whether your address is a relay exit, which network it belongs to, the region it shows, and whether WebRTC leaks anything past it. No IP is kept, only anonymous counts of how common each value is.","inLanguage":"en","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -71,13 +71,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="icloud-private-relay">
-      <div class="focus-t"><h1>iCloud Private Relay check</h1><p>iCloud Private Relay sends Safari's traffic through two hops, so sites see an exit run by Cloudflare, Akamai or Fastly instead of your own address. Sites can still tell it's a relay, and roughly where you are. Here's what yours shows.</p></div>
+      <div class="focus-t"><h1>iCloud Private Relay check</h1><p class="focus-lede">iCloud Private Relay sends Safari's traffic through two hops, so sites see an exit run by Cloudflare, Akamai or Fastly instead of your own address.</p><p>Sites can still tell it's a relay, and roughly where you are. Here's what yours shows.</p><a class="btn ink focus-all" href="/">See your full portrait (134 signals)</a></div>
       <div class="focus-r"><h2>Your relay</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>How to fix</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="ip"><span>IP address</span><b>…</b></li><li data-f="isp"><span>Network (ASN)</span><b>…</b></li><li data-f="geo"><span>IP location</span><b>…</b></li><li data-f="webrtc"><span>WebRTC addresses</span><b>…</b></li><li data-f="ex_intl"><span>IP service abroad</span><b>…</b></li></ul>
         
-        <a class="btn ink focus-all" href="/">See your full portrait (134 signals)</a>
       </div>
     </section>
     <section class="hero card">

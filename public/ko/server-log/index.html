@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="두 방문이 ‘같은 환경’으로 이어지는 방식">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"서버 로그에 남는 나 · 1ms.dog","url":"https://who.1ms.dog/ko/server-log/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"한 번의 방문이 서버 로그에 어떻게 남는지, 허니팟이 지문·저장된 흔적·캐시 ID로 여러 방문을 어떻게 잇는지. 무엇을 알 수 있고 무엇은 알 수 없는지(신원·의도·공격은 포함되지 않아요).","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -71,13 +71,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="server-log">
-      <div class="focus-t"><h1>서버 로그에 남는 나</h1><p>방문할 때마다 서버는 로그 한 줄을 남겨요. 여러 방문을 모으면 일부 읽기값이 같은 환경을 가리키죠. 이 방문이 로그에 어떻게 남는지, 지난번과 어떤 읽기값이 같은지, 그 연관이 무엇을 말할 수 있고 없는지 보여 드려요.</p></div>
+      <div class="focus-t"><h1>서버 로그에 남는 나</h1><p class="focus-lede">방문할 때마다 서버는 로그 한 줄을 남겨요. 여러 방문을 모으면 일부 읽기값이 같은 환경을 가리키죠. 이 방문이 로그에 어떻게 남는지, 지난번과 어떤 읽기값이 같은지, 그 연관이 무엇을 말할 수 있고 없는지 보여 드려요.</p><a class="btn ink focus-all" href="/ko/">사이트가 보는 내 전체 모습 보기(134개 항목)</a></div>
       <div class="focus-r"><h2>방문을 넘어 남는 읽기값</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>해결 방법</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="hwid"><span>하드웨어 ID(브라우저 공통)</span><b>…</b></li><li data-f="fpid"><span>종합 지문</span><b>…</b></li><li data-f="fonts"><span>설치된 글꼴</span><b>…</b></li><li data-f="traces"><span>저장 흔적</span><b>…</b></li><li data-f="etag"><span>캐시 ID(ETag)</span><b>…</b></li></ul>
         
-        <a class="btn ink focus-all" href="/ko/">사이트가 보는 내 전체 모습 보기(134개 항목)</a>
       </div>
     </section><section class="demo card" id="demo" data-none="처음 방문이에요. 이 브라우저에는 지난번 읽기값이 없어요. 홈에서 한 번 측정한 뒤 돌아오면 비교를 볼 수 있어요." data-same="지문 부품이 모두 같아요. 같은 기기, 같은 환경일 가능성이 높아요." data-some="지문 부품 대부분이 같아요. 같은 환경이거나 같은 모델일 수 있어요." data-diff="지문 부품 대부분이 달라졌어요. 다른 기기이거나 다른 설정일 수 있어요.">
       <div class="demo-head"><p class="demo-tag">수비하는 쪽에서 보면</p><h2>두 방문이 어떻게 이어지는가</h2><p class="demo-sub">이 방문과 이 브라우저에 남아 있는 지난 기록으로 보여 드려요. 페이지 자체는 저장하거나 보내지 않아요.</p></div>

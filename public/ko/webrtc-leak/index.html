@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="WebRTC가 실제 IP를 드러내나요?">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"WebRTC 유출 테스트 · 1ms.dog","url":"https://who.1ms.dog/ko/webrtc-leak/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"무료 WebRTC 유출 테스트: WebRTC가 어느 사이트에나 넘겨주는 공인 IPv4·IPv6 주소와 내부 주소를, VPN이나 프록시가 보여 주는 IP와 비교해요. 다르면 WebRTC로 실제 IP가 새고 있는 거예요. Chrome, Firefox, Brave, 프록시 클라이언트에서 고치는 방법도 알려 드려요.","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -71,13 +71,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="webrtc-leak">
-      <div class="focus-t"><h1>WebRTC 유출 테스트</h1><p>브라우저 영상 통화는 WebRTC를 쓰고, 어느 페이지든 묻지 않고 WebRTC를 켤 수 있어요. WebRTC는 UDP로 STUN 서버에 '내가 어느 주소에서 왔는지' 물어보는데, UDP를 전달하지 않는 VPN과 프록시가 많아요. WebRTC가 드러내는 주소를 사이트가 보는 주소와 나란히 보여 드려요.</p></div>
+      <div class="focus-t"><h1>WebRTC 유출 테스트</h1><p class="focus-lede">브라우저 영상 통화는 WebRTC를 쓰고, 어느 페이지든 묻지 않고 WebRTC를 켤 수 있어요.</p><p>WebRTC는 UDP로 STUN 서버에 '내가 어느 주소에서 왔는지' 물어보는데, UDP를 전달하지 않는 VPN과 프록시가 많아요. WebRTC가 드러내는 주소를 사이트가 보는 주소와 나란히 보여 드려요.</p><a class="btn ink focus-all" href="/ko/">사이트가 보는 내 전체 모습 보기(134개 항목)</a></div>
       <div class="focus-r"><h2>내 WebRTC 주소</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>해결 방법</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="webrtc"><span>WebRTC 주소</span><b>…</b></li><li data-f="lan"><span>내부 네트워크 주소</span><b>…</b></li><li data-f="ip"><span>IP 주소</span><b>…</b></li><li data-f="stack"><span>IPv4와 IPv6</span><b>…</b></li></ul>
         <a class="focus-go" id="focusGo" target="_blank" rel="noopener" hidden>출구 IP 돋보기<svg class="ext" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2.5h4.5V7M13.5 2.5 7.5 8.5M12 10v3.5H2.5V4H6"/></svg></a>
-        <a class="btn ink focus-all" href="/ko/">사이트가 보는 내 전체 모습 보기(134개 항목)</a>
       </div>
     </section>
     <section class="hero card">

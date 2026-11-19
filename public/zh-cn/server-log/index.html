@@ -46,7 +46,7 @@
 <meta name="twitter:description" content="两次访问，网站怎么把「同一套环境」串起来">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"网站日志里的你 · 1ms.dog","url":"https://who.1ms.dog/zh-cn/server-log/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"一次访问在网站日志里长什么样，蜜罐怎么用指纹、存储留痕和缓存编号把几次访问串起来；能看到什么、不能看到什么（身份、意图、攻击都不在其中）。","inLanguage":"zh-CN","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -74,13 +74,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="server-log">
-      <div class="focus-t"><h1>网站日志里的你</h1><p>一次访问，服务器会记下一行日志；把几次访问放在一起，有些读数还能指向同一个环境。下面是这次访问在日志里的样子、它和上次的哪些读数一样，以及这些关联能说明什么、不能说明什么。</p></div>
+      <div class="focus-t"><h1>网站日志里的你</h1><p class="focus-lede">一次访问，服务器会记下一行日志；把几次访问放在一起，有些读数还能指向同一个环境。</p><p>下面是这次访问在日志里的样子、它和上次的哪些读数一样，以及这些关联能说明什么、不能说明什么。</p><a class="btn ink focus-all" href="/zh-cn/">看网站眼里的完整画像（134 项）</a></div>
       <div class="focus-r"><h2>能跨访问留下的读数</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>怎么改</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="hwid"><span>硬件编号（跨浏览器）</span><b>…</b></li><li data-f="fpid"><span>综合指纹</span><b>…</b></li><li data-f="fonts"><span>已装字体</span><b>…</b></li><li data-f="traces"><span>存储留痕</span><b>…</b></li><li data-f="etag"><span>缓存编号（ETag）</span><b>…</b></li></ul>
         
-        <a class="btn ink focus-all" href="/zh-cn/">看网站眼里的完整画像（134 项）</a>
       </div>
     </section><section class="demo card" id="demo" data-none="这是第一次，浏览器里还没有上次的读数。先去首页测一次，再回来就能看到对照。" data-same="所有指纹部件都一样：很可能还是同一台机器、同一套环境。" data-some="多数指纹部件一样：可能是同一套环境，也可能是同款机器。" data-diff="多数指纹部件变了：可能是另一台机器，或另一套设置。">
       <div class="demo-head"><p class="demo-tag">防守方视角</p><h2>两次访问，网站怎么把你串起来</h2><p class="demo-sub">下面用这次访问和上一次的本地记录演示；页面本身不记录、不上传。</p></div>

@@ -32,6 +32,19 @@ const IA = JSON.stringify(IN_APPS.map(([n, re]) => [n, re.source]));
 const PREPAINT = `(function(){var d=document.documentElement,th=null,s=null;try{th=localStorage.getItem("who:theme");s=localStorage.getItem("who:lang");if(localStorage.getItem("who:optout")==="1")d.setAttribute("data-nouniq","");if(localStorage.getItem("who:last"))d.setAttribute("data-back","")}catch(e){}var sh=location.pathname.indexOf("/r/")>=0||/^#p=/.test(location.hash);if(sh)d.setAttribute("data-back","");if(sh||navigator.globalPrivacyControl||navigator.webdriver)d.setAttribute("data-nouniq","");if(th==="light"||th==="dark")d.setAttribute("data-theme",th);var u=navigator.userAgent,A=${IA};for(var j=0;j<A.length;j++)if(new RegExp(A[j][1]).test(u)){d.setAttribute("data-inapp",A[j][0]);break}if(!d.hasAttribute("data-inapp")&&/; wv\\)/.test(u))d.setAttribute("data-inapp","wv");var oS=0;function oN(){if(oS)return;oS=1;d.setAttribute("data-old","");var el=document.getElementById("old");if(el){el.hidden=false;el.textContent=(window.L1MS&&window.L1MS.old_b)||"This browser is too old to run this page. Open it in a newer Chrome, Edge or Safari."}}addEventListener("error",function(e){var f=String(e&&e.filename||""),m=String(e&&e.message||"");if(/\\/assets\\/app\\.[0-9a-f]+\\.js/.test(f)&&/SyntaxError|Unexpected token|Unexpected end|not a function|is not defined|not iterable/.test(m))oN()},true);setTimeout(function(){if(!window.__whoAlive)oN()},8000);if(!d.hasAttribute("data-root")||/[?&]embed=/.test(location.search))return;var P=JSON.parse(d.getAttribute("data-paths")||"{}"),l=null;try{var q=new URLSearchParams(location.search).get("lang");if(P[q])l=q}catch(e){}if(!l&&P[s])l=s;for(var ls=navigator.languages||[navigator.language||"en"],i=0;!l&&!s&&i<ls.length;i++){var x=String(ls[i]).toLowerCase(),b=x.split("-")[0];l=b==="zh"?(/tw|hk|mo|hant/.test(x)?"zh-TW":"zh-CN"):P[b]?b:null}if(l&&l!=="en")location.replace(P[l]+location.search+location.hash)})();`;
 
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+// A topic page's opening text, split into two blocks at a sentence (or semicolon) near its middle: one wall of text
+// reads badly on a wide screen. If no boundary leaves a usable block on each side, it stays one paragraph.
+function introParts(s) {
+  const cuts = [];
+  for (const re of [/[。！？]\s*/g, /[.!?](?=\s+["'“‘A-Z])/g, /[;；]\s+/g]) {
+    let m; while ((m = re.exec(s))) cuts.push(m.index + m[0].length);
+  }
+  const ok = cuts.filter(i => i >= 40 && s.length - i >= 40);
+  if (!ok.length) return [s];
+  const mid = s.length / 2;
+  const cut = ok.reduce((a, b) => Math.abs(b - mid) < Math.abs(a - mid) ? b : a);
+  return [s.slice(0, cut).trim(), s.slice(cut).trim()];
+}
 const hash = s => createHash("sha256").update(s).digest("hex").slice(0, 10);
 const sha = s => createHash("sha256").update(s).digest("base64");
 
@@ -212,13 +225,12 @@ export async function build({ check = false } = {}) {
       </div>
       <div class="cp-foot"><p class="cp-note"><span class="cp-i"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg></span>${esc(T("cr_note"))}</p></div>
     </section>` : `<section class="focus card" id="focus" data-page="${page}">
-      <div class="focus-t"><h1>${esc(T("h1"))}</h1><p>${esc(T("intro"))}</p>${d.explain ? `<div class="focus-layers"><p class="focus-layers-h">${esc(d.explain.h)}</p><ol>${d.explain.items.map(([b, s]) => `<li><b>${esc(b)}</b><span>${esc(s)}</span></li>`).join("")}</ol></div>${d.explain.note ? `<p class="focus-limits">${esc(d.explain.note)}</p>` : ""}` : ""}</div>
+      <div class="focus-t"><h1>${esc(T("h1"))}</h1>${introParts(T("intro")).map((p, i) => `<p${i ? "" : ' class="focus-lede"'}>${esc(p)}</p>`).join("")}${d.explain ? `<div class="focus-layers"><p class="focus-layers-h">${esc(d.explain.h)}</p><ol>${d.explain.items.map(([b, s]) => `<li><b>${esc(b)}</b><span>${esc(s)}</span></li>`).join("")}</ol></div>${d.explain.note ? `<p class="focus-limits">${esc(d.explain.note)}</p>` : ""}` : ""}<a class="btn ink focus-all" href="${path(slug)}">${esc(T("go_all").replace("{n}", SNIFFERS.length))}</a></div>
       <div class="focus-r"><h2>${esc(T("focus_h"))}</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         ${P.check ? `<div class="focus-fix" id="focusFix" hidden><p>${esc(T("fix"))}</p><ul></ul></div>` : ""}
         <ul class="focus-rows">${P.rows.map(id => `<li data-f="${id}"><span>${esc(T("s_" + id))}</span><b>…</b></li>`).join("")}</ul>
         ${P.go ? `<a class="focus-go" id="focusGo" target="_blank" rel="noopener" hidden>${esc(T("go_" + P.go))}${EXT}</a>` : ""}
-        <a class="btn ink focus-all" href="${path(slug)}">${esc(T("go_all").replace("{n}", SNIFFERS.length))}</a>
       </div>
     </section>${demo}`;
       const heroTitle = page ? `<h2 class="h1">${esc(base.h1)}</h2>` : `<h1>${esc(T("h1"))}</h1>`;

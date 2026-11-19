@@ -46,7 +46,7 @@
 <meta name="twitter:description" content="不用 Cookie，网站也能给你算出一个 ID">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"浏览器指纹检测 · 1ms.dog","url":"https://who.1ms.dog/zh-cn/fingerprint/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"免费浏览器指纹检测：看看你的 Canvas、WebGL、音频和字体指纹，以及网站不用 Cookie 就能算出的指纹 ID；你的浏览器有没有打乱它，上次来过之后有没有被认出来。检测在你的浏览器里进行，不存 IP，只累计匿名计数，用来告诉你有多少人和你一样。","inLanguage":"zh-CN","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -74,13 +74,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="fingerprint">
-      <div class="focus-t"><h1>浏览器指纹检测</h1><p>网站不用 Cookie 也能认出你。你的系统怎么画文字和图形、怎么处理声音、装了哪些字体，合起来就是一个 ID：换网站、开无痕、开 VPN 都不变。下面是你的指纹、它由哪几部分组成，以及你的浏览器有没有把它打乱。</p><div class="focus-layers"><p class="focus-layers-h">读数来自三个地方</p><ol><li><b>网络与边缘</b><span>IP、网络归属、地理和时延：接收这次连接的一侧先看到这些。</span></li><li><b>协议</b><span>TCP、TLS 和 HTTP/2 的开头：本站的独立探针在自己的连接上读，页面脚本改不了。</span></li><li><b>页面脚本</b><span>画布、WebGL、音频、字体、屏幕和设置：关掉 JavaScript 就没有这些。</span></li></ol></div><p class="focus-limits">越靠前的越不依赖 JavaScript。每一项只证明它测到的东西；边界和例外见右上角的「?」。</p></div>
+      <div class="focus-t"><h1>浏览器指纹检测</h1><p class="focus-lede">网站不用 Cookie 也能认出你。你的系统怎么画文字和图形、怎么处理声音、装了哪些字体，合起来就是一个 ID：换网站、开无痕、开 VPN 都不变。下面是你的指纹、它由哪几部分组成，以及你的浏览器有没有把它打乱。</p><div class="focus-layers"><p class="focus-layers-h">读数来自三个地方</p><ol><li><b>网络与边缘</b><span>IP、网络归属、地理和时延：接收这次连接的一侧先看到这些。</span></li><li><b>协议</b><span>TCP、TLS 和 HTTP/2 的开头：本站的独立探针在自己的连接上读，页面脚本改不了。</span></li><li><b>页面脚本</b><span>画布、WebGL、音频、字体、屏幕和设置：关掉 JavaScript 就没有这些。</span></li></ol></div><p class="focus-limits">越靠前的越不依赖 JavaScript。每一项只证明它测到的东西；边界和例外见右上角的「?」。</p><a class="btn ink focus-all" href="/zh-cn/">看网站眼里的完整画像（134 项）</a></div>
       <div class="focus-r"><h2>你的指纹</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>怎么改</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="fpid"><span>综合指纹</span><b>…</b></li><li data-f="canvas"><span>Canvas</span><b>…</b></li><li data-f="webgl"><span>WebGL</span><b>…</b></li><li data-f="audio"><span>音频</span><b>…</b></li><li data-f="fontfp"><span>字体列表</span><b>…</b></li><li data-f="rand"><span>防指纹</span><b>…</b></li><li data-f="traces"><span>存储留痕</span><b>…</b></li></ul>
         
-        <a class="btn ink focus-all" href="/zh-cn/">看网站眼里的完整画像（134 项）</a>
       </div>
     </section>
     <section class="hero card">

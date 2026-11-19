@@ -46,7 +46,7 @@
 <meta name="twitter:description" content="DNS、WebRTC，以及不同网站看到的出口">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"VPN 泄漏检测 · 1ms.dog","url":"https://who.1ms.dog/zh-cn/vpn-leak/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"免费 VPN 泄漏检测：看看 DNS 服务器、WebRTC，以及不同网站看到的出口会不会暴露你的真实位置；地址是不是 VPN 服务商或 Tor 出口；连接本身的指纹又说了什么。不存 IP，只累计匿名计数。","inLanguage":"zh-CN","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -74,13 +74,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="vpn-leak">
-      <div class="focus-t"><h1>VPN 泄漏检测</h1><p>VPN 藏起了网站看到的地址，但别处还可能漏：DNS 查询走出隧道、WebRTC 找到本地地址，或者不同目标走了不同的线路。下面这次访问会露出什么，哪些口子是真的开着。</p></div>
+      <div class="focus-t"><h1>VPN 泄漏检测</h1><p class="focus-lede">VPN 藏起了网站看到的地址，但别处还可能漏：DNS 查询走出隧道、WebRTC 找到本地地址，或者不同目标走了不同的线路。下面这次访问会露出什么，哪些口子是真的开着。</p><a class="btn ink focus-all" href="/zh-cn/">看网站眼里的完整画像（134 项）</a></div>
       <div class="focus-r"><h2>你的 VPN 泄漏情况</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>怎么改</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="ip"><span>IP 地址</span><b>…</b></li><li data-f="isp"><span>网络（ASN）</span><b>…</b></li><li data-f="tor"><span>Tor 节点</span><b>…</b></li><li data-f="dns"><span>DNS 解析器</span><b>…</b></li><li data-f="webrtc"><span>WebRTC 地址</span><b>…</b></li><li data-f="lan"><span>局域网地址</span><b>…</b></li><li data-f="v6mac"><span>IPv6 泄露网卡 MAC</span><b>…</b></li><li data-f="stack"><span>IPv4 和 IPv6</span><b>…</b></li></ul>
         <a class="focus-go" id="focusGo" target="_blank" rel="noopener" hidden>出口照妖镜<svg class="ext" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2.5h4.5V7M13.5 2.5 7.5 8.5M12 10v3.5H2.5V4H6"/></svg></a>
-        <a class="btn ink focus-all" href="/zh-cn/">看网站眼里的完整画像（134 项）</a>
       </div>
     </section>
     <section class="hero card">

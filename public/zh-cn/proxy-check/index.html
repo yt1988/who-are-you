@@ -46,7 +46,7 @@
 <meta name="twitter:description" content="网站看得出中间隔着代理吗？">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"代理检测 · 1ms.dog","url":"https://who.1ms.dog/zh-cn/proxy-check/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"免费代理检测：对比浏览器测到的往返延迟和 Cloudflare 在自己那条连接上测到的延迟，再看 IP 是不是机房 IP、DNS 和 WebRTC 漏了什么。代理会多出一段网站量得出来的路程，换成家宽 IP 也藏不住。","inLanguage":"zh-CN","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -74,13 +74,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="proxy-check">
-      <div class="focus-t"><h1>代理检测</h1><p>代理能藏住 IP，藏不住多出来的那段路。Cloudflare 在它自己那条连接上测往返时间，而那条连接的另一头其实是代理；你的浏览器测的则是全程。浏览器测出来的比 Cloudflare 长很多，就说明中间还隔着一段，不管 IP 看起来多干净。下面是这两个数字，以及网站常看的其他破绽。</p></div>
+      <div class="focus-t"><h1>代理检测</h1><p class="focus-lede">代理能藏住 IP，藏不住多出来的那段路。Cloudflare 在它自己那条连接上测往返时间，而那条连接的另一头其实是代理；你的浏览器测的则是全程。</p><p>浏览器测出来的比 Cloudflare 长很多，就说明中间还隔着一段，不管 IP 看起来多干净。下面是这两个数字，以及网站常看的其他破绽。</p><a class="btn ink focus-all" href="/zh-cn/">看网站眼里的完整画像（134 项）</a></div>
       <div class="focus-r"><h2>你的往返延迟</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>怎么改</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="edge"><span>最近的数据中心</span><b>…</b></li><li data-f="ip"><span>IP 地址</span><b>…</b></li><li data-f="isp"><span>网络（ASN）</span><b>…</b></li><li data-f="dns"><span>DNS 解析器</span><b>…</b></li><li data-f="webrtc"><span>WebRTC 地址</span><b>…</b></li></ul>
         <a class="focus-go" id="focusGo" target="_blank" rel="noopener" hidden>出口照妖镜<svg class="ext" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2.5h4.5V7M13.5 2.5 7.5 8.5M12 10v3.5H2.5V4H6"/></svg></a>
-        <a class="btn ink focus-all" href="/zh-cn/">看网站眼里的完整画像（134 项）</a>
       </div>
     </section>
     <section class="hero card">

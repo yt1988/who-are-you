@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="중간에 프록시가 있다는 걸 사이트가 알까?">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"프록시 검사 · 1ms.dog","url":"https://who.1ms.dog/ko/proxy-check/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"무료 프록시 검사: 브라우저가 잰 왕복 시간과 Cloudflare가 자기 연결에서 본 왕복 시간을 비교하고, IP가 데이터센터 것인지, DNS와 WebRTC 주소는 어떤지 확인해요. 깨끗한 가정용 IP라도 프록시는 사이트가 잴 수 있는 구간을 하나 더 만들어요.","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -71,13 +71,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="proxy-check">
-      <div class="focus-t"><h1>프록시 검사</h1><p>프록시는 IP를 숨겨 주지만, 길이 한 구간 늘어나는 건 숨기지 못해요. Cloudflare는 자기 연결에서 왕복 시간을 재는데, 그 연결의 반대쪽 끝은 프록시예요. 브라우저는 전체 구간을 재요. 브라우저 쪽이 훨씬 길면 IP가 어떻게 보이든 중간에 뭔가 있다는 뜻이에요. 두 값과 함께, 사이트가 보는 다른 단서도 보여 드려요.</p></div>
+      <div class="focus-t"><h1>프록시 검사</h1><p class="focus-lede">프록시는 IP를 숨겨 주지만, 길이 한 구간 늘어나는 건 숨기지 못해요.</p><p>Cloudflare는 자기 연결에서 왕복 시간을 재는데, 그 연결의 반대쪽 끝은 프록시예요. 브라우저는 전체 구간을 재요. 브라우저 쪽이 훨씬 길면 IP가 어떻게 보이든 중간에 뭔가 있다는 뜻이에요. 두 값과 함께, 사이트가 보는 다른 단서도 보여 드려요.</p><a class="btn ink focus-all" href="/ko/">사이트가 보는 내 전체 모습 보기(134개 항목)</a></div>
       <div class="focus-r"><h2>내 왕복 시간</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>해결 방법</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="edge"><span>가장 가까운 데이터센터</span><b>…</b></li><li data-f="ip"><span>IP 주소</span><b>…</b></li><li data-f="isp"><span>네트워크(ASN)</span><b>…</b></li><li data-f="dns"><span>DNS 리졸버</span><b>…</b></li><li data-f="webrtc"><span>WebRTC 주소</span><b>…</b></li></ul>
         <a class="focus-go" id="focusGo" target="_blank" rel="noopener" hidden>출구 IP 돋보기<svg class="ext" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2.5h4.5V7M13.5 2.5 7.5 8.5M12 10v3.5H2.5V4H6"/></svg></a>
-        <a class="btn ink focus-all" href="/ko/">사이트가 보는 내 전체 모습 보기(134개 항목)</a>
       </div>
     </section>
     <section class="hero card">

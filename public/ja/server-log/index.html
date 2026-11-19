@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="2 回の訪問が「同じ環境」に結ばれるまで">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"サーバーログに残るあなた · 1ms.dog","url":"https://who.1ms.dog/ja/server-log/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"1 回の訪問がサーバーのログにどう残るか、ハニーポットが指紋・保存された痕跡・キャッシュ ID で複数の訪問をどう結びつけるか。何が分かり、何が分からないか（身元・意図・攻撃は含みません）。","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -71,13 +71,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="server-log">
-      <div class="focus-t"><h1>サーバーログに残るあなた</h1><p>訪問のたびに、サーバーは 1 行のログを残します。複数の訪問を並べると、いくつかの読み取りは同じ環境を指します。ここでは、この訪問がログにどう残るか、前回とどの読み取りが同じか、その関連が何を言えて何を言えないかを示します。</p></div>
+      <div class="focus-t"><h1>サーバーログに残るあなた</h1><p class="focus-lede">訪問のたびに、サーバーは 1 行のログを残します。複数の訪問を並べると、いくつかの読み取りは同じ環境を指します。</p><p>ここでは、この訪問がログにどう残るか、前回とどの読み取りが同じか、その関連が何を言えて何を言えないかを示します。</p><a class="btn ink focus-all" href="/ja/">サイトから見たあなたの全体像を見る（134 項目）</a></div>
       <div class="focus-r"><h2>訪問をまたいで残る読み取り</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>直し方</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="hwid"><span>ハードウェア ID（ブラウザ共通）</span><b>…</b></li><li data-f="fpid"><span>総合フィンガープリント</span><b>…</b></li><li data-f="fonts"><span>インストール済みフォント</span><b>…</b></li><li data-f="traces"><span>保存の痕跡</span><b>…</b></li><li data-f="etag"><span>キャッシュ ID（ETag）</span><b>…</b></li></ul>
         
-        <a class="btn ink focus-all" href="/ja/">サイトから見たあなたの全体像を見る（134 項目）</a>
       </div>
     </section><section class="demo card" id="demo" data-none="初めての訪問です。このブラウザには前回の読み取りがありません。トップページで 1 回測ってから戻ると比較できます。" data-same="指紋の部品がすべて同じです。同じマシン、同じ環境である可能性が高いです。" data-some="指紋の部品の多くが同じです。同じ環境か、同じ型の端末かもしれません。" data-diff="指紋の部品の多くが変わりました。別のマシン、または別の設定かもしれません。">
       <div class="demo-head"><p class="demo-tag">防御側から見ると</p><h2>2 回の訪問がどう結ばれるか</h2><p class="demo-sub">この訪問と、このブラウザに残っている前回の記録で示します。ページ自体は何も保存せず、送信もしません。</p></div>

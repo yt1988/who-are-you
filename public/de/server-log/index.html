@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="Wie zwei Besuche an derselben Umgebung hängen">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Du im Server-Log · 1ms.dog","url":"https://who.1ms.dog/de/server-log/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Wie ein Besuch im Server-Log aussieht und wie ein Honeypot Besuche über Fingerabdruck, gespeicherte Spuren und Cache-ID verbindet — und was diese Verbindung sagen kann und was nicht (weder Identität noch Absicht noch Angriff).","inLanguage":"de","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -71,13 +71,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="server-log">
-      <div class="focus-t"><h1>Du im Server-Log</h1><p>Jeder Besuch hinterlässt eine Zeile im Server-Log; mehrere Besuche zusammen lassen einige Messwerte auf dieselbe Umgebung deuten. Hier siehst du diesen Besuch, wie ein Log ihn sieht, welche Messwerte er mit dem letzten teilt und was diese Verbindung sagen kann und was nicht.</p></div>
+      <div class="focus-t"><h1>Du im Server-Log</h1><p class="focus-lede">Jeder Besuch hinterlässt eine Zeile im Server-Log; mehrere Besuche zusammen lassen einige Messwerte auf dieselbe Umgebung deuten.</p><p>Hier siehst du diesen Besuch, wie ein Log ihn sieht, welche Messwerte er mit dem letzten teilt und was diese Verbindung sagen kann und was nicht.</p><a class="btn ink focus-all" href="/de/">Dein vollständiges Porträt ansehen (134 Signale)</a></div>
       <div class="focus-r"><h2>Messwerte, die einen Besuch überdauern</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>Lösung</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="hwid"><span>Hardware-ID (browserübergreifend)</span><b>…</b></li><li data-f="fpid"><span>Gesamtfingerabdruck</span><b>…</b></li><li data-f="fonts"><span>Installierte Schriften</span><b>…</b></li><li data-f="traces"><span>Gespeicherte Spuren</span><b>…</b></li><li data-f="etag"><span>Cache-ID (ETag)</span><b>…</b></li></ul>
         
-        <a class="btn ink focus-all" href="/de/">Dein vollständiges Porträt ansehen (134 Signale)</a>
       </div>
     </section><section class="demo card" id="demo" data-none="Das ist der erste Besuch; dieser Browser hat keine früheren Messwerte. Mach den Test einmal auf der Hauptseite und komm zurück, um den Vergleich zu sehen." data-same="Alle Teile des Fingerabdrucks sind gleich: sehr wahrscheinlich dieselbe Maschine oder dieselbe Umgebung." data-some="Die meisten Teile sind gleich: vielleicht dieselbe Umgebung oder dasselbe Modell." data-diff="Die meisten Teile haben sich geändert: vielleicht eine andere Maschine oder eine andere Einrichtung.">
       <div class="demo-head"><p class="demo-tag">Die Seite des Verteidigers</p><h2>Wie zwei Besuche verbunden werden</h2><p class="demo-sub">Eine Demonstration mit diesem Besuch und dem Eintrag des letzten in diesem Browser; die Seite speichert und sendet nichts.</p></div>

@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="Les sites voient-ils qu’un proxy se glisse entre vous ?">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Détection de proxy · 1ms.dog","url":"https://who.1ms.dog/fr/proxy-check/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Détection de proxy gratuite : le temps d’aller-retour mesuré par votre navigateur comparé à celui que Cloudflare voit sur sa connexion, le type de votre IP (datacenter ou non), votre DNS et vos adresses WebRTC. Un proxy ajoute un détour que les sites peuvent mesurer, même avec une IP résidentielle propre.","inLanguage":"fr","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.86b860d11b.css">
+<link rel="stylesheet" href="/assets/app.69c1340c71.css">
 </head>
 <body>
 <div class="app">
@@ -71,13 +71,12 @@
 
   <main id="main" class="topic">
     <section class="focus card" id="focus" data-page="proxy-check">
-      <div class="focus-t"><h1>Détection de proxy</h1><p>Un proxy cache votre IP, mais pas le détour qu’il ajoute au trajet. Cloudflare mesure l’aller-retour sur sa propre connexion, qui s’arrête au proxy ; votre navigateur mesure le trajet complet. Quand celui du navigateur est nettement plus long, il y a quelque chose entre les deux, quelle que soit l’allure de l’IP. Voici les deux mesures, avec les autres indices qu’utilisent les sites.</p></div>
+      <div class="focus-t"><h1>Détection de proxy</h1><p class="focus-lede">Un proxy cache votre IP, mais pas le détour qu’il ajoute au trajet. Cloudflare mesure l’aller-retour sur sa propre connexion, qui s’arrête au proxy ; votre navigateur mesure le trajet complet.</p><p>Quand celui du navigateur est nettement plus long, il y a quelque chose entre les deux, quelle que soit l’allure de l’IP. Voici les deux mesures, avec les autres indices qu’utilisent les sites.</p><a class="btn ink focus-all" href="/fr/">Voir votre portrait complet (134 signaux)</a></div>
       <div class="focus-r"><h2>Votre aller-retour</h2>
         <p class="focus-v" id="focusV"><i class="st"></i><b><i class="skl"></i></b></p>
         <div class="focus-fix" id="focusFix" hidden><p>Comment corriger</p><ul></ul></div>
         <ul class="focus-rows"><li data-f="edge"><span>Centre de données le plus proche</span><b>…</b></li><li data-f="ip"><span>Adresse IP</span><b>…</b></li><li data-f="isp"><span>Réseau (ASN)</span><b>…</b></li><li data-f="dns"><span>Résolveur DNS</span><b>…</b></li><li data-f="webrtc"><span>Adresses WebRTC</span><b>…</b></li></ul>
         <a class="focus-go" id="focusGo" target="_blank" rel="noopener" hidden>Loupe IP<svg class="ext" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2.5h4.5V7M13.5 2.5 7.5 8.5M12 10v3.5H2.5V4H6"/></svg></a>
-        <a class="btn ink focus-all" href="/fr/">Voir votre portrait complet (134 signaux)</a>
       </div>
     </section>
     <section class="hero card">
