@@ -273,11 +273,9 @@ export default {
   ],
 
   // 可追蹤度：畫像下方的一張判決（站長 2026-11-19 選「畫像優先」）
-  tv_k: "可追蹤度", tv_note: "依本站匿名計數的分布估算，不是全世界的比例。", tv_of: "/ 100", tv_better: "比 {p}% 的訪客更不易被認出", tv_worse: "比 {p}% 的訪客更容易被認出", tv_wait: "樣本還在累積（已有 {n} 次檢測）；先看你的指紋在人群裡有多常見",
+  tv_k: "可追蹤度", tv_note: "依本站匿名計數的分布估算，不是全世界的比例。", tv_of: "/ 100", tv_better: "比 {p}% 的訪客更不易被認出", tv_worse: "比 {p}% 的訪客更容易被認出", tv_wait: "可追蹤度的分桶樣本還在累積（已有 {n} 次）；先看你的指紋在人群裡有多常見",
   tv_conf: "信心度：{c}", tv_hi: "高", tv_mid: "中", tv_lo: "低",
   tv_rar: "稀有度", tv_rar_v: "指紋在 {total} 次檢測裡出現 {k} 次", tv_stab: "穩定度", tv_stab_v: "{a}/{b} 個元件與上次相同",
-  tv_bread: "可讀面", tv_bread_v: "讀到 {a}/{b} 項", tv_na: "這次沒讀到",
-  tv_h: "最要緊的三件事", tv_exp: "預計 -{n}", tv_fix: "怎麼改", tv_share: "分享判決書", tv_go: "去改這三項",
-  tv_none: "這次沒有發現明顯的識別點", tv_hist: "上次 {a} → 這次 {b}", tv_hist_fixed: "上次 {a} → 這次 {b} · 修好 {n} 項", tv_hist_one: "這次 {a}；再測一次就能看到變化",
+  tv_bread: "可讀面", tv_bread_v: "讀到 {a}/{b} 項", tv_na: "這次沒讀到", tv_fix: "怎麼改", tv_hist: "上次 {a} → 這次 {b}", tv_hist_fixed: "上次 {a} → 這次 {b} · 修好 {n} 項", tv_hist_one: "這次 {a}；再測一次就能看到變化",
 
 };

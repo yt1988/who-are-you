@@ -274,11 +274,9 @@ export default {
   ],
 
   // traçabilité : le verdict sous le portrait (le portrait d’abord, 2026-11-19)
-  tv_k: "Traçabilité", tv_note: "Estimé à partir des comptages anonymes de ce site, pas une proportion du monde entier.", tv_of: "/ 100", tv_better: "Moins identifiable que {p}% des visiteurs", tv_worse: "Plus identifiable que {p}% des visiteurs", tv_wait: "L’échantillon grandit encore ({n} tests) ; en attendant, voyez à quel point votre empreinte est courante",
+  tv_k: "Traçabilité", tv_note: "Estimé à partir des comptages anonymes de ce site, pas une proportion du monde entier.", tv_of: "/ 100", tv_better: "Moins identifiable que {p}% des visiteurs", tv_worse: "Plus identifiable que {p}% des visiteurs", tv_wait: "L’échantillon de traçabilité grandit encore ({n} tests) ; en attendant, voyez à quel point votre empreinte est courante",
   tv_conf: "Confiance : {c}", tv_hi: "élevée", tv_mid: "moyenne", tv_lo: "faible",
   tv_rar: "Rareté", tv_rar_v: "Votre empreinte est apparue {k} fois sur {total} tests", tv_stab: "Stabilité", tv_stab_v: "{a} parties sur {b} identiques à la dernière visite",
-  tv_bread: "Lisibilité", tv_bread_v: "{a} lectures sur {b} obtenues", tv_na: "non lue cette fois",
-  tv_h: "Les trois points qui comptent", tv_exp: "environ −{n}", tv_fix: "Comment corriger", tv_share: "Partager le verdict", tv_go: "Corriger ces trois points",
-  tv_none: "Rien de marquant cette fois", tv_hist: "La dernière fois {a} → cette fois {b}", tv_hist_fixed: "La dernière fois {a} → cette fois {b} · {n} corrigés", tv_hist_one: "{a} cette fois ; relancez le test pour voir le changement",
+  tv_bread: "Lisibilité", tv_bread_v: "{a} lectures sur {b} obtenues", tv_na: "non lue cette fois", tv_fix: "Comment corriger", tv_hist: "La dernière fois {a} → cette fois {b}", tv_hist_fixed: "La dernière fois {a} → cette fois {b} · {n} corrigés", tv_hist_one: "{a} cette fois ; relancez le test pour voir le changement",
 
 };

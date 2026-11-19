@@ -274,11 +274,9 @@ export default {
   ],
 
   // rastreabilidade: o veredicto sob o retrato (retrato primeiro, 2026-11-19)
-  tv_k: "Rastreabilidade", tv_note: "Estimado pelas contagens anônimas deste site, não é uma proporção do mundo todo.", tv_of: "/ 100", tv_better: "Menos identificável que {p}% dos visitantes", tv_worse: "Mais identificável que {p}% dos visitantes", tv_wait: "A amostra ainda cresce ({n} testes); por enquanto, veja quão comum é a sua impressão",
+  tv_k: "Rastreabilidade", tv_note: "Estimado pelas contagens anônimas deste site, não é uma proporção do mundo todo.", tv_of: "/ 100", tv_better: "Menos identificável que {p}% dos visitantes", tv_worse: "Mais identificável que {p}% dos visitantes", tv_wait: "A amostra de rastreabilidade ainda cresce ({n} testes); por enquanto, veja quão comum é a sua impressão",
   tv_conf: "Confiança: {c}", tv_hi: "alta", tv_mid: "média", tv_lo: "baixa",
   tv_rar: "Raridade", tv_rar_v: "Sua impressão apareceu {k} vezes em {total} testes", tv_stab: "Estabilidade", tv_stab_v: "{a} de {b} partes iguais à última visita",
-  tv_bread: "Leitura", tv_bread_v: "{a} de {b} leituras respondidas", tv_na: "não lida desta vez",
-  tv_h: "As três coisas que mais importam", tv_exp: "cerca de −{n}", tv_fix: "Como corrigir", tv_share: "Compartilhar o veredito", tv_go: "Corrigir estas três",
-  tv_none: "Nada se destacou desta vez", tv_hist: "Da última vez {a} → desta vez {b}", tv_hist_fixed: "Da última vez {a} → desta vez {b} · {n} corrigidas", tv_hist_one: "{a} desta vez; teste de novo para ver a mudança",
+  tv_bread: "Leitura", tv_bread_v: "{a} de {b} leituras respondidas", tv_na: "não lida desta vez", tv_fix: "Como corrigir", tv_hist: "Da última vez {a} → desta vez {b}", tv_hist_fixed: "Da última vez {a} → desta vez {b} · {n} corrigidas", tv_hist_one: "{a} desta vez; teste de novo para ver a mudança",
 
 };

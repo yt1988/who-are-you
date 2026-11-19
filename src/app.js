@@ -2135,6 +2135,7 @@ import { standing, percentile, shares, bucketOf, BUCKETS } from "./standing.mjs"
       available: Math.max(0, done.size - unsup.size), rows: SNIFFERS.length, gradeScore: gr.score, checks: R.ck || {},
     });
     R.st.pct = shares(R.ixHist, R.st.score);
+    R.st.ixTotal = R.ixHist ? Object.values(R.ixHist).reduce((a, b) => a + (+b || 0), 0) : 0;
     paintStanding();
     // (the first count had no rarity yet: count this run's bucket alone now, once a day like the traits)
     if (R.countedNow && !R.ixSent) {
@@ -2142,7 +2143,7 @@ import { standing, percentile, shares, bucketOf, BUCKETS } from "./standing.mjs"
       try {
         const res = await within(fetch("/api/seen", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ix: bucketOf(R.st.score) }) }), 4000, null);
         const j = res && res.ok ? await res.json() : null;
-        if (j && j.ix) { R.ixHist = j.ix; R.st.pct = shares(R.ixHist, R.st.score); paintStanding(); }
+        if (j && j.ix) { R.ixHist = j.ix; R.st.pct = shares(R.ixHist, R.st.score); R.st.ixTotal = Object.values(R.ixHist).reduce((a, b) => a + (+b || 0), 0); paintStanding(); }
       } catch (e) {}
     }
   }
@@ -2152,7 +2153,7 @@ import { standing, percentile, shares, bucketOf, BUCKETS } from "./standing.mjs"
     $("#tvN").textContent = st.score;
     const p = st.pct;
     const hi = p ? Math.round(100 * p.higher / p.all) : null, lo = p ? Math.round(100 * p.lower / p.all) : null;
-    $("#tvP").textContent = p == null ? t("tv_wait", { n: (R.uniq ? R.uniq.total : 0).toLocaleString(LANG) })
+    $("#tvP").textContent = p == null ? t("tv_wait", { n: (st.ixTotal || 0).toLocaleString(LANG) })
       : hi >= lo ? t("tv_better", { p: hi }) : t("tv_worse", { p: lo });
     $("#tvC").textContent = t("tv_conf", { c: t("tv_" + st.confidence) });
     const kv = [["rarity", "tv_rar", "tv_rar_v"], ["stability", "tv_stab", "tv_stab_v"], ["breadth", "tv_bread", "tv_bread_v"]];
@@ -2165,10 +2166,6 @@ import { standing, percentile, shares, bucketOf, BUCKETS } from "./standing.mjs"
         : key === "rarity" ? t(val, { k: st.rarityN.k || "?", total: (st.rarityN.total || 0).toLocaleString(LANG) })
         : key === "stability" ? t(val, { a: st.stabilityN.same, b: st.stabilityN.total }) : t(val, { a: st.breadthN.a, b: st.breadthN.b });
     });
-    $("#tvF").innerHTML = st.findings.length ? st.findings.map(f => {
-      const v = ((CK[f.id] && CK[f.id].querySelector(".ck-v")) || {}).textContent || "";
-      return `<li class="lv-${f.level}"><b>${esc(t("c_" + f.id))}</b><span>${esc(v)}</span><em>${esc(t("tv_exp", { n: f.expected }))}</em><button type="button" data-go="${f.id}">${esc(t("tv_fix"))}</button></li>`;
-    }).join("") : `<li class="tv-none">${esc(t("tv_none"))}</li>`;
     let h = []; try { h = JSON.parse(store.get(K.hist) || "[]"); } catch (e) {}
     h = (Array.isArray(h) ? h : []).filter(x => x && x.idx != null);
     const hl = $("#tvHist");
@@ -2179,16 +2176,9 @@ import { standing, percentile, shares, bucketOf, BUCKETS } from "./standing.mjs"
     else hl.textContent = " ";
   }
 
-  // a finding's "怎么改": open that check's tip and bring its row to the middle of the screen
-  function showCheck(id) {
-    const r = CK[id]; if (!r) return;
-    const tip = r.querySelector(".ck-tip"), fix = r.querySelector(".ck-fix");
-    if (tip) tip.hidden = false; if (fix) fix.setAttribute("aria-expanded", "true");
-    r.scrollIntoView({ block: "center", behavior: "smooth" });
-  }
-  if ($("#tvF")) $("#tvF").onclick = e => { const b = e.target.closest("[data-go]"); if (b) showCheck(b.dataset.go); };
   if ($("#tvShare")) $("#tvShare").onclick = () => $("#share").click();
-  if ($("#tvGo")) $("#tvGo").onclick = () => { const f = R.st && R.st.findings[0]; if (f) showCheck(f.id); else $("#todo").scrollIntoView({ block: "center" }); };
+  // (the card is the metric, not a second list of checks: the fixes live in the right-hand panel's 先改这几项)
+  if ($("#tvGo")) $("#tvGo").onclick = () => $("#todo").scrollIntoView({ block: "center" });
 
   // Compare with a friend: the portrait a shared link carried here (?vs=), beside the visitor's own, field by field
   function versus() {

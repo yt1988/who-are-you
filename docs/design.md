@@ -659,10 +659,15 @@ gives one number, 0–100, higher = easier to tell apart, from four measured par
 - **breadth (15%)** — how many of the 134 rows the browser answered;
 - **leaks (10%)** — the inverse of the existing A–F grade's score.
 
-Unknown parts use 50 and drop the confidence (high/mid/low). Findings are the flagged checks, strongest first, each
-with a conservative "about −N" (an estimate, not a promise). The percentile is the share of counted visitors above or
-below the score, from 10-point buckets, and is withheld until 1,000 counted runs; the card's note says the share is of
-this site's visitors, not the world.
+Unknown parts use 50 and drop the confidence (high/mid/low). The percentile is the share of counted visitors above or
+below the score, from 10-point buckets, and is withheld until 1,000 counted runs; the wait line gives the bucket
+sample's own count, not the 252k traits total, and the card's note says the share is of this site's visitors, not the
+world.
+
+The card deliberately does **not** repeat the disguise checks: the owner pointed out that its first draft listed the
+same three findings and fixes as the right-hand panel, a second copy of one list. The checks, "fix these first" and
+every per-row fix stay the single source on the right; the card carries only what they cannot: the population
+percentile, the index's three parts, confidence and the thirty-day trajectory, with one link to the panel.
 
 Counting: `POST /api/seen` also accepts a 10-point `ix` bucket, stored in the same counts table and returned as a
 histogram. The page posts it alone after the first answer, when the rarity it needs is known (once a day per browser,

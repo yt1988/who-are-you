@@ -90,7 +90,6 @@ await pool(LANGS, N, async ([lang, slug], base) => {
     story: document.querySelector("#story").textContent, checks: [...document.querySelectorAll(".ckr")].map(x => [x.dataset.c, x.className]),
     num: document.querySelector("#mNum").textContent, fp: document.querySelector("#fpId").textContent, ret: document.querySelector("#fpRet").textContent,
     tv: document.querySelector("#tvN").textContent.trim(), tvK: [...document.querySelectorAll("#tvK b")].map(x => x.textContent.trim()),
-    tvF: document.querySelector("#tvF").textContent.trim(),
   }));
   for (const e of errors) fail(lang, "script error: " + e);
   if (r.rows.length !== SNIFFERS.length) fail(lang, `${r.rows.length} rows, expected ${SNIFFERS.length}`);
@@ -104,7 +103,6 @@ await pool(LANGS, N, async ([lang, slug], base) => {
   if (!r.fp.trim() || !r.ret.trim()) fail(lang, "ID card not filled");
   if (!/^\d+$/.test(r.tv)) fail(lang, `standing "${r.tv}"`);
   if (r.tvK.length !== 3 || r.tvK.some(v => !v || v === "…")) fail(lang, `standing parts not filled (${r.tvK.join(", ")})`);
-  if (!r.tvF) fail(lang, "standing findings are empty");
 
   if (lang === "zh-CN") {
     // share (1ms.dog's share dialog), then open the link as someone else would
