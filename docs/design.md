@@ -644,3 +644,32 @@ now carries no candidates, and the visitor types what is wrong; the page-level e
 which entry was clicked in a capture listener (the host opens the dialog on the bubble phase) and `msReport` consumes
 it once; any other report entry clears it. Verified against a stand-in host: the time-zone row's report has no `picks`,
 `#rpRead` still has all eight with the graphics card first.
+
+## 2026-11-19 — the trackability standing (portrait first)
+
+The owner chose portrait-first: the new standing follows the hero, it does not replace it. Under the portrait a card
+gives one number, 0–100, higher = easier to tell apart, from four measured parts:
+
+- **rarity (45%)** — the whole fingerprint's count among the anonymous checks (the first 8 characters of the hash):
+  `100·(1 − log10(n)/log10(total))`, not the sum of per-attribute entropy (Google's 2024 study on tens of millions of
+  Chrome browsers: correlated attributes overstate uniqueness);
+- **stability (30%)** — of the seven fingerprint parts kept from the visitor's last visit, how many are identical;
+  with no last visit a randomized/noisy/protected browser answers for itself (15/45/35), otherwise unknown, scored as
+  the middle value and lowering confidence;
+- **breadth (15%)** — how many of the 134 rows the browser answered;
+- **leaks (10%)** — the inverse of the existing A–F grade's score.
+
+Unknown parts use 50 and drop the confidence (high/mid/low). Findings are the flagged checks, strongest first, each
+with a conservative "about −N" (an estimate, not a promise). The percentile is the share of counted visitors above or
+below the score, from 10-point buckets, and is withheld until 1,000 counted runs; the card's note says the share is of
+this site's visitors, not the world.
+
+Counting: `POST /api/seen` also accepts a 10-point `ix` bucket, stored in the same counts table and returned as a
+histogram. The page posts it alone after the first answer, when the rarity it needs is known (once a day per browser,
+like the traits). No per-visit records; the bucket is anonymous. The last ten runs keep their score and grade in this
+browser (`who:hist`), and the card shows the last change and the fixes made (the flagged count fell).
+
+Measured against the mocked Worker: CLS 0.074 at 1280×900 and 0.029 at 390×844; the card's skeletons are in the HTML
+from the first paint. It is hidden on topic pages, shared portraits and embeds. Still to come in this slice: the
+context × time stability map (page / iframe / worker / cross-domain / reload), the public Browser Privacy Index from the
+buckets, and the Tune-Up loop. The share dialog still draws the portrait card; a verdict card comes next.

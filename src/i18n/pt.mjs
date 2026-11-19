@@ -272,4 +272,13 @@ export default {
     ["Por que o número de telas é maior que a do meu desk?", "O site conta todas as telas que o navegador declara, não as que você pode tocar. Três coisas adicionam telas virtuais: um driver de tela virtual (programas como Duet Display, SuperDisplay ou iDisplay transformam um tablet em segunda tela), uma sessão de área de trabalho remota, ou um app de streaming (Parsec, Moonlight, TeamViewer) que apresenta uma tela extra. Uma tela estendida também conta: um notebook com monitor externo declara duas.\nPara baixar, feche a sessão de streaming ou remota e saia do programa de tela virtual, ou desligue a tela extra nas configurações de vídeo do sistema (Windows: Configurações → Sistema → Tela; macOS: Ajustes do Sistema → Telas). A página não distingue uma tela física de uma virtual, então só conta o que dizem a ela."],
     ["Por que algumas linhas dizem \"este navegador não informa\"?", "Nem todo navegador tem todas as APIs. Layout do teclado, bateria, tipo de conexão, memória e client hints só existem no Chromium; Safari e Firefox compartilham menos de propósito. Um valor que não pôde ser lido é bom para a sua privacidade."],
   ],
+
+  // rastreabilidade: o veredicto sob o retrato (retrato primeiro, 2026-11-19)
+  tv_k: "Rastreabilidade", tv_note: "Estimado pelas contagens anônimas deste site, não é uma proporção do mundo todo.", tv_of: "/ 100", tv_better: "Menos identificável que {p}% dos visitantes", tv_worse: "Mais identificável que {p}% dos visitantes", tv_wait: "A amostra ainda cresce ({n} testes); por enquanto, veja quão comum é a sua impressão",
+  tv_conf: "Confiança: {c}", tv_hi: "alta", tv_mid: "média", tv_lo: "baixa",
+  tv_rar: "Raridade", tv_rar_v: "Sua impressão apareceu {k} vezes em {total} testes", tv_stab: "Estabilidade", tv_stab_v: "{a} de {b} partes iguais à última visita",
+  tv_bread: "Leitura", tv_bread_v: "{a} de {b} leituras respondidas", tv_na: "não lida desta vez",
+  tv_h: "As três coisas que mais importam", tv_exp: "cerca de −{n}", tv_fix: "Como corrigir", tv_share: "Compartilhar o veredito", tv_go: "Corrigir estas três",
+  tv_none: "Nada se destacou desta vez", tv_hist: "Da última vez {a} → desta vez {b}", tv_hist_fixed: "Da última vez {a} → desta vez {b} · {n} corrigidas", tv_hist_one: "{a} desta vez; teste de novo para ver a mudança",
+
 };

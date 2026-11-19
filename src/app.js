@@ -12,6 +12,7 @@ import { wasmProbe, WASM_FEATURES } from "./wasm.mjs";
 import { TZ_CC } from "./tz.mjs";
 import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
 import { exifOf } from "./exif.mjs";
+import { standing, percentile, shares, bucketOf, BUCKETS } from "./standing.mjs";
 
 (function () {
   "use strict";
@@ -193,6 +194,7 @@ import { exifOf } from "./exif.mjs";
   const N = SNIFFERS.length;
   // Network Checkup, the run of every 1ms.dog tool at once, beside the verdict (when the host announces it; never
   // inside it)
+  if (EMBED && $("#tv")) $("#tv").hidden = true;
   const CHECK = META("check");
   if (CHECK && !EMBED) { const a = $("#checkGo"); a.href = inLang(CHECK); a.innerHTML = esc(t("go_check")) + EXT; a.hidden = false; }
   // the row under the bar takes its place from the start when it will hold something, so nothing moves later
@@ -1802,6 +1804,8 @@ import { exifOf } from "./exif.mjs";
     try { last = JSON.parse(store.get(K.last) || "null"); } catch (e) {}
     const where = cityName(P.city) || (P.cc ? country(P.cc) : "");
     const parts = R.fpParts || {};
+    // (the standing compares this visit with the one before, so keep the old record before overwriting it)
+    R.lastParts = last && last.parts && Object.keys(last.parts).length ? last.parts : null;
     store.set(K.last, JSON.stringify({ at: Date.now(), fp: P.rand ? null : P.fp, where, br: R.browser || "", parts }));
     $("#forget").hidden = false;
     if (P.rand) return t("rv_rand");
@@ -2107,8 +2111,10 @@ import { exifOf } from "./exif.mjs";
     let h = [];
     try { h = JSON.parse(store.get(K.hist) || "[]"); } catch (e) {}
     const n = COUNTED.filter(id => R.ck[id] && (R.ck[id][0] === "bad" || R.ck[id][0] === "warn")).length;
-    h = [...(Array.isArray(h) ? h : []), { at: Date.now(), n }].slice(-10);
+    const gr = grade(R.ck, COUNTED.filter(id => R.ck[id]));
+    h = [...(Array.isArray(h) ? h : []), { at: Date.now(), n, idx: R.st ? R.st.score : null, grade: gr.grade }].slice(-10);
     store.set(K.hist, JSON.stringify(h));
+    if ($("#tv")) paintStanding();
     const el = $("#vHist");
     if (h.length < 2) { el.hidden = true; return; }
     const W = 120, H = 26, top = Math.max(1, ...h.map(x => x.n)), x = i => (i * W / (h.length - 1)).toFixed(1), y = v => (H - 3 - v / top * (H - 6)).toFixed(1);
@@ -2117,6 +2123,72 @@ import { exifOf } from "./exif.mjs";
       h.map((p, i) => `<circle cx="${x(i)}" cy="${y(p.n)}" r="2.6"><title>${esc(t("hist_pt", { ago: ago(p.at), n: p.n }))}</title></circle>`).join("") + "</svg>";
     el.hidden = false; $("#vMeta").hidden = false;
   }
+
+  // The trackability standing, computed after the anonymous counts answer (rarity is their whole-fingerprint count).
+  // Painted under the portrait: the page stays portrait-first, the verdict follows (the owner's choice, 2026-11-19).
+  async function standingNow() {
+    if (EMBED || D.focus || document.documentElement.classList.contains("shared") || !$("#tv")) return;
+    const gr = grade(R.ck || {}, COUNTED.filter(id => R.ck && R.ck[id]));
+    R.st = standing({
+      total: R.uniq ? R.uniq.total : null, fpid: R.uniq && R.uniq.n ? +R.uniq.n.fpid || null : null,
+      lastParts: R.lastParts, parts: R.fpParts, rand: R.rand, noise: R.noise, rf: rfp() || /^(sh_rfp|sh_fpp|sh_atfp)$/.test(R.shield || ""),
+      available: Math.max(0, done.size - unsup.size), rows: SNIFFERS.length, gradeScore: gr.score, checks: R.ck || {},
+    });
+    R.st.pct = shares(R.ixHist, R.st.score);
+    paintStanding();
+    // (the first count had no rarity yet: count this run's bucket alone now, once a day like the traits)
+    if (R.countedNow && !R.ixSent) {
+      R.ixSent = true;
+      try {
+        const res = await within(fetch("/api/seen", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ix: bucketOf(R.st.score) }) }), 4000, null);
+        const j = res && res.ok ? await res.json() : null;
+        if (j && j.ix) { R.ixHist = j.ix; R.st.pct = shares(R.ixHist, R.st.score); paintStanding(); }
+      } catch (e) {}
+    }
+  }
+
+  function paintStanding() {
+    const st = R.st; if (!st || !$("#tv")) return;
+    $("#tvN").textContent = st.score;
+    const p = st.pct;
+    const hi = p ? Math.round(100 * p.higher / p.all) : null, lo = p ? Math.round(100 * p.lower / p.all) : null;
+    $("#tvP").textContent = p == null ? t("tv_wait", { n: (R.uniq ? R.uniq.total : 0).toLocaleString(LANG) })
+      : hi >= lo ? t("tv_better", { p: hi }) : t("tv_worse", { p: lo });
+    $("#tvC").textContent = t("tv_conf", { c: t("tv_" + st.confidence) });
+    const kv = [["rarity", "tv_rar", "tv_rar_v"], ["stability", "tv_stab", "tv_stab_v"], ["breadth", "tv_bread", "tv_bread_v"]];
+    const lis = $$("#tvK li");
+    kv.forEach(([key, lab, val], i) => {
+      if (!lis[i]) return;
+      lis[i].querySelector("b").textContent = st[key] == null ? "–" : st[key];
+      lis[i].querySelector("span").textContent = t(lab);
+      lis[i].querySelector("em").textContent = st[key] == null ? t("tv_na")
+        : key === "rarity" ? t(val, { k: st.rarityN.k || "?", total: (st.rarityN.total || 0).toLocaleString(LANG) })
+        : key === "stability" ? t(val, { a: st.stabilityN.same, b: st.stabilityN.total }) : t(val, { a: st.breadthN.a, b: st.breadthN.b });
+    });
+    $("#tvF").innerHTML = st.findings.length ? st.findings.map(f => {
+      const v = ((CK[f.id] && CK[f.id].querySelector(".ck-v")) || {}).textContent || "";
+      return `<li class="lv-${f.level}"><b>${esc(t("c_" + f.id))}</b><span>${esc(v)}</span><em>${esc(t("tv_exp", { n: f.expected }))}</em><button type="button" data-go="${f.id}">${esc(t("tv_fix"))}</button></li>`;
+    }).join("") : `<li class="tv-none">${esc(t("tv_none"))}</li>`;
+    let h = []; try { h = JSON.parse(store.get(K.hist) || "[]"); } catch (e) {}
+    h = (Array.isArray(h) ? h : []).filter(x => x && x.idx != null);
+    const hl = $("#tvHist");
+    if (h.length >= 2) {
+      const a = h[h.length - 2], b = h[h.length - 1], fixed = (a.n || 0) - (b.n || 0);
+      hl.textContent = t(fixed > 0 ? "tv_hist_fixed" : "tv_hist", { a: a.idx, b: b.idx, n: Math.abs(fixed) });
+    } else if (h.length === 1) hl.textContent = t("tv_hist_one", { a: h[0].idx });
+    else hl.textContent = " ";
+  }
+
+  // a finding's "怎么改": open that check's tip and bring its row to the middle of the screen
+  function showCheck(id) {
+    const r = CK[id]; if (!r) return;
+    const tip = r.querySelector(".ck-tip"), fix = r.querySelector(".ck-fix");
+    if (tip) tip.hidden = false; if (fix) fix.setAttribute("aria-expanded", "true");
+    r.scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+  if ($("#tvF")) $("#tvF").onclick = e => { const b = e.target.closest("[data-go]"); if (b) showCheck(b.dataset.go); };
+  if ($("#tvShare")) $("#tvShare").onclick = () => $("#share").click();
+  if ($("#tvGo")) $("#tvGo").onclick = () => { const f = R.st && R.st.findings[0]; if (f) showCheck(f.id); else $("#todo").scrollIntoView({ block: "center" }); };
 
   // Compare with a friend: the portrait a shared link carried here (?vs=), beside the visitor's own, field by field
   function versus() {
@@ -2466,6 +2538,8 @@ import { exifOf } from "./exif.mjs";
     if (!r || typeof r.total !== "number") { $("#fpUniq").classList.add("gone"); return; }
     if (add) store.set(K.seen, stamp);
     R.uniq = { total: r.total, n: r.n || {} };
+    R.ixHist = r.ix || null;
+    R.countedNow = !!add;
     paintUniq();
   }
   // a run still going STUCK_MS in: counted once as stuck, the time alone (nothing about the visitor)
@@ -2975,7 +3049,7 @@ import { exifOf } from "./exif.mjs";
     R.end = true;
     syncReportEntries(); syncCheckReports();
     adProfile();
-    if (!EMBED) { compare(); history(); seen(); versus(); }
+    if (!EMBED) { compare(); versus(); seen().then(() => standingNow(), () => standingNow()).finally(() => history()); }
     $("#rerun").disabled = false; $("#share").disabled = false; $("#copyTxt").disabled = false; $("#dlJson").disabled = false; $("#printPg").disabled = false;
     warmShare();
     if (EMBED && !failed) post(embedResult());

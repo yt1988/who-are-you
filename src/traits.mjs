@@ -2,6 +2,7 @@
 // Coarse values as they are (a system, a browser, a screen); fingerprint hashes cut to their first 8 characters.
 // Used by the page (what to send, which rows get a "common / rare / only you" tag) and the Worker (what it accepts).
 import { CHECKS, PROTO } from "./sniffers.mjs";
+import { BUCKETS } from "./standing.mjs";
 
 export const TRAITS = ["os", "browser", "screen", "gpu", "langs", "tz", "fontfp", "canvas", "webgl", "audio", "mathfp", "emoji", "hwdec", "fpid",
   // (the coarse readings beside the fingerprints: one value each, counted the same way, so every row with one can say
@@ -28,7 +29,10 @@ export function cleanSeen(b) {
   }
   if (b.ck && typeof b.ck === "object") for (const [id, lv] of Object.entries(b.ck)) if (IDS.has(id) && LEVELS.has(lv)) ck[id] = lv;
   const any = Object.keys(t).length > 0;
-  return any || dur ? { add: b.add === true && any, t, ck, ...(dur && { dur }) } : null;
+  // (the 10-point trackability bucket, counted once a day like the traits; a run can send it alone, after the counts
+  // that its rarity needs have answered)
+  const ix = BUCKETS.includes(b.ix) ? b.ix : null;
+  return any || dur || ix ? { add: b.add === true && any, t, ck, ...(dur && { dur }), ...(ix && { ix }) } : null;
 }
 
 // how common a value is among `total` checks: only you, rare (under 2%), or common; null until there are enough checks

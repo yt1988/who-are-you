@@ -273,4 +273,13 @@ export default {
     ["Why does the monitor count show more than the one on my desk?", "A site counts every display the browser reports, not the ones you can touch. Three things add virtual ones: a virtual-display driver (software such as Duet Display, SuperDisplay or iDisplay turns a tablet into a second screen), a remote-desktop session, or a streaming app (Parsec, Moonlight, TeamViewer) that presents an extra screen. An extended display counts too: a laptop with an external monitor reports two.\nTo bring it down, close the streaming or remote session and quit the virtual-display software, or turn the extra display off in the system's display settings (Windows: Settings → System → Display; macOS: System Settings → Displays). The page can't tell a physical screen from a virtual one, so it just counts what it is told."],
     ["Why do some rows say \"this browser doesn't say\"?", "Not every browser offers every API. Keyboard layout, battery, connection type, memory and client hints are Chromium only; Safari and Firefox share less on purpose. A missing value is good for your privacy."],
   ],
+
+  // trackability: the verdict under the portrait (portrait-first, the owner's choice, 2026-11-19)
+  tv_k: "Trackability", tv_note: "Estimated from this site's anonymous counts, not a share of the whole world.", tv_of: "/ 100", tv_better: "Less identifiable than {p}% of visitors", tv_worse: "More identifiable than {p}% of visitors", tv_wait: "The sample is still growing ({n} checks so far); for now, how common your fingerprint is",
+  tv_conf: "Confidence: {c}", tv_hi: "high", tv_mid: "medium", tv_lo: "low",
+  tv_rar: "Rarity", tv_rar_v: "Your fingerprint appeared {k} times in {total} checks", tv_stab: "Stability", tv_stab_v: "{a} of {b} parts matched the last visit",
+  tv_bread: "Readable", tv_bread_v: "{a} of {b} readings answered", tv_na: "not read this time",
+  tv_h: "The three that matter most", tv_exp: "about −{n}", tv_fix: "How to fix", tv_share: "Share the verdict", tv_go: "Fix these three",
+  tv_none: "Nothing stood out this time", tv_hist: "Last time {a} → this time {b}", tv_hist_fixed: "Last time {a} → this time {b} · {n} fixed", tv_hist_one: "{a} this time; run it again to see the change",
+
 };

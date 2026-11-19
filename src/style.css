@@ -151,7 +151,8 @@ html[lang="ru"] { --story-p1: 6; }
   .dv-head span:nth-child(2), .dv-head span:nth-child(3) { display: none; }
 }
 /* a topic page keeps to its topic: the main page's sections stay out (the check still runs, for its panel) */
-main.topic > .hero, main.topic > .target, main.topic > .probes, main.topic > .vs { display: none; }
+main.topic > .hero, main.topic > .tv, main.topic > .target, main.topic > .probes, main.topic > .vs { display: none; }
+html.shared .tv { display: none; }
 /* compare with a friend: the visitor's readings beside a shared portrait's, the matching ones marked */
 .vs { margin: 10px 0 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; scroll-margin: 16px; } .vs h2 { font-size: 16px; font-weight: 800; margin-bottom: 4px; } .vs-n { color: var(--muted); font-size: 13.5px; margin-bottom: 12px; }
 .vs-t { width: 100%; border-collapse: collapse; font-size: 13.5px; table-layout: fixed; }
@@ -326,6 +327,40 @@ html.shared .tally, html.shared .idc-u, html[data-who-embed] .tally, html[data-w
 .v-d { color: var(--muted); font-size: 12.5px; line-height: 1.45; min-height: 2.9em; margin-top: 3px; }
 /* sharing, and the checkup, right under the verdict */
 .v-acts { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; margin-top: 8px; }
+/* The trackability standing, under the portrait: one number, its three parts, the three findings that matter, and the
+   last runs. Portrait-first (the owner's choice): it follows the hero, it does not replace it. */
+.tv { display: flex; flex-direction: column; gap: 10px; }
+.tv[hidden] { display: none; }
+.tv-top { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.tv-k { color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.tv-n { font: 800 34px/1 var(--f-num); color: var(--ink); letter-spacing: -.03em; }
+.tv-of { color: var(--muted); font: 500 13px var(--f-num); }
+.tv-c { margin-left: auto; color: var(--muted); font-size: 12px; }
+.tv-p { margin: 0; font-size: 13px; line-height: 1.6; color: var(--muted); }
+.tv-kpis { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 2px 0 0; padding: 0; }
+.tv-kpis li { background: var(--soft); border-radius: 10px; padding: 8px 10px; }
+.tv-kpis b { display: block; font: 700 20px/1.2 var(--f-num); color: var(--fg); }
+.tv-kpis span { display: block; color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+.tv-kpis em { display: block; color: var(--muted); font-size: 11.5px; font-style: normal; margin-top: 4px; }
+.tv-kpis em .skl { width: 8ch; }
+.tv h3 { font-size: 14px; margin: 6px 0 0; }
+.tv-f { list-style: none; margin: 0; padding: 0; }
+.tv-f li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; align-items: baseline; border-top: 1px solid var(--line); padding: 8px 0; font-size: 13px; min-height: 44px; }
+.tv-f li:first-child { border-top: 0; }
+.tv-f b { font-weight: 600; }
+.tv-f b::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--t3); margin-right: 7px; }
+.tv-f li.lv-bad b::before { background: var(--bad); }
+.tv-f span { color: var(--muted); font-size: 12px; grid-column: 1; line-height: 1.45; }
+.tv-f em { color: var(--ink); font-style: normal; font-size: 12px; font-weight: 600; grid-column: 2; grid-row: 1; white-space: nowrap; }
+.tv-f button { grid-column: 2; grid-row: 2; justify-self: end; border: 0; background: none; color: var(--ink); font: 600 12px var(--f-ui); padding: 4px 0; min-height: 24px; cursor: pointer; }
+.tv-f button:hover { text-decoration: underline; }
+.tv-f .tv-sk { display: block; padding: 12px 0; }
+.tv-f .tv-sk .skl { width: 70%; }
+.tv-none { color: var(--muted); padding: 8px 0; }
+.tv-hist { margin: 0; color: var(--muted); font-size: 12px; min-height: 1.5em; }
+.tv-note { margin: 0; color: var(--muted); font-size: 11.5px; line-height: 1.5; }
+.tv-a { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+@media (max-width: 720px) { .tv-kpis { grid-template-columns: 1fr; } .tv-c { margin-left: 0; flex-basis: 100%; } }
 .btn.sm { height: 30px; padding: 0 12px; font-size: 13px; border-radius: 9px; }
 .btn.ink { border-color: var(--ink); color: var(--ink); font-weight: 600; }
 .btn.ink:not(:disabled):hover { background: var(--ink-soft); }
