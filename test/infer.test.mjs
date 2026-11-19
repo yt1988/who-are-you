@@ -1,7 +1,7 @@
 // What the readings are taken to mean: system and browser, graphics card, keyboard, network, nationality, checks.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { macOf, v6Type, tunnelOf, langCC, nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, netOf, sysLangs, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, discreteGpu, isRelayIp, rfpClock, isIntegratedGpu, FEATURES, engineRange, engineOff, platformOff, glVendorOff, idLies, armSay, armGpu } from "../src/infer.mjs";
+import { macOf, v6Type, tunnelOf, langCC, nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, netOf, sysLangs, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, discreteGpu, isRelayIp, rfpClock, isIntegratedGpu, FEATURES, engineRange, engineOff, rigOf, freshOf, platformOff, glVendorOff, idLies, armSay, armGpu } from "../src/infer.mjs";
 import { cleanSeen, rarity, durOf } from "../src/traits.mjs";
 import { regionName, flagCode } from "../src/regions.mjs";
 
@@ -224,6 +224,20 @@ test("disguise checks", () => {
   assert.equal(engineOff(156, engineRange(old)), true);    // claims 156, the engine stops at 127
   assert.equal(engineOff(125, engineRange(old)), false);
   assert.equal(engineOff(110, engineRange(all)), true);    // claims 110, the engine has 136's features
+  assert.equal(engineOff(130, { lo: 136, hi: 116 }), false); // contradictory table (a newer feature present, an older one gone): unknown
+  // What a site makes of the machine: a 120 Hz Mac is a high-end creator machine, not a gaming console
+  assert.equal(rigOf({ kind: "mac", gpu: "Apple M1 Pro", hz: 120 }), "rg_power");
+  assert.equal(rigOf({ kind: "mac", gpu: "Apple M1 Pro", hz: 60 }), "rg_power");
+  assert.equal(rigOf({ kind: "pc", gpu: "NVIDIA GeForce RTX 4060", hz: 144 }), "rg_game");
+  assert.equal(rigOf({ kind: "pc", gpu: "Intel UHD Graphics", hz: 60 }), "rg_basic");
+  assert.equal(rigOf({ kind: "mac", gpu: "Apple M1 Pro", hz: 120, gs: 1 }), "rg_soft");
+  // Freshness is a lower bound against the newest version on record, never an extrapolated "current"; a version
+  // newer than the record has no verdict ("unknown"), which is the exit the audit asked for.
+  assert.equal(freshOf({ browser: "Chrome 158" }), null);
+  assert.equal(freshOf({ browser: "Chrome 157" }), 0);
+  assert.equal(freshOf({ browser: "Chrome 153" }), 4);
+  assert.equal(freshOf({ browser: "Firefox 160" }), null);
+  assert.equal(freshOf({ browser: "Safari 26" }), null);
   assert.equal(platformOff("Win32", "Windows 11"), false);
   assert.equal(platformOff("MacIntel", "Windows 11"), true);
   assert.equal(platformOff("MacIntel", "iPadOS 18"), false);

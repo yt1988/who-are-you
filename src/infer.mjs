@@ -594,8 +594,38 @@ export function engineRange(has) {
   const yes = FEATURES.filter(([, k]) => has[k]).map(([v]) => v), no = FEATURES.filter(([, k]) => !has[k]).map(([v]) => v);
   return { lo: yes.length ? Math.max(...yes) : 0, hi: no.length ? Math.min(...no) - 1 : null, n: yes.length };
 }
-// a Chromium user agent's version against that range (a feature missing below one present is itself a sign)
-export const engineOff = (claimed, r) => !!(claimed && r && (claimed < r.lo || (r.hi != null && (claimed > r.hi || r.hi < r.lo))));
+// a Chromium user agent's version against that range (a feature missing below one present is itself a sign). A
+// feature set that contradicts itself (a later feature present, an earlier one gone, as when an API is renamed) is
+// no ground for a verdict: return false rather than call the browser disguised.
+export const engineOff = (claimed, r) => {
+  if (!claimed || !r || (r.hi != null && r.hi < r.lo)) return false;
+  return claimed < r.lo || (r.hi != null && claimed > r.hi);
+};
+
+// What a site makes of the machine: the newest stable major versions this table knows (update monthly, AGENTS.md).
+// A browser newer than its entry is unknown, not "latest": the table cannot see releases after it was written, and
+// the old four-week extrapolation called current browsers behind. An older one is at least that many behind.
+export const LATEST = { Chrome: 157, Edge: 157, Firefox: 159 };
+export function freshOf(P = {}) {
+  const m = /^(Chrome|Edge|Firefox) (\d+)/.exec(P.browser || "");
+  if (!m) return null;
+  const known = LATEST[m[1]];
+  return known == null || +m[2] > known ? null : known - +m[2];
+}
+
+// A high-refresh screen plus a high-end card is a gaming PC. A Mac's ProMotion screen is a creator's display, not a
+// console, so the game verdict asks for a PC platform: an Apple M-series Mac with 120 Hz falls through to the
+// neutral high-end line. (The keys are the i18n's rg_*.)
+export function rigOf(P = {}) {
+  const g = P.gpu || "", hi = !!P.gi || /RTX\s?(20|30|40|50)\d0|RX\s?[679]\d{3}|Arc A7|Apple M\d+ (Pro|Max|Ultra)/i.test(g),
+    low = /UHD|HD Graphics|Iris|Radeon\(TM\) Graphics|Radeon Graphics|Vega \d+ Graphics/i.test(g),
+    pc = P.kind === "pc" || P.kind === "mac";
+  if (P.gs) return "rg_soft";
+  if (P.kind === "pc" && hi && (P.hz || 0) >= 120) return "rg_game";
+  if (pc && hi) return "rg_power";
+  if (pc && low) return "rg_basic";
+  return "rg_none";
+}
 // navigator.platform against the system the user agent names
 // (HarmonyOS is left out on purpose: its browsers report Win32 on every device, so that alone would mark a whole system
 // as tampered — what the row says instead is armSay's job, #114)

@@ -66,6 +66,8 @@ shift. `CHROME_PATH=…` picks the browser for the smoke tests.
 - `node scripts/cities.mjs`: city names in ja, ko, zh-CN, zh-TW and ru for the English names Cloudflare gives, from
   Wikidata (CC0; writes `public/assets/city/`). Rarely.
 - iPhone and iPad screens in `src/models.mjs`: by hand, when Apple ships a new screen size (usually September).
+- `LATEST` in `src/infer.mjs`: the newest stable Chrome, Edge and Firefox major versions (`freshOf` never guesses
+  past them; a newer version is "unknown"). Monthly, or when a release ships.
 - `npm run og`: the link-preview images (`public/og/`), after the hero's wording changes.
 
 ## Deploy

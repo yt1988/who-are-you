@@ -7,7 +7,7 @@ import { GROUPS, SNIFFERS, BLANKS, CHECKS, PROTO, COUNTED, TODO_SK } from "./sni
 import { TRAITS, rarity, MIN_TOTAL, durOf, STUCK_MS } from "./traits.mjs";
 import { TW, flagCode } from "./regions.mjs";
 import { encode, decode, linkPath, parsePath } from "./share.mjs";
-import { nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, tzCC, langCC, sysLangs, SYS_FONT_LIST, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, isIntegratedGpu, discreteGpu, isRelayIp, rfpClock, idLies, FEATURES, engineRange, engineOff, platformOff, glVendorOff, armSay, armGpu, tunnelOf, macOf, v6Type } from "./infer.mjs";
+import { nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, tzCC, langCC, sysLangs, SYS_FONT_LIST, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, isIntegratedGpu, discreteGpu, isRelayIp, rfpClock, idLies, FEATURES, engineRange, engineOff, rigOf, freshOf, platformOff, glVendorOff, armSay, armGpu, tunnelOf, macOf, v6Type } from "./infer.mjs";
 import { wasmProbe, WASM_FEATURES } from "./wasm.mjs";
 import { TZ_CC } from "./tz.mjs";
 import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
@@ -1927,10 +1927,7 @@ import { exifOf } from "./exif.mjs";
         : strong && ipc && home ? t(P.nt === "dc" || P.nt === "split" ? "rd_off" : "rd_proxy", { ipc, home, list: list(away.map(k => t("gs_i_" + k))) })
         : P.nt === "split" ? t("rd_split") : P.nt === "dc" ? t("rd_dc") : P.nt === "vpn" ? t("rd_vpn") : away.length && ipc && home ? t("rd_abroad", { ipc, home }) : ipc ? t("rd_home", { ipc }) : t("rd_none")));
     }
-    // (a discrete card beside the integrated one counts as a high-end machine)
-    const g = P.gpu || "", hi = !!P.gi || /RTX\s?(20|30|40|50)\d0|RX\s?[679]\d{3}|Arc A7|Apple M\d+ (Pro|Max|Ultra)/i.test(g);
-    const low = /UHD|HD Graphics|Iris|Radeon\(TM\) Graphics|Radeon Graphics|Vega \d+ Graphics/i.test(g), pc = P.kind === "pc" || P.kind === "mac";
-    blank("rig", esc(t(P.gs ? "rg_soft" : pc && hi && P.hz >= 120 ? "rg_game" : pc && hi ? "rg_power" : pc && low ? "rg_basic" : "rg_none")));
+    blank("rig", esc(t(rigOf(P))));
     // how a site recognizes you anyway: scrambled (it can't), the cache's ID, a store that survived, the hardware ID
     const kept = (P.kept || []).filter(k => k !== "ls");
     // (the store probes answer this, not the fingerprint alone: in a partial pass it waits for them, not for "same")
@@ -1944,8 +1941,8 @@ import { exifOf } from "./exif.mjs";
     // the paragraphs after: what the machine is worth, updates, when, power, settings; then the labels and standing out
     const tier = tierOf(P);
     blank("tier", esc(tier.text));
-    const b = behind(P);
-    blank("fresh", esc(b == null ? t("fr_na") : b <= 2 ? t("fr_new") : tn("fr_old", b, { n: b })), BLANKS.fresh, P.browser || "");
+    const b = freshOf(P);
+    blank("fresh", esc(b == null ? t("fr_na") : b === 0 ? t("fr_new") : tn("fr_old", b, { n: b })), BLANKS.fresh, P.browser || "");
     blank("when", esc(whenOf(P)));
     blank("power", esc(!P.bat ? t("pw_na") : P.bat === "ac" ? t("pw_ac") : t(P.bat[0] === "c" ? "pw_chg" : "pw_bat", { p: P.bat.slice(1) })));
     const pf = [P.fs && P.fs !== 16 && t("pf_font", { n: P.fs }), P.rm && t("pf_motion"), P.hc && t("pf_contrast")].filter(Boolean);
@@ -1965,14 +1962,6 @@ import { exifOf } from "./exif.mjs";
     const spec = list([{ 7680: "8K", 6016: "6K", 5120: "5K", 3840: "4K", 2560: "2K", 1920: "1080p" }[big] || P.screen,   // (2880×1800 is no "2K")
       P.hz >= 90 ? P.hz + " Hz" : "", g, P.cpu ? tn("cores", P.cpu, { n: P.cpu }) : ""].filter(Boolean));
     return { lv, text: t("tr_" + lv, { spec }) + (P.multi ? t("tr_multi") : "") };
-  }
-  // how many versions behind the browser is: a recent release of each, and one every four weeks since
-  const LATEST = { Chrome: [156, "2026-11-03"], Edge: [156, "2026-11-03"], Firefox: [159, "2026-11-03"] };
-  function behind(P) {
-    const m = /^(Chrome|Edge|Firefox) (\d+)/.exec(P.browser || "");
-    if (!m) return null;
-    const [v0, d0] = LATEST[m[1]], want = v0 + Math.floor(((P.t || Date.now()) - Date.parse(d0)) / (28 * 864e5));
-    return Math.max(0, want - +m[2]);
   }
   // the visitor's local time when they came, by their clock (not when the clock is a stand-in)
   function whenOf(P) {

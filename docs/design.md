@@ -644,3 +644,24 @@ now carries no candidates, and the visitor types what is wrong; the page-level e
 which entry was clicked in a capture listener (the host opens the dialog on the bubble phase) and `msReport` consumes
 it once; any other report entry clears it. Verified against a stand-in host: the time-zone row's report has no `picks`,
 `#rpRead` still has all eight with the graphics card first.
+
+
+## 2026-11-20 — a 120 Hz Mac is not a console; freshness is a lower bound (P0 audit #6)
+
+The external P0 audit said a recent Chrome was called four versions behind and an Apple Silicon Mac with a 120 Hz
+screen was called a gaming machine. Reproduced the second on this Mac (Chrome 157.0.8103.79, M1 Pro, 120 Hz): the
+portrait said 「八成是拿来打游戏的」. The rule `pc && hi && hz >= 120` counted `kind: "mac"` as `pc`; the game verdict
+now asks for `kind === "pc"`, so the same machine says 「是台能写代码、剪视频的高配机器」.
+
+The first did not reproduce on today's table (Chrome 157 was shown as latest, not four behind), but the rule behind it
+was wrong: `LATEST` held a version and a date, and `behind` projected one release every 28 days from them, so a table
+that ages can invent a "current" version and call a browser behind; and a browser at or above the table was called
+"latest" although the table cannot know. `freshOf` now compares with the newest version on record only: lower → at
+least N behind; equal → the same as the record; higher → unknown (`fr_na`). The copy says "at least" and "same as the
+newest on record", never "about" or "latest"; `LATEST` updates monthly (AGENTS.md). The engine-feature table keeps its
+mismatch check, but a feature set that contradicts itself (a later feature present, an earlier one gone, as when an API
+is renamed) now returns unknown instead of calling the browser disguised.
+
+Tests: `rigOf` (Mac 120 Hz → power, Windows RTX 144 Hz → game), `freshOf` (157 → 0, 158 → unknown, 153 → 4),
+`engineOff` with a contradictory table. Re-checked in the real Chrome on this Mac: 120 Hz, "high-end machine", "same as
+the newest on record".
