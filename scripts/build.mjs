@@ -193,11 +193,13 @@ export async function build({ check = false } = {}) {
         <div class="demo-visits"><h3>${esc(DM.visits_h)}</h3>
           <div class="dv-pair"><div class="dv"><b>${esc(DM.now)}</b><span id="dgNow"><i class="skl"></i></span></div>
             <div class="dv"><b>${esc(DM.last)}</b><span id="dgLast"><i class="skl"></i></span></div></div>
-          <div class="dv-head"><span></span><span>${esc(DM.now)}</span><span>${esc(DM.last)}</span><span></span></div>
-          <ul class="dv-parts" id="dgParts"></ul>
           <p class="dv-verdict" id="dgVerdict"><i class="skl"></i></p>
-          <p class="hint">${esc(DM.note)}</p>
         </div>
+      </div>
+      <div class="demo-parts">
+        <div class="dv-head"><span></span><span>${esc(DM.now)}</span><span>${esc(DM.last)}</span><span></span></div>
+        <ul class="dv-parts" id="dgParts"></ul>
+        <p class="hint">${esc(DM.note)}</p>
       </div>
     </section>`;
       const focus = !page ? "" : P.stats ? `<section class="cp" id="crowd" data-page="${page}">

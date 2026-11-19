@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="Comment deux visites se rattachent à un même environnement">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Vous dans le journal d’un serveur · 1ms.dog","url":"https://who.1ms.dog/fr/server-log/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"À quoi ressemble une visite dans le journal d’un serveur, comment un honeypot relie des visites par l’empreinte, les traces stockées et l’ID de cache — et ce que ce lien peut dire ou non (ni identité, ni intention, ni attaque).","inLanguage":"fr","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.7d0614a16a.css">
+<link rel="stylesheet" href="/assets/app.86b860d11b.css">
 </head>
 <body>
 <div class="app">
@@ -86,11 +86,13 @@
         <div class="demo-visits"><h3>Cette visite et la précédente : ce qui n’a pas changé</h3>
           <div class="dv-pair"><div class="dv"><b>Cette visite</b><span id="dgNow"><i class="skl"></i></span></div>
             <div class="dv"><b>La précédente</b><span id="dgLast"><i class="skl"></i></span></div></div>
-          <div class="dv-head"><span></span><span>Cette visite</span><span>La précédente</span><span></span></div>
-          <ul class="dv-parts" id="dgParts"></ul>
           <p class="dv-verdict" id="dgVerdict"><i class="skl"></i></p>
-          <p class="hint">C’est un lien candidat : une autre machine du même modèle et de la même configuration peut aussi correspondre, et il ne prouve ni la même personne ni une intention. L’IP de sortie n’a jamais été conservée.</p>
         </div>
+      </div>
+      <div class="demo-parts">
+        <div class="dv-head"><span></span><span>Cette visite</span><span>La précédente</span><span></span></div>
+        <ul class="dv-parts" id="dgParts"></ul>
+        <p class="hint">C’est un lien candidat : une autre machine du même modèle et de la même configuration peut aussi correspondre, et il ne prouve ni la même personne ni une intention. L’IP de sortie n’a jamais été conservée.</p>
       </div>
     </section>
     <section class="hero card">

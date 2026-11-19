@@ -110,7 +110,7 @@ html[lang="ru"] { --story-p1: 6; }
 @media (max-width: 720px) { .focus-layers li { grid-template-columns: 1fr; gap: 2px; } }
 
 /* the server-log page's demonstration: one log line, and this visit against the last one kept in this browser */
-.demo { display: flex; flex-direction: column; gap: 16px; }
+.demo { display: flex; flex-direction: column; gap: 16px; padding: 20px 24px; }
 .demo-tag { color: var(--ink); font-size: 12px; font-weight: 600; margin: 0; }
 .demo-head h2 { font-size: 15px; margin: 2px 0 6px; }
 .demo-sub { color: var(--muted); font-size: 13px; line-height: 1.6; margin: 0; }
@@ -120,22 +120,25 @@ html[lang="ru"] { --story-p1: 6; }
 .dv-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
 .dv { background: var(--soft); border-radius: 8px; padding: 8px 10px; font-size: 12.5px; color: var(--muted); min-height: 3.4em; }
 .dv b { display: block; color: var(--fg); font-weight: 600; margin-bottom: 2px; }
-.dv-head { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr) 20px; gap: 8px; padding: 10px 0 2px; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.demo-parts { border-top: 1px solid var(--line); padding-top: 8px; }
+.dv-head { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr) 24px; gap: 12px; padding: 4px 0 2px; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
 .dv-parts { list-style: none; margin: 0; padding: 0; min-height: 210px; }
 .demo.first .dv-parts, .demo.first .dv-head { min-height: 0; }
-.demo.first .dv-head { display: none; }
-.dv-parts li { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr) 20px; gap: 8px; align-items: center; border-top: 1px solid var(--line); min-height: 30px; font-size: 12.5px; }
+.demo.first .dv-head, .demo.first .demo-parts { display: none; }
+.dv-parts li, .dv-head { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr) 24px; }
+.dv-parts li { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr) 24px; gap: 12px; align-items: center; border-top: 1px solid var(--line); min-height: 32px; font-size: 12.5px; }
 .dv-parts li span { color: var(--muted); }
 .dv-parts li b { font: 500 11.5px var(--f-num); overflow-wrap: anywhere; }
 .dv-parts li i { font-style: normal; font-weight: 700; text-align: right; }
 .dv-parts .ok { color: var(--t1); } .dv-parts .bad { color: var(--t3); }
 .dv-verdict { font-weight: 600; font-size: 13px; margin: 10px 0 0; min-height: 1.5em; }
 @media (max-width: 720px) {
+  .demo { padding: 16px; }
   .demo-grid { grid-template-columns: 1fr; }
   .dv-parts { min-height: 0; }
-  .dv-parts li { grid-template-columns: minmax(0, 1fr) 20px; }
+  .dv-parts li { grid-template-columns: minmax(0, 1fr) 24px; }
   .dv-parts li b { display: none; }
-  .dv-head { grid-template-columns: minmax(0, 1fr) 20px; }
+  .dv-head { grid-template-columns: minmax(0, 1fr) 24px; }
   .dv-head span:nth-child(2), .dv-head span:nth-child(3) { display: none; }
 }
 /* a topic page keeps to its topic: the main page's sections stay out (the check still runs, for its panel) */

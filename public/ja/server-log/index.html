@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="2 回の訪問が「同じ環境」に結ばれるまで">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"サーバーログに残るあなた · 1ms.dog","url":"https://who.1ms.dog/ja/server-log/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"1 回の訪問がサーバーのログにどう残るか、ハニーポットが指紋・保存された痕跡・キャッシュ ID で複数の訪問をどう結びつけるか。何が分かり、何が分からないか（身元・意図・攻撃は含みません）。","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.7d0614a16a.css">
+<link rel="stylesheet" href="/assets/app.86b860d11b.css">
 </head>
 <body>
 <div class="app">
@@ -86,11 +86,13 @@
         <div class="demo-visits"><h3>今回と前回：変わらなかった読み取り</h3>
           <div class="dv-pair"><div class="dv"><b>今回</b><span id="dgNow"><i class="skl"></i></span></div>
             <div class="dv"><b>前回</b><span id="dgLast"><i class="skl"></i></span></div></div>
-          <div class="dv-head"><span></span><span>今回</span><span>前回</span><span></span></div>
-          <ul class="dv-parts" id="dgParts"></ul>
           <p class="dv-verdict" id="dgVerdict"><i class="skl"></i></p>
-          <p class="hint">これは候補の関連です。同じ型と設定の別の端末も一致し得ますし、同じ人だという証明にも、意図の説明にもなりません。出口 IP は一度も保存していません。</p>
         </div>
+      </div>
+      <div class="demo-parts">
+        <div class="dv-head"><span></span><span>今回</span><span>前回</span><span></span></div>
+        <ul class="dv-parts" id="dgParts"></ul>
+        <p class="hint">これは候補の関連です。同じ型と設定の別の端末も一致し得ますし、同じ人だという証明にも、意図の説明にもなりません。出口 IP は一度も保存していません。</p>
       </div>
     </section>
     <section class="hero card">

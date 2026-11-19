@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="Como duas visitas se ligam a um mesmo ambiente">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Você no log de um servidor · 1ms.dog","url":"https://who.1ms.dog/pt/server-log/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Como uma visita aparece no log de um servidor e como um honeypot liga visitas pela impressão digital, rastros guardados e ID de cache; o que esse vínculo pode dizer e o que não pode (nem identidade, nem intenção, nem ataque).","inLanguage":"pt","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.7d0614a16a.css">
+<link rel="stylesheet" href="/assets/app.86b860d11b.css">
 </head>
 <body>
 <div class="app">
@@ -86,11 +86,13 @@
         <div class="demo-visits"><h3>Esta visita e a anterior: o que não mudou</h3>
           <div class="dv-pair"><div class="dv"><b>Esta visita</b><span id="dgNow"><i class="skl"></i></span></div>
             <div class="dv"><b>A anterior</b><span id="dgLast"><i class="skl"></i></span></div></div>
-          <div class="dv-head"><span></span><span>Esta visita</span><span>A anterior</span><span></span></div>
-          <ul class="dv-parts" id="dgParts"></ul>
           <p class="dv-verdict" id="dgVerdict"><i class="skl"></i></p>
-          <p class="hint">É um vínculo candidato: outro aparelho do mesmo modelo e configuração também pode coincidir, e ele não prova a mesma pessoa nem qualquer intenção. O IP de saída nunca foi guardado.</p>
         </div>
+      </div>
+      <div class="demo-parts">
+        <div class="dv-head"><span></span><span>Esta visita</span><span>A anterior</span><span></span></div>
+        <ul class="dv-parts" id="dgParts"></ul>
+        <p class="hint">É um vínculo candidato: outro aparelho do mesmo modelo e configuração também pode coincidir, e ele não prova a mesma pessoa nem qualquer intenção. O IP de saída nunca foi guardado.</p>
       </div>
     </section>
     <section class="hero card">

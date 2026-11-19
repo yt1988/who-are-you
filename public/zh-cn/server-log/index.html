@@ -46,7 +46,7 @@
 <meta name="twitter:description" content="两次访问，网站怎么把「同一套环境」串起来">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"网站日志里的你 · 1ms.dog","url":"https://who.1ms.dog/zh-cn/server-log/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"一次访问在网站日志里长什么样，蜜罐怎么用指纹、存储留痕和缓存编号把几次访问串起来；能看到什么、不能看到什么（身份、意图、攻击都不在其中）。","inLanguage":"zh-CN","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.7d0614a16a.css">
+<link rel="stylesheet" href="/assets/app.86b860d11b.css">
 </head>
 <body>
 <div class="app">
@@ -89,11 +89,13 @@
         <div class="demo-visits"><h3>这次和上次：哪些读数没有变</h3>
           <div class="dv-pair"><div class="dv"><b>这次</b><span id="dgNow"><i class="skl"></i></span></div>
             <div class="dv"><b>上次</b><span id="dgLast"><i class="skl"></i></span></div></div>
-          <div class="dv-head"><span></span><span>这次</span><span>上次</span><span></span></div>
-          <ul class="dv-parts" id="dgParts"></ul>
           <p class="dv-verdict" id="dgVerdict"><i class="skl"></i></p>
-          <p class="hint">这只是候选关联：同款同配置的机器也可能一样；它不能证明是同一个人，更不能说明意图。出口 IP 我们一次都没有保存。</p>
         </div>
+      </div>
+      <div class="demo-parts">
+        <div class="dv-head"><span></span><span>这次</span><span>上次</span><span></span></div>
+        <ul class="dv-parts" id="dgParts"></ul>
+        <p class="hint">这只是候选关联：同款同配置的机器也可能一样；它不能证明是同一个人，更不能说明意图。出口 IP 我们一次都没有保存。</p>
       </div>
     </section>
     <section class="hero card">

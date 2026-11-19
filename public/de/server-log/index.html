@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="Wie zwei Besuche an derselben Umgebung hängen">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Du im Server-Log · 1ms.dog","url":"https://who.1ms.dog/de/server-log/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Wie ein Besuch im Server-Log aussieht und wie ein Honeypot Besuche über Fingerabdruck, gespeicherte Spuren und Cache-ID verbindet — und was diese Verbindung sagen kann und was nicht (weder Identität noch Absicht noch Angriff).","inLanguage":"de","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.7d0614a16a.css">
+<link rel="stylesheet" href="/assets/app.86b860d11b.css">
 </head>
 <body>
 <div class="app">
@@ -86,11 +86,13 @@
         <div class="demo-visits"><h3>Dieser Besuch und der letzte: was gleich blieb</h3>
           <div class="dv-pair"><div class="dv"><b>Dieser Besuch</b><span id="dgNow"><i class="skl"></i></span></div>
             <div class="dv"><b>Der letzte</b><span id="dgLast"><i class="skl"></i></span></div></div>
-          <div class="dv-head"><span></span><span>Dieser Besuch</span><span>Der letzte</span><span></span></div>
-          <ul class="dv-parts" id="dgParts"></ul>
           <p class="dv-verdict" id="dgVerdict"><i class="skl"></i></p>
-          <p class="hint">Das ist eine Kandidaten-Verbindung: Ein anderes Gerät desselben Modells und derselben Einrichtung kann ebenfalls passen, und sie beweist weder dieselbe Person noch eine Absicht. Die Ausgangs-IP wurde nie gespeichert.</p>
         </div>
+      </div>
+      <div class="demo-parts">
+        <div class="dv-head"><span></span><span>Dieser Besuch</span><span>Der letzte</span><span></span></div>
+        <ul class="dv-parts" id="dgParts"></ul>
+        <p class="hint">Das ist eine Kandidaten-Verbindung: Ein anderes Gerät desselben Modells und derselben Einrichtung kann ebenfalls passen, und sie beweist weder dieselbe Person noch eine Absicht. Die Ausgangs-IP wurde nie gespeichert.</p>
       </div>
     </section>
     <section class="hero card">

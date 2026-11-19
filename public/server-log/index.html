@@ -43,7 +43,7 @@
 <meta name="twitter:description" content="How two visits get tied to one environment">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"You in a server log · 1ms.dog","url":"https://who.1ms.dog/server-log/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"What one visit looks like in a server's log, how a honeypot can link visits through fingerprints, stored traces and cache IDs — and what those links can and cannot say (not identity, intent or attack).","inLanguage":"en","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.7d0614a16a.css">
+<link rel="stylesheet" href="/assets/app.86b860d11b.css">
 </head>
 <body>
 <div class="app">
@@ -86,11 +86,13 @@
         <div class="demo-visits"><h3>This visit and the last: what did not change</h3>
           <div class="dv-pair"><div class="dv"><b>This visit</b><span id="dgNow"><i class="skl"></i></span></div>
             <div class="dv"><b>Last visit</b><span id="dgLast"><i class="skl"></i></span></div></div>
-          <div class="dv-head"><span></span><span>This visit</span><span>Last visit</span><span></span></div>
-          <ul class="dv-parts" id="dgParts"></ul>
           <p class="dv-verdict" id="dgVerdict"><i class="skl"></i></p>
-          <p class="hint">This is a candidate link: another machine of the same model and setup can match too, and it proves neither the same person nor any intent. The exit IP was never stored.</p>
         </div>
+      </div>
+      <div class="demo-parts">
+        <div class="dv-head"><span></span><span>This visit</span><span>Last visit</span><span></span></div>
+        <ul class="dv-parts" id="dgParts"></ul>
+        <p class="hint">This is a candidate link: another machine of the same model and setup can match too, and it proves neither the same person nor any intent. The exit IP was never stored.</p>
       </div>
     </section>
     <section class="hero card">

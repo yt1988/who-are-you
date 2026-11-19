@@ -44,7 +44,7 @@
 <meta name="twitter:description" content="Как два визита привязываются к одной среде">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Вы в журнале сервера · 1ms.dog","url":"https://who.1ms.dog/ru/server-log/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Как выглядит визит в журнале сервера и как ханипот связывает визиты по отпечатку, сохранённым следам и ID кеша; что такая связь может сказать и чего не может (ни личности, ни намерения, ни атаки).","inLanguage":"ru","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
 <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/app.7d0614a16a.css">
+<link rel="stylesheet" href="/assets/app.86b860d11b.css">
 </head>
 <body>
 <div class="app">
@@ -87,11 +87,13 @@
         <div class="demo-visits"><h3>Этот визит и прошлый: что не изменилось</h3>
           <div class="dv-pair"><div class="dv"><b>Этот визит</b><span id="dgNow"><i class="skl"></i></span></div>
             <div class="dv"><b>Прошлый</b><span id="dgLast"><i class="skl"></i></span></div></div>
-          <div class="dv-head"><span></span><span>Этот визит</span><span>Прошлый</span><span></span></div>
-          <ul class="dv-parts" id="dgParts"></ul>
           <p class="dv-verdict" id="dgVerdict"><i class="skl"></i></p>
-          <p class="hint">Это связь-кандидат: другая машина той же модели и настройки тоже может совпасть, и она не доказывает ни того же человека, ни намерения. Выходной IP мы ни разу не сохраняли.</p>
         </div>
+      </div>
+      <div class="demo-parts">
+        <div class="dv-head"><span></span><span>Этот визит</span><span>Прошлый</span><span></span></div>
+        <ul class="dv-parts" id="dgParts"></ul>
+        <p class="hint">Это связь-кандидат: другая машина той же модели и настройки тоже может совпасть, и она не доказывает ни того же человека, ни намерения. Выходной IP мы ни разу не сохраняли.</p>
       </div>
     </section>
     <section class="hero card">
