@@ -2295,7 +2295,9 @@ import { exifOf } from "./exif.mjs";
       const li = $(`#tgList [data-t="${id}"]`);
       li.className = ok == null ? "na" : ok ? "ok" : "bad";
       li.querySelector(".tg-i").textContent = ok == null ? "–" : ok ? "✓" : "✗";
-      li.querySelector(".tg-l").textContent = id === "dns" && pub ? t("tg_dns_public") : ok == null && id === "dns" ? t("tg_dns_na") : t("tg_" + id, { c: name });
+      li.querySelector(".tg-l").textContent = id === "dns"
+        ? pub ? t("tg_dns_public") : !R.dnsCC ? t("tg_dns_na") : t("tg_dns", { c: country(R.dnsCC) })
+        : t("tg_" + id, { c: name });
       li.querySelector(".tg-x").textContent = ok === false ? t("tg_" + id + "_fix", { c: name }) : "";
     }
     const left = items.filter(([, ok]) => ok === false).length;
