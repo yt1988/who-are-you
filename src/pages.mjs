@@ -430,7 +430,7 @@ export const TEXT = {
   "dns-leak": {
     en: {
       seo_title: "DNS Leak Test: does your DNS go around your VPN? · Who Are You",
-      seo_desc: "Free DNS leak test: find the DNS resolver that actually looks up sites for you, see its country and network, and compare it with the IP sites see. If they don't match, your VPN or proxy leaks DNS. Includes fixes for Clash, V2Ray and the browser.",
+      seo_desc: "Free DNS leak test: find the DNS resolver that actually looks up sites for you, see its country and network, and compare it with the IP sites see. A mismatch means a leak, unless a public DNS is answering from its nearest site. Includes fixes for Clash, V2Ray and the browser.",
       seo_kw: "DNS leak test, DNS leak, VPN DNS leak, which DNS server am I using, DNS resolver test, Clash DNS leak, fake-ip, proxy DNS leak",
       h1: "DNS leak test", og_sub: "Does your DNS go around your VPN?",
       intro: "Your VPN may carry your traffic while your DNS lookups still go to your own internet provider. Whoever runs those servers can then see where you really are. This test looks up a name nobody has asked for before and asks the name server who asked: that's your resolver. You'll see its country and network next to the address sites see.",
@@ -444,7 +444,7 @@ export const TEXT = {
     },
     "zh-CN": {
       seo_title: "DNS 泄露检测：你的 DNS 有没有绕过 VPN？ · 你是谁",
-      seo_desc: "免费 DNS 泄露检测：找出真正替你解析网址的 DNS 服务器，看它在哪个国家、属于哪家运营商，再和网站看到的 IP 对比。两边对不上，就是 VPN 或代理漏了 DNS。附 Clash、V2Ray 和浏览器里的修复方法。",
+      seo_desc: "免费 DNS 泄露检测：找出真正替你解析网址的 DNS 服务器，看它在哪个国家、属于哪家运营商，再和网站看到的 IP 对比。两边对不上，通常是 VPN 或代理漏了 DNS；公共 DNS 就近作答不算。附 Clash、V2Ray 和浏览器里的修复方法。",
       seo_kw: "DNS 泄露检测, DNS 泄漏, VPN DNS 泄露, 查看我的 DNS 服务器, DNS 解析器检测, Clash DNS 泄露, fake-ip, 代理 DNS 泄露",
       h1: "DNS 泄露检测", og_sub: "你的 DNS 有没有绕过 VPN？",
       intro: "VPN 帮你转发了流量，DNS 查询却可能还发给本地运营商，等于告诉别人你真正在哪。这个检测会去查一个从没人查过的域名，再问负责这个域名的服务器：是谁来查的。这样就知道了你用的 DNS 解析器是哪台、在哪个国家、属于哪家运营商，再拿它和网站看到的 IP 对比。",
@@ -458,7 +458,7 @@ export const TEXT = {
     },
     "zh-TW": {
       seo_title: "DNS 外洩檢測：你的 DNS 有沒有繞過 VPN？ · 你是誰",
-      seo_desc: "免費 DNS 外洩檢測：找出真正幫你解析網址的 DNS 伺服器，看它在哪個國家、屬於哪家電信業者，再和網站看到的 IP 比對。兩邊對不上，就是 VPN 或代理漏掉了 DNS。附 Clash、V2Ray 和瀏覽器的修正方法。",
+      seo_desc: "免費 DNS 外洩檢測：找出真正幫你解析網址的 DNS 伺服器，看它在哪個國家、屬於哪家電信業者，再和網站看到的 IP 比對。兩邊對不上，通常是 VPN 或代理漏掉了 DNS；公共 DNS 就近作答不算。附 Clash、V2Ray 和瀏覽器的修正方法。",
       seo_kw: "DNS 外洩檢測, DNS 洩漏, VPN DNS 外洩, 查詢我的 DNS 伺服器, DNS 解析器檢測, Clash DNS 外洩, fake-ip, 代理 DNS 外洩",
       h1: "DNS 外洩檢測", og_sub: "你的 DNS 有沒有繞過 VPN？",
       intro: "VPN 幫你轉送了流量，DNS 查詢卻可能還是送到當地電信業者，等於告訴別人你真正在哪裡。這個檢測會去查一個從來沒人查過的網域，再問負責這個網域的伺服器：是誰來查的。這樣就知道你用的 DNS 解析器是哪一台、在哪個國家、屬於哪家電信業者，再拿它和網站看到的 IP 比對。",
@@ -472,7 +472,7 @@ export const TEXT = {
     },
     ja: {
       seo_title: "DNS リークテスト：DNS が VPN を素通りしていない？ · あなたは誰",
-      seo_desc: "無料の DNS リークテスト：実際にサイト名を調べている DNS サーバーを見つけ、その国とネットワークを、サイトから見える IP と比べます。食い違っていれば、VPN やプロキシから DNS が漏れています。Clash、V2Ray、ブラウザでの直し方付き。",
+      seo_desc: "無料の DNS リークテスト：実際にサイト名を調べている DNS サーバーを見つけ、その国とネットワークを、サイトから見える IP と比べます。食い違っていれば、VPN やプロキシから DNS が漏れています（公共 DNS が最寄りで応答している場合は除く）。Clash、V2Ray、ブラウザでの直し方付き。",
       seo_kw: "DNS リーク テスト, DNS 漏れ, VPN DNS リーク, 使っている DNS サーバー 確認, DNS サーバー 確認, Clash DNS 漏れ, fake-ip",
       h1: "DNS リークテスト", og_sub: "DNS が VPN を素通りしていませんか？",
       intro: "VPN が通信を運んでいても、DNS の問い合わせだけは手元のプロバイダーに出ていることがあります。そうなると、DNS リゾルバーを運営する側にあなたの本当の居場所が分かります。このテストは誰も問い合わせたことのない名前を引き、ネームサーバーに「誰が問い合わせてきたか」を聞きます。それがあなたの DNS リゾルバーです。その国とネットワークを、サイトから見えるアドレスと並べて示します。",
@@ -486,7 +486,7 @@ export const TEXT = {
     },
     ko: {
       seo_title: "DNS 유출 테스트: DNS가 VPN을 우회하고 있나요? · 당신은 누구",
-      seo_desc: "무료 DNS 유출 테스트: 실제로 사이트 주소를 찾아 주는 DNS 서버와 그 국가, 네트워크를 찾아서 사이트가 보는 IP와 비교해요. 둘이 다르면 VPN이나 프록시에서 DNS가 새고 있는 거예요. Clash, V2Ray, 브라우저에서 고치는 방법도 알려 드려요.",
+      seo_desc: "무료 DNS 유출 테스트: 실제로 사이트 주소를 찾아 주는 DNS 서버와 그 국가, 네트워크를 찾아서 사이트가 보는 IP와 비교해요. 둘이 다르면 VPN이나 프록시에서 DNS가 새는 것이에요(공용 DNS가 가장 가까운 곳에서 응답하는 경우는 제외). Clash, V2Ray, 브라우저에서 고치는 방법도 알려 드려요.",
       seo_kw: "DNS 유출 테스트, DNS 누수, VPN DNS 유출, 내 DNS 서버 확인, DNS 서버 테스트, Clash DNS 유출, fake-ip, 프록시 DNS 유출",
       h1: "DNS 유출 테스트", og_sub: "DNS가 VPN을 우회하고 있나요?",
       intro: "VPN이 트래픽은 맡아 주는데, 사이트 주소를 찾는 DNS 조회는 여전히 원래 통신사로 가고 있을 수 있어요. 그러면 DNS를 운영하는 쪽에 실제 위치를 알려 주는 셈이에요. 이 테스트는 아무도 조회한 적 없는 주소를 조회한 뒤, 누가 물어 왔는지 확인해요. 그렇게 찾은 DNS 리졸버와 그 국가, 네트워크를 사이트가 보는 주소와 비교해요.",
@@ -500,7 +500,7 @@ export const TEXT = {
     },
     es: {
       seo_title: "Test de fuga de DNS: ¿tu DNS se salta la VPN? · ¿Quién eres?",
-      seo_desc: "Test gratuito de fuga de DNS: encuentra el servidor DNS que de verdad busca las webs por ti, su país y su red, y compáralo con la IP que ven las webs. Si no coinciden, tu VPN o proxy filtra el DNS. Incluye cómo arreglarlo en Clash, V2Ray y el navegador.",
+      seo_desc: "Test gratuito de fuga de DNS: encuentra el servidor DNS que de verdad busca las webs por ti, su país y su red, y compáralo con la IP que ven las webs. Si no coinciden, tu VPN o proxy filtra el DNS, salvo que un DNS público responda desde el sitio más cercano. Incluye cómo arreglarlo en Clash, V2Ray y el navegador.",
       seo_kw: "test fuga DNS, fuga de DNS, DNS leak test, fuga DNS VPN, qué servidor DNS uso, test servidor DNS, fuga DNS Clash, fake-ip",
       h1: "Test de fuga de DNS", og_sub: "¿Tu DNS se salta la VPN?",
       intro: "Puede que tu VPN lleve tu tráfico mientras tus consultas DNS siguen yendo a tu proveedor de siempre, y eso le dice a quien gestiona esos servidores dónde estás realmente. Este test hace una consulta que nadie ha hecho antes y le pregunta al servidor de nombres quién la hizo: tu resolvedor DNS, su país y su red, comparados con la dirección que ven las webs.",
@@ -514,7 +514,7 @@ export const TEXT = {
     },
     fr: {
       seo_title: "Test de fuite DNS : votre DNS passe-t-il à côté du VPN ? · Qui êtes-vous ?",
-      seo_desc: "Test gratuit de fuite DNS : trouvez le serveur DNS qui cherche réellement l’adresse des sites pour vous, son pays et son réseau, et comparez-le à l’IP que voient les sites. S’ils ne correspondent pas, votre VPN ou votre proxy laisse fuir le DNS. Avec les corrections pour Clash, V2Ray et le navigateur.",
+      seo_desc: "Test gratuit de fuite DNS : trouvez le serveur DNS qui cherche réellement l’adresse des sites pour vous, son pays et son réseau, et comparez-le à l’IP que voient les sites. S’ils ne correspondent pas, votre VPN ou votre proxy laisse fuir le DNS, sauf si un DNS public répond depuis le site le plus proche. Avec les corrections pour Clash, V2Ray et le navigateur.",
       seo_kw: "test fuite DNS, fuite DNS, DNS leak test, fuite DNS VPN, quel serveur DNS j’utilise, vérifier serveur DNS, Clash fuite DNS, fake-ip",
       h1: "Test de fuite DNS", og_sub: "Votre DNS passe-t-il à côté du VPN ?",
       intro: "Votre VPN peut transporter votre trafic alors que vos requêtes DNS partent encore chez votre fournisseur d’accès. Celui qui gère ces serveurs voit alors où vous êtes vraiment. Ce test demande une adresse que personne n’a jamais demandée, puis interroge le serveur qui fait autorité sur ce nom pour savoir qui a posé la question : c’est votre résolveur DNS. Vous voyez son pays et son réseau, comparés à l’adresse que voient les sites.",
@@ -528,7 +528,7 @@ export const TEXT = {
     },
     de: {
       seo_title: "DNS-Leak-Test: Umgeht dein DNS das VPN? · Wer bist du?",
-      seo_desc: "Kostenloser DNS-Leak-Test: Finde den DNS-Server, der die Adressen von Websites wirklich für dich nachschlägt, mit Land und Netz, und vergleiche ihn mit der IP, die Websites sehen. Passen sie nicht zusammen, leckt dein VPN oder Proxy DNS. Mit Lösungen für Clash, V2Ray und den Browser.",
+      seo_desc: "Kostenloser DNS-Leak-Test: Finde den DNS-Server, der die Adressen von Websites wirklich für dich nachschlägt, mit Land und Netz, und vergleiche ihn mit der IP, die Websites sehen. Passen sie nicht zusammen, leckt dein VPN oder Proxy DNS – außer ein öffentliches DNS antwortet vom nächstgelegenen Standort. Mit Lösungen für Clash, V2Ray und den Browser.",
       seo_kw: "DNS Leak Test, DNS-Leck, VPN DNS Leak, welchen DNS-Server nutze ich, DNS-Server prüfen, Clash DNS Leak, fake-ip",
       h1: "DNS-Leak-Test", og_sub: "Umgeht dein DNS das VPN?",
       intro: "Dein VPN leitet vielleicht deinen Verkehr um, während deine DNS-Anfragen weiter bei deinem Provider landen. Wer diese Server betreibt, sieht dann, wo du wirklich bist. Dieser Test fragt nach einem Namen, nach dem noch nie jemand gefragt hat, und erkundigt sich dann beim zuständigen Nameserver, wer gefragt hat: Das ist dein DNS-Resolver. Du siehst sein Land und Netz, verglichen mit der Adresse, die Websites sehen.",
@@ -542,7 +542,7 @@ export const TEXT = {
     },
     pt: {
       seo_title: "Teste de vazamento de DNS: seu DNS está escapando da VPN? · Quem é você?",
-      seo_desc: "Teste grátis de vazamento de DNS: descubra o servidor DNS que realmente procura os sites para você, o país e a rede dele, e compare com o IP que os sites veem. Se forem diferentes, sua VPN ou proxy está vazando DNS. Com o passo a passo para corrigir no Clash, no V2Ray e no navegador.",
+      seo_desc: "Teste grátis de vazamento de DNS: descubra o servidor DNS que realmente procura os sites para você, o país e a rede dele, e compare com o IP que os sites veem. Se forem diferentes, sua VPN ou proxy está vazando DNS, a menos que um DNS público responda do site mais próximo. Com o passo a passo para corrigir no Clash, no V2Ray e no navegador.",
       seo_kw: "teste vazamento DNS, vazamento de DNS, DNS leak test, vazamento DNS VPN, qual servidor DNS estou usando, teste servidor DNS, vazamento DNS Clash, fake-ip",
       h1: "Teste de vazamento de DNS", og_sub: "Seu DNS está escapando da VPN?",
       intro: "Sua VPN pode estar levando o tráfego enquanto as consultas de DNS continuam indo para a sua operadora, o que conta para quem administra esses servidores onde você realmente está. Este teste faz uma consulta que ninguém fez antes e pergunta ao servidor de nomes quem fez: seu resolvedor DNS, o país e a rede dele, comparados com o endereço que os sites veem.",
@@ -556,7 +556,7 @@ export const TEXT = {
     },
     ru: {
       seo_title: "Проверка утечки DNS: не идёт ли ваш DNS в обход VPN? · Кто вы?",
-      seo_desc: "Бесплатная проверка утечки DNS: узнайте, какой DNS-сервер на самом деле ищет для вас адреса сайтов, в какой он стране и сети, и сравните его с IP, который видят сайты. Если они не совпадают, ваш VPN или прокси пропускает DNS мимо себя. С инструкциями для Clash, V2Ray и браузера.",
+      seo_desc: "Бесплатная проверка утечки DNS: узнайте, какой DNS-сервер на самом деле ищет для вас адреса сайтов, в какой он стране и сети, и сравните его с IP, который видят сайты. Если они не совпадают, ваш VPN или прокси пропускает DNS мимо себя — кроме случая, когда публичный DNS отвечает из ближайшей точки. С инструкциями для Clash, V2Ray и браузера.",
       seo_kw: "проверка утечки DNS, утечка DNS, DNS leak test, утечка DNS VPN, какой DNS сервер я использую, проверить DNS сервер, Clash утечка DNS, fake-ip",
       h1: "Проверка утечки DNS", og_sub: "Не идёт ли ваш DNS в обход VPN?",
       intro: "VPN может пропускать через себя весь ваш трафик, а DNS-запросы при этом по-прежнему уходят к провайдеру. Тот, кто держит эти серверы, видит, где вы на самом деле. Этот тест запрашивает имя, которое ещё никто не запрашивал, и спрашивает у ответственного за него сервера имён, кто прислал запрос. Это и есть ваш DNS-резолвер: вы увидите его страну и сеть рядом с адресом, который видят сайты.",
