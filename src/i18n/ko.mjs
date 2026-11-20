@@ -91,7 +91,7 @@ export default {
   c_dns_ok: "DNS 리졸버도 {ipc}에 있어요",
   c_dns_bad: "DNS 리졸버는 {cc}, IP는 {ipc}",
   c_dns_warn: "DNS 리졸버는 {cc}, IP는 {ipc}", c_dns_rot: "두 번 조회에서 DNS 리졸버가 서로 다른 나라({cc}, {cc2})에 있어요: 요청마다 경로가 달라져서, 사이트에는 그때그때 다른 서버가 보여요",
-  c_dns_info: "DNS 리졸버 위치를 알 수 없어요",
+  c_dns_info: "DNS 리졸버 위치를 알 수 없어요", c_dns_public: "공용 DNS({org})가 가장 가까운 지점에서 응답해요: 리졸버는 {cc}, IP는 {ipc}. 정상이며 유출이 아니에요", c_dns_public_rot: "공용 DNS({org})가 가까운 다른 지점에서 두 번 응답했어요({cc}, {cc2}). 공용 리졸버에서는 흔한 일이며 유출이 아니에요",
   c_split: "분할 라우팅",
   c_split_ok: "어느 사이트에서나 같은 출구가 보여요",
   c_split_warn: "{a}, {b}: 보이는 출구가 서로 달라요",

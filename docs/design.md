@@ -665,3 +665,14 @@ is renamed) now returns unknown instead of calling the browser disguised.
 Tests: `rigOf` (Mac 120 Hz → power, Windows RTX 144 Hz → game), `freshOf` (157 → 0, 158 → unknown, 153 → 4),
 `engineOff` with a contradictory table. Re-checked in the real Chrome on this Mac: 120 Hz, "high-end machine", "same as
 the newest on record".
+
+## 2026-11-20 — a public DNS's nearest site is not a leak (#135)
+
+The resolver lookup returns a `geo` string whose first part is the city and whose rest is the operator. The DNS check
+compared only the resolver's country with the address's, so a Malaysian visitor on Cloudflare's private DNS (DoH) was
+told the resolver in Singapore was a leak, put into the todo and given DNS-fix steps. `isPublicDns` now reads the
+operator (Cloudflare, Google, Quad9, OpenDNS, AdGuard, NextDNS, CleanBrowsing, Mullvad, Control D, DNS0, DNS.SB): a
+public resolver answering from another country is info (`c_dns_public`), or info when two of its nearest sites answered
+(`c_dns_public_rot`), never warn or bad, so it stays out of the todo and shows no fix. A resolver outside that list
+keeps the old judgment. Tests: the public operators; TM Net is not one; MY vs SG is info; same country is ok; a public
+resolver rotating between SG and JP is info. All ten languages have the two strings.

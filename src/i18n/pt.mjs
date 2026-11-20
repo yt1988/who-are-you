@@ -91,7 +91,7 @@ export default {
   c_dns_ok: "O resolvedor DNS também está em {ipc}",
   c_dns_bad: "Resolvedor DNS em {cc}, IP em {ipc}",
   c_dns_warn: "Resolvedor DNS em {cc}, IP em {ipc}", c_dns_rot: "As duas consultas deram resolvedores em países diferentes ({cc} e {cc2}): a rota muda a cada pedido e um site vê o que levou o dele",
-  c_dns_info: "Não deu para localizar o resolvedor DNS",
+  c_dns_info: "Não deu para localizar o resolvedor DNS", c_dns_public: "O DNS público ({org}) responde do site mais próximo: resolvedor em {cc}, IP em {ipc}. É normal, não é vazamento", c_dns_public_rot: "O DNS público ({org}) respondeu de dois sites próximos ({cc} e {cc2}); é normal em resolvedores públicos, não é vazamento",
   c_split: "Roteamento dividido",
   c_split_ok: "Todos os destinos veem a mesma saída",
   c_split_warn: "{a} e {b} veem saídas diferentes",

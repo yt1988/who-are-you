@@ -1,7 +1,7 @@
 // What the readings are taken to mean: system and browser, graphics card, keyboard, network, nationality, checks.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { macOf, v6Type, tunnelOf, langCC, nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, netOf, sysLangs, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, discreteGpu, isRelayIp, rfpClock, isIntegratedGpu, FEATURES, engineRange, engineOff, rigOf, freshOf, platformOff, glVendorOff, idLies, armSay, armGpu } from "../src/infer.mjs";
+import { macOf, v6Type, tunnelOf, langCC, nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, netOf, sysLangs, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, discreteGpu, isRelayIp, rfpClock, isIntegratedGpu, FEATURES, engineRange, engineOff, rigOf, freshOf, isPublicDns, platformOff, glVendorOff, idLies, armSay, armGpu } from "../src/infer.mjs";
 import { cleanSeen, rarity, durOf } from "../src/traits.mjs";
 import { regionName, flagCode } from "../src/regions.mjs";
 
@@ -387,6 +387,17 @@ test("DNS leak: the resolver's country against the address's", () => {
   assert.equal(checks({ ipcc: "JP", dnsCC: "CN" }).dns[0], "warn");
   assert.equal(checks({ ipcc: "JP", dnsCC: "JP" }).dns[0], "ok");
   assert.equal(checks({ ipcc: "JP", dnsCC: null }).dns[0], "info");
+  // #135: a public DNS answers from its nearest site; another country is normal, not a leak, and never a todo item
+  assert.equal(isPublicDns("Cloudflare"), true);
+  assert.equal(isPublicDns("Google LLC"), true);
+  assert.equal(isPublicDns("Quad9"), true);
+  assert.equal(isPublicDns("Cisco OpenDNS"), true);
+  assert.equal(isPublicDns("TM Net"), false);
+  const pub = checks({ ipcc: "MY", dnsCC: "SG", dnsOrg: "Cloudflare" });
+  assert.equal(pub.dns[0], "info"); assert.equal(pub.dns[1], "c_dns_public"); assert.equal(pub.dns[2].org, "Cloudflare");
+  assert.equal(checks({ ipcc: "MY", dnsCC: "MY", dnsOrg: "Cloudflare" }).dns[0], "ok");
+  assert.equal(checks({ ipcc: "MY", dnsCC: "SG", dns2CC: "JP", dnsRot: true, dnsOrg: "Cloudflare" }).dns[1], "c_dns_public_rot");
+  assert.equal(checks({ ipcc: "MY", dnsCC: "SG", dnsOrg: "TM Net" }).dns[0], "warn");
   assert.equal(checks({ ipcc: "JP" }).dns, null);
   // it is a contradiction only with another check saying the route is inconsistent: another system opened the
   // connection, or WebRTC gave away an address the page's exit does not have

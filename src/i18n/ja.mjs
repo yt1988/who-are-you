@@ -91,7 +91,7 @@ export default {
   c_dns_ok: "DNS リゾルバーも{ipc}",
   c_dns_bad: "DNS リゾルバーは{cc}、IP は{ipc}：プロキシ利用の手がかりに",
   c_dns_warn: "DNS リゾルバーは{cc}、IP は{ipc}", c_dns_rot: "2 回の問い合わせで DNS リゾルバーの国が違います（{cc} と {cc2}）：毎回経路が変わり、サイトにはその回のものが見えます",
-  c_dns_info: "DNS リゾルバーの場所が分からない",
+  c_dns_info: "DNS リゾルバーの場所が分からない", c_dns_public: "公共 DNS（{org}）が最寄りの拠点で応答しています：リゾルバは {cc}、IP は {ipc}。これは正常で、漏えいではありません", c_dns_public_rot: "公共 DNS（{org}）が近くの別の拠点から応答しました（{cc} と {cc2}）。公共リゾルバではよくあることで、漏えいではありません",
   c_split: "スプリットトンネル（分流）",
   c_split_ok: "どの宛先にも同じ出口",
   c_split_warn: "{a}と{b}で出口が違う",

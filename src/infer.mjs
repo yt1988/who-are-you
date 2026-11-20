@@ -272,6 +272,10 @@ export function tunnelOf(mss, v6) {
 // The disguise checks. Each returns [level, key, vars]: "ok" (nothing gives you away), "warn" (a site could notice),
 // "bad" (a clear contradiction), "info" (says nothing either way), or null while its inputs are still coming in.
 const fam = ip => ip && ip.includes(":") ? 6 : 4;
+// Public DoH/DNS operators answer from whichever site is nearest, so their country need not be the visitor's: the
+// resolver's organization says whether the mismatch is ordinary (Cloudflare, Google, Quad9, OpenDNS and the like).
+export const isPublicDns = org => /cloudflare|google|quad9|opendns|adguard|nextdns|cleanbrowsing|mullvad|control ?d|dns0|dns\.?sb/i.test(String(org || ""));
+
 export function checks(x) {
   const out = {};
   // the system time zone against the address's: another zone of the same country (the US has six) only hints, since
@@ -342,8 +346,15 @@ export function checks(x) {
   // — a proxy pool whose nodes resolve for themselves, a DoH endpoint moved between answers — so naming one country
   // says less than saying the route varies)
   if (x.dnsCC === undefined || !x.ipcc) out.dns = null;
-  else if (x.dnsRot && x.dns2CC) out.dns = ["warn", "c_dns_rot", { cc: x.dnsCC || x.dns2CC, cc2: x.dns2CC }];
   else if (!x.dnsCC) out.dns = ["info", "c_dns_info", {}];
+  // a public resolver's nearest site is often in another country; that is how it works, not a leak. It stays out of
+  // the todo and gets no fix steps, whether one site answered or two did.
+  else if (isPublicDns(x.dnsOrg)) {
+    if (x.dnsRot && x.dns2CC && x.dnsCC !== x.dns2CC) out.dns = ["info", "c_dns_public_rot", { cc: x.dnsCC, cc2: x.dns2CC, org: x.dnsOrg }];
+    else if (x.dnsCC === x.ipcc) out.dns = ["ok", "c_dns_ok", {}];
+    else out.dns = ["info", "c_dns_public", { cc: x.dnsCC, org: x.dnsOrg }];
+  }
+  else if (x.dnsRot && x.dns2CC) out.dns = ["warn", "c_dns_rot", { cc: x.dnsCC || x.dns2CC, cc2: x.dns2CC }];
   else if (x.dnsCC === x.ipcc) out.dns = ["ok", "c_dns_ok", {}];
   else if ((out.conn && out.conn[1] === "c_conn_os") || (out.webrtc && out.webrtc[0] === "bad")) out.dns = ["bad", "c_dns_bad", { cc: x.dnsCC }];
   else out.dns = ["warn", "c_dns_warn", { cc: x.dnsCC }];

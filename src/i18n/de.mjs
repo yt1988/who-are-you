@@ -91,7 +91,7 @@ export default {
   c_dns_ok: "Der DNS-Resolver liegt auch hier: {ipc}",
   c_dns_bad: "DNS-Resolver: {cc}, IP: {ipc}",
   c_dns_warn: "DNS-Resolver: {cc}, IP: {ipc}", c_dns_rot: "Die beiden Abfragen bekamen Resolver in verschiedenen Ländern ({cc} und {cc2}): Die Route wechselt bei jeder Anfrage, und eine Website sieht den, der ihre eigene befördert hat",
-  c_dns_info: "Standort des DNS-Resolvers unklar",
+  c_dns_info: "Standort des DNS-Resolvers unklar", c_dns_public: "Öffentliches DNS ({org}) antwortet vom nächstgelegenen Standort: Resolver in {cc}, IP in {ipc}. Das ist normal, kein Leck", c_dns_public_rot: "Öffentliches DNS ({org}) antwortete von zwei nahen Standorten ({cc} und {cc2}); bei öffentlichen Resolvern normal, kein Leck",
   c_split: "Split-Routing",
   c_split_ok: "Alle Ziele sehen denselben Ausgang",
   c_split_warn: "{a} und {b} sehen verschiedene Ausgänge",

@@ -91,7 +91,7 @@ export default {
   c_dns_ok: "El resolvedor DNS también está en {ipc}",
   c_dns_bad: "Resolvedor DNS en {cc}, IP en {ipc}",
   c_dns_warn: "Resolvedor DNS en {cc}, IP en {ipc}", c_dns_rot: "Las dos consultas dieron resolutores en países distintos ({cc} y {cc2}): la ruta cambia en cada petición y la web ve la que la llevó",
-  c_dns_info: "No se pudo ubicar el resolvedor DNS",
+  c_dns_info: "No se pudo ubicar el resolvedor DNS", c_dns_public: "El DNS público ({org}) responde desde el sitio más cercano: resolutor en {cc}, IP en {ipc}. Es normal, no es una fuga", c_dns_public_rot: "El DNS público ({org}) respondió desde dos sitios cercanos ({cc} y {cc2}); es normal en un resolutor público, no es una fuga",
   c_split: "Enrutamiento dividido",
   c_split_ok: "Todos los destinos ven la misma salida",
   c_split_warn: "{a} y {b} ven salidas distintas",

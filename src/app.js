@@ -2647,7 +2647,7 @@ import { exifOf } from "./exif.mjs";
     const c = (R.srv && R.srv.cf) || {};
     const res = checks({
       tz: R.tz, rfp: rfp(), tzOff: R.tzOff == null ? null : offTxt(R.tzOff), tzAlt: R.tzAlt == null ? null : offTxt(R.tzAlt), ipTzOff: c.timezone ? offTxt(tzOffset(c.timezone)) : null, ipTz: c.timezone || null, ipcc: c.country,
-      langs: R.langs, dnsCC: R.dnsCC, dns2CC: R.dns2CC, dnsRot: R.dnsRot, exits: allExits(), rtc: R.rtc, ip: R.srv && R.srv.ip, asn: c.asn, org: orgName(c.asOrganization, c.asn),
+      langs: R.langs, dnsCC: R.dnsCC, dns2CC: R.dns2CC, dnsRot: R.dnsRot, dnsOrg: R.dnsOrg || "", exits: allExits(), rtc: R.rtc, ip: R.srv && R.srv.ip, asn: c.asn, org: orgName(c.asOrganization, c.asn),
       uaOS: R.dev && R.dev.os, real: !!R.dev, hintOS: R.hi && R.hi.platform, gpuOS: gpuOS(R.gpuRaw), rand: R.rand, noise: R.noise, webdriver: R.webdriver, agent: ACT.state, auto: R.auto,
       rttB: R.latDone ? R.rttB : null, coarse: R.latDone ? !!R.coarse : false, rttCf: c.clientTcpRtt || null, sys: final || R.voices ? sysOf() : undefined, tamper: R.dev && R.srv ? tampered() : null, fpb: fpbTraces(),
       // (the check names the headers; the row holds their values, which a Forwarded can make an address)

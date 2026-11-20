@@ -91,7 +91,7 @@ export default {
   c_dns_ok: "解析器也在{ipc}",
   c_dns_bad: "解析器在{cc}，IP 卻在{ipc}",
   c_dns_warn: "解析器在{cc}，IP 在{ipc}", c_dns_rot: "兩次查詢的解析器在不同國家（{cc} 和 {cc2}）：線路每次不一樣，網站看到的是當次那個",
-  c_dns_info: "判斷不出解析器在哪裡",
+  c_dns_info: "判斷不出解析器在哪裡", c_dns_public: "公共 DNS（{org}）按就近的機房作答：解析器在 {cc}，IP 在 {ipc}；這是正常的，不是洩露", c_dns_public_rot: "公共 DNS（{org}）兩次從附近的不同機房作答（{cc} 和 {cc2}）；公共解析器會這樣，不是洩露",
   c_split: "分流",
   c_split_ok: "所有網站看到的都是同一個出口",
   c_split_warn: "{a}和{b}看到的出口不同",

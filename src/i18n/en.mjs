@@ -92,7 +92,7 @@ export default {
   c_dns_ok: "The resolver is in {ipc} too",
   c_dns_bad: "Resolver in {cc}, IP in {ipc}: a sign of a proxy",
   c_dns_warn: "Resolver in {cc}, IP in {ipc}", c_dns_rot: "The two lookups got resolvers in different countries ({cc} and {cc2}): the route changes from request to request, and a site sees whichever one carried its own",
-  c_dns_info: "Couldn't locate the resolver",
+  c_dns_info: "Couldn't locate the resolver", c_dns_public: "Public DNS ({org}) answers from the nearest site: resolver in {cc}, IP in {ipc}. That is normal, not a leak", c_dns_public_rot: "Public DNS ({org}) answered from two nearby sites ({cc} and {cc2}); public resolvers do that, it is not a leak",
   c_split: "Split routing",
   c_split_ok: "Every site sees the same exit",
   c_split_warn: "{a} and {b} see different exits",
