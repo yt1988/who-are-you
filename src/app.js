@@ -7,7 +7,7 @@ import { GROUPS, SNIFFERS, BLANKS, CHECKS, PROTO, COUNTED, TODO_SK } from "./sni
 import { TRAITS, rarity, MIN_TOTAL, durOf, STUCK_MS } from "./traits.mjs";
 import { TW, flagCode } from "./regions.mjs";
 import { encode, decode, linkPath, parsePath } from "./share.mjs";
-import { nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, tzCC, langCC, sysLangs, SYS_FONT_LIST, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, isIntegratedGpu, discreteGpu, isRelayIp, rfpClock, idLies, FEATURES, engineRange, engineOff, rigOf, freshOf, platformOff, glVendorOff, armSay, armGpu, tunnelOf, macOf, v6Type } from "./infer.mjs";
+import { nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, tzCC, langCC, sysLangs, SYS_FONT_LIST, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, isIntegratedGpu, discreteGpu, isRelayIp, rfpClock, idLies, FEATURES, engineRange, engineOff, rigOf, freshOf, isPublicDns, platformOff, glVendorOff, armSay, armGpu, tunnelOf, macOf, v6Type } from "./infer.mjs";
 import { wasmProbe, WASM_FEATURES } from "./wasm.mjs";
 import { TZ_CC } from "./tz.mjs";
 import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
@@ -1473,6 +1473,21 @@ import { exifOf } from "./exif.mjs";
     }
     return EN_CC[name] || null;
   }
+  // the API's geo starts with a country for some resolvers ("Japan - Cloudflare") and a city for others
+  // ("Beijing - China Unicom"): when the first part is no country, a country named inside the organization is the
+  // next best the response itself gives. Only names of five letters or more, so short country names don't match
+  // inside an unrelated word.
+  function ccOfText(s) {
+    const text = String(s || "").trim();
+    if (!text) return null;
+    const exact = ccOfName(text); if (exact) return exact;
+    if (!EN_CC) ccOfName("");
+    for (const [name, cc] of Object.entries(EN_CC)) {
+      if (name.length < 5) continue;
+      if (new RegExp(`(^|[^A-Za-z])${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}([^A-Za-z]|$)`, "i").test(text)) return cc;
+    }
+    return null;
+  }
   async function dnsResolver() {
     const ask = async () => {
       const id = [...crypto.getRandomValues(new Uint8Array(16))].map(b => b.toString(16).padStart(2, "0")).join("");
@@ -1480,8 +1495,8 @@ import { exifOf } from "./exif.mjs";
     };
     const j = await ask();
     if (!j) { R.dnsCC = null; return na("dns", "v_fail"); }
-    const d = j.dns || {}, geo = String(d.geo || ""), parts = geo.split(" - "), cname = parts[0].trim();
-    R.dnsCC = ccOfName(cname); R.dnsOrg = parts.slice(1).join(" - ").trim();
+    const d = j.dns || {}, geo = String(d.geo || ""), parts = geo.split(" - "), cname = parts[0].trim(), org = parts.slice(1).join(" - ").trim();
+    R.dnsCC = ccOfName(cname) || ccOfText(cname) || ccOfText(org); R.dnsOrg = org;
     const ecs = j.edns && j.edns.ip ? "ECS " + j.edns.ip : "";
     // a second name right after the first: one resolver answering both is the one a site meets. Two answers from two
     // countries mean the resolver varies per request (a proxy pool whose nodes resolve for themselves, a DoH endpoint
@@ -1490,7 +1505,8 @@ import { exifOf } from "./exif.mjs";
     const j2 = await ask();
     if (j2 && j2.dns) {
       d2 = j2.dns;
-      const g2 = String(d2.geo || ""), p2 = g2.split(" - "), c2 = ccOfName(p2[0].trim()), e2 = j2.edns && j2.edns.ip ? "ECS " + j2.edns.ip : "";
+      const g2 = String(d2.geo || ""), p2 = g2.split(" - "), org2 = p2.slice(1).join(" - ").trim(),
+        c2 = ccOfName(p2[0].trim()) || ccOfText(p2[0].trim()) || ccOfText(org2), e2 = j2.edns && j2.edns.ip ? "ECS " + j2.edns.ip : "";
       R.dns2CC = c2;
       if (R.dnsCC && c2 && c2 !== R.dnsCC) R.dnsRot = true;
       if (d2.ip !== d.ip || c2 !== R.dnsCC || e2 !== ecs) why2 = [d2.ip, g2, e2].filter(Boolean).join("\n");
@@ -2271,14 +2287,15 @@ import { exifOf } from "./exif.mjs";
   function paintTarget() {
     const c = (R.srv && R.srv.cf) || {}, T = tgVal || c.country;
     if (!T || !R.ck) return;
-    const name = country(T), wr = R.ck.webrtc && R.ck.webrtc[0];
+    const name = country(T), wr = R.ck.webrtc && R.ck.webrtc[0], pub = isPublicDns(R.dnsOrg || "");
     const items = [["ip", c.country ? c.country === T : null], ["tz", R.tz ? tzCC(R.tz) === T : null], ["lang", R.langs && R.langs.length ? langCC(R.langs[0]) === T : null],
-      ["dns", R.dnsCC ? R.dnsCC === T : null], ["rtc", wr ? wr !== "bad" : null]];
+      // a public resolver answers from its nearest site; matching the target is not a thing it can do
+      ["dns", pub ? true : R.dnsCC ? R.dnsCC === T : null], ["rtc", wr ? wr !== "bad" : null]];
     for (const [id, ok] of items) {
       const li = $(`#tgList [data-t="${id}"]`);
       li.className = ok == null ? "na" : ok ? "ok" : "bad";
       li.querySelector(".tg-i").textContent = ok == null ? "–" : ok ? "✓" : "✗";
-      li.querySelector(".tg-l").textContent = t("tg_" + id, { c: name });
+      li.querySelector(".tg-l").textContent = id === "dns" && pub ? t("tg_dns_public") : ok == null && id === "dns" ? t("tg_dns_na") : t("tg_" + id, { c: name });
       li.querySelector(".tg-x").textContent = ok === false ? t("tg_" + id + "_fix", { c: name }) : "";
     }
     const left = items.filter(([, ok]) => ok === false).length;

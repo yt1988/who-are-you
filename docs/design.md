@@ -676,3 +676,15 @@ public resolver answering from another country is info (`c_dns_public`), or info
 (`c_dns_public_rot`), never warn or bad, so it stays out of the todo and shows no fix. A resolver outside that list
 keeps the old judgment. Tests: the public operators; TM Net is not one; MY vs SG is info; same country is ok; a public
 resolver rotating between SG and JP is info. All ten languages have the two strings.
+
+### The resolver's country from its organization, and an honest unknown on the target tile
+
+A second local report: the resolver row read `111.206.4.140 · China Unicom Beijing Province Network`, the DNS check
+said "couldn't locate the resolver", and the target tile (gray) still read "DNS resolver in Japan" (the goal, not the
+reading). The API's `geo` starts with a country for Cloudflare or Google ("Japan - Cloudflare, Inc.") but with a city
+for some ISPs ("Beijing - China Unicom…"), and `ccOfName` only knew country names. `ccOfText` now falls back to a
+country named in the city or organization (five letters or more, so short names don't match inside words). The same
+machine behind a Japanese exit now gets "resolver in China, IP in Japan", the fix step and the red target tile. The
+target tile also stopped claiming a country when nothing was read: gray says "DNS resolver: can't tell where"; a public
+resolver is green "answers nearby; nothing to change" instead of a mismatch. Verified with the exact China Unicom
+string, Cloudflare and an unlocatable KDDI resolver.
