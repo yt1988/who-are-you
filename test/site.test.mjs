@@ -169,3 +169,17 @@ test("a browser too old to parse the page says so instead of showing nothing", a
   assert.ok(en && en[1].length > 20, "old_b says what to do");
   for (const [lang] of LANGS) assert.ok(new RegExp(`old_b: "`).test(await read(`src/i18n/${lang}.mjs`)), lang + ": old_b");
 });
+
+// A long string that repeats a whole sentence reads as a stutter and ships to search results with it (audit #136):
+// no value in any language says the same sentence twice. Sentences end at 。！？!? or a full stop and a space.
+test("no string says the same sentence twice", async () => {
+  const cut = v => String(v).split(/[。！？!?]+|\.\s+/).map(x => x.trim()).filter(x => x.length >= 20);
+  for (const [lang] of LANGS) {
+    const d = (await import(`../src/i18n/${lang}.mjs`)).default;
+    for (const [k, v] of Object.entries(d)) {
+      if (typeof v !== "string" || v.length < 60) continue;
+      const seen = new Set(), twice = cut(v).find(x => seen.has(x) || !seen.add(x));
+      assert.equal(twice, undefined, `${lang}: ${k} repeats "${String(twice).slice(0, 40)}"`);
+    }
+  }
+});
