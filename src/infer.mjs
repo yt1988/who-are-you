@@ -316,7 +316,8 @@ export function checks(x) {
     else if (off) out.conn = ["warn", "c_conn_os", { a: os, b: x.uaOS }];
     // (a path wider than 1500 bytes is a cloud's inside: jumbo frames, as AWS's 9001, so a cloud server opened it)
     else if (mtu > 1500) out.conn = ["warn", "c_conn_cloud", { m: mtu }];
-    else if (os || pseudo) out.conn = ["ok", "c_conn_ok", {}];
+    // "other" means the probe found no family in the layout: no evidence, not an agreement
+    else if ((os && os !== "other") || pseudo) out.conn = ["ok", "c_conn_ok", {}];
     else out.conn = ["info", "c_conn_na", {}];
   }
   // A proxy or gateway that names itself in Via or Forwarded: the request says an intermediary is on the path. Company,

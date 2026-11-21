@@ -405,6 +405,11 @@ test("DNS leak: the resolver's country against the address's", () => {
   assert.equal(checks({ ipcc: "HU", dnsCC: "DE", ip: "1.2.3.4", rtc: ["5.6.7.8"] }).dns[0], "bad");
   // (a cloud's wide MTU says a server opened the connection, which is what a tunnel is: not a contradiction on its own)
   assert.equal(checks({ ipcc: "HU", dnsCC: "DE", conn: { mtu: 9001 } }).dns[0], "warn");
+  // a Windows SYN over IPv6 keeps its layout but the router's RA makes the hop limit 64: windows, not unix (#138)
+  assert.equal(checks({ uaOS: "Windows 11", conn: { os: "windows" } }).conn[0], "ok");
+  assert.equal(checks({ uaOS: "Windows 11", conn: { os: "linux" } }).conn[1], "c_conn_os");
+  // a layout the probe can't place is no evidence, not an agreement and not a disguise
+  assert.deepEqual(checks({ uaOS: "Windows 11", conn: { os: "other" } }).conn, ["info", "c_conn_na", {}]);
   // and one hint keeps the grade at A, where a contradiction cost it B
   assert.equal(grade(checks({ ipcc: "HU", dnsCC: "DE" }), ["dns"]).grade, "A");
   // two lookups, two countries: the route varies per request, which is what the check says instead of one country

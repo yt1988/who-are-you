@@ -157,25 +157,23 @@ func (s *synInfo) report() map[string]any {
 	}
 	return map[string]any{
 		"ttl": s.ttl, "initial_ttl": init, "hops": init - int(s.ttl), "window": s.window, "mss": s.mss, "wscale": s.wscale,
-		"options": opts, "mtu": mtu, "ja4t": fmt.Sprintf("%d_%s_%d_%s", s.window, opts, s.mss, ws), "os": osOf(init, opts, s.window),
+		"options": opts, "mtu": mtu, "ja4t": fmt.Sprintf("%d_%s_%d_%s", s.window, opts, s.mss, ws), "os": osOf(opts),
 	}
 }
 
-// The OS family a SYN's layout matches (p0f-style, the common systems only). Windows: TTL 128, no timestamps;
-// Apple (macOS, iOS): TTL 64, window 65535, mss,nop,ws,nop,nop,ts,sack,eol; Linux and Android: TTL 64,
-// mss,sack,ts,nop,ws
-func osOf(init int, opts string, win uint16) string {
+// The OS family a SYN's option layout matches (p0f-style, the common systems only). The initial TTL is not used:
+// over IPv6 the first hop's hop limit comes from the router's RA (RFC 4861 6.3.4), commonly 64, so a Windows host
+// can send 64 there while sending 128 on IPv4. The layout is what the host's stack writes. Windows: mss,nop,ws,nop,
+// nop,sack (2-1-3-1-1-4); Apple (macOS, iOS): the same with timestamps and eol (2-1-3-1-1-8-4); Linux and Android:
+// mss,sack,ts,nop,ws (2-4-8-1-3). Anything else is "other": no evidence for a family, never a guess of "unix".
+func osOf(opts string) string {
 	switch {
-	case init == 128:
-		return "windows"
-	case init == 64 && strings.HasPrefix(opts, "2-1-3-1-1-8-4"):
+	case strings.HasPrefix(opts, "2-1-3-1-1-8-4"):
 		return "apple"
-	case init == 64 && strings.HasPrefix(opts, "2-4-8-1-3"):
+	case strings.HasPrefix(opts, "2-4-8-1-3"):
 		return "linux"
-	case init == 64:
-		return "unix"
-	case init == 255:
-		return "other"
+	case strings.HasPrefix(opts, "2-1-3-1-1-4"):
+		return "windows"
 	}
-	return ""
+	return "other"
 }

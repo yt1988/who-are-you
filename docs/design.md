@@ -688,3 +688,15 @@ machine behind a Japanese exit now gets "resolver in China, IP in Japan", the fi
 target tile also stopped claiming a country when nothing was read: gray says "DNS resolver: can't tell where"; a public
 resolver is green "answers nearby; nothing to change" instead of a mismatch. Verified with the exact China Unicom
 string, Cloudflare and an unlocatable KDDI resolver.
+
+## 2026-11-21 — the SYN's OS family comes from its option layout (#138)
+
+The probe guessed the OS family from the initial TTL. Over IPv6 the first hop's hop limit is what the router's RA
+advertises (RFC 4861 6.3.4), commonly 64, so a Windows host sent 64 there and `osOf()` fell through to "unix": the
+connection check then blamed a proxy or VPN for a direct connection (a Windows 11 visitor, reproduced on a second
+machine on the same LAN). The option layout is what the host's stack writes and does not change with the hop limit:
+`2-1-3-1-1-4` is Windows, `2-1-3-1-1-8-4` Apple, `2-4-8-1-3` Linux/Android. `osOf` now uses only that; anything else
+is "other", which the check treats as no evidence (an info row, not an agreement), and the page's TCP row falls back
+to "another system" rather than "unix". The initial TTL is still shown, with the hops, but no family claim rests on it.
+#130 (Windows read as Linux) had a Linux-looking layout plus a 582 ms round trip, so it was a different signature, not
+this TTL-only path; it stays closed.
