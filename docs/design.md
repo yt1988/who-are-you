@@ -697,6 +697,9 @@ connection check then blamed a proxy or VPN for a direct connection (a Windows 1
 machine on the same LAN). The option layout is what the host's stack writes and does not change with the hop limit:
 `2-1-3-1-1-4` is Windows, `2-1-3-1-1-8-4` Apple, `2-4-8-1-3` Linux/Android. `osOf` now uses only that; anything else
 is "other", which the check treats as no evidence (an info row, not an agreement), and the page's TCP row falls back
-to "another system" rather than "unix". The initial TTL is still shown, with the hops, but no family claim rests on it.
+to "another system" rather than "unix". The initial TTL is still shown, with the hops, but no family claim rests on it. A page
+served by a probe built before this fix can still receive the old `"unix"` fallback: the page treats it as unknown too
+(an info row, no blame), so the visitor-facing false positive goes away without waiting for the server binary. The
+probe release `server-8ff6ff7` carries the real fix.
 #130 (Windows read as Linux) had a Linux-looking layout plus a 582 ms round trip, so it was a different signature, not
 this TTL-only path; it stays closed.

@@ -352,7 +352,8 @@ test("split routing: different networks over the same IP version", () => {
   assert.deepEqual(cn({ os: "linux", pseudo: "m,a,s,p", engine: "V8" }), ["warn", "c_conn_os", { a: "linux", b: "Windows 11" }]);
   assert.equal(cn({ os: "windows", pseudo: "m,p,s,a", engine: "V8" })[1], "c_conn_mitm");
   assert.equal(cn({ os: "apple", pseudo: "m,s,p,a", engine: "JavaScriptCore" }, "iOS 18.7")[1], "c_conn_ok");
-  assert.equal(cn({ os: "unix", pseudo: null, engine: "V8" }, "Android 15")[1], "c_conn_ok");
+  // "unix" was the old probe's cannot-place fallback (see #138): no family, so no verdict either way
+  assert.deepEqual(cn({ os: "unix", pseudo: null, engine: "V8" }, "Android 15"), ["info", "c_conn_na", {}]);
   assert.deepEqual(cn(null), ["info", "c_conn_na", {}]);
   assert.deepEqual(cn({ os: "windows", pseudo: "m,a,s,p", engine: "V8", mtu: 9001 }), ["warn", "c_conn_cloud", { m: 9001 }]);
   // an IPv6 address built from the card's MAC, and a random one
@@ -410,6 +411,8 @@ test("DNS leak: the resolver's country against the address's", () => {
   assert.equal(checks({ uaOS: "Windows 11", conn: { os: "linux" } }).conn[1], "c_conn_os");
   // a layout the probe can't place is no evidence, not an agreement and not a disguise
   assert.deepEqual(checks({ uaOS: "Windows 11", conn: { os: "other" } }).conn, ["info", "c_conn_na", {}]);
+  // the old probe's "unix" was that same cannot-place fallback: an already-deployed page must not blame a proxy
+  assert.deepEqual(checks({ uaOS: "Windows 11", conn: { os: "unix" } }).conn, ["info", "c_conn_na", {}]);
   // and one hint keeps the grade at A, where a contradiction cost it B
   assert.equal(grade(checks({ ipcc: "HU", dnsCC: "DE" }), ["dns"]).grade, "A");
   // two lookups, two countries: the route varies per request, which is what the check says instead of one country

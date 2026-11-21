@@ -787,7 +787,7 @@ import { exifOf } from "./exif.mjs";
     try { const r = await within(fetch(PROBE, { cache: "no-store" }), 6000, null); j = r && r.ok ? await r.json() : null; } catch (e) {}
     R.probe = j;
     const tc = j && j.tcp, tl = j && j.tls, h2 = j && j.http2;
-    if (tc) txt("tcpfp", t("tcp_v", { os: t("tos_" + (tc.os || "other")), ttl: tc.initial_ttl, hops: tc.hops, mtu: tc.mtu || "?" }), { why: t("tcp_why") + "\nJA4T " + tc.ja4t });
+    if (tc) txt("tcpfp", t("tcp_v", { os: t("tos_" + (tc.os === "unix" ? "other" : tc.os || "other")), ttl: tc.initial_ttl, hops: tc.hops, mtu: tc.mtu || "?" }), { why: t("tcp_why") + "\nJA4T " + tc.ja4t });
     else na("tcpfp", j ? "v_empty" : "v_fail");
     if (tl) txt("ja4", tl.ja4, { why: t("ja4_why") + "\nJA3 " + tl.ja3 });
     else na("ja4", j ? "v_empty" : "v_fail");

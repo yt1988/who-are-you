@@ -311,13 +311,14 @@ export function checks(x) {
     const { os, pseudo, engine, mtu } = x.conn;
     const want = { V8: ["m,a,s,p"], SpiderMonkey: ["m,p,a,s"], JavaScriptCore: ["m,s,p,a", "m,s,a,p"] }[engine];
     const fam = /^Windows/.test(x.uaOS || "") ? "windows" : /^(macOS|iOS|iPadOS)/.test(x.uaOS || "") ? "apple" : /^(Android|Linux|ChromeOS|HarmonyOS)/.test(x.uaOS || "") ? "linux" : null;
-    const off = fam && os && os !== "other" && (fam === "windows" ? os !== "windows" : fam === "apple" ? os === "windows" || os === "linux" : os === "windows" || os === "apple");
+    // "unix" is what an older probe said when it could not place the layout; it is not a family and not evidence
+    const off = fam && os && os !== "other" && os !== "unix" && (fam === "windows" ? os !== "windows" : fam === "apple" ? os === "windows" || os === "linux" : os === "windows" || os === "apple");
     if (want && pseudo && !want.includes(pseudo)) out.conn = ["bad", "c_conn_mitm", { b: x.brName || engine }];
     else if (off) out.conn = ["warn", "c_conn_os", { a: os, b: x.uaOS }];
     // (a path wider than 1500 bytes is a cloud's inside: jumbo frames, as AWS's 9001, so a cloud server opened it)
     else if (mtu > 1500) out.conn = ["warn", "c_conn_cloud", { m: mtu }];
     // "other" means the probe found no family in the layout: no evidence, not an agreement
-    else if ((os && os !== "other") || pseudo) out.conn = ["ok", "c_conn_ok", {}];
+    else if ((os && os !== "other" && os !== "unix") || pseudo) out.conn = ["ok", "c_conn_ok", {}];
     else out.conn = ["info", "c_conn_na", {}];
   }
   // A proxy or gateway that names itself in Via or Forwarded: the request says an intermediary is on the path. Company,
