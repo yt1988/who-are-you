@@ -56,7 +56,7 @@ export default {
   rtc_off: "WebRTC 꺼짐", rtc_none: "공인 주소 없음",
 
   dv_pc: "{os} PC", dv_mac: "Mac({os})", dv_phone: "{os} 휴대폰", dv_tablet: "{os} 태블릿", dv_model: "{model}({os})", dv_unknown: "알 수 없는 기기",
-  gpu_unknown: "모델명 없음", nt_dc: "데이터센터 네트워크라서 VPN이나 프록시를 쓰는 것처럼 보여요", nt_vpn: "VPN 업체 자체의 네트워크예요", nt_tor: "Tor 네트워크예요", nt_home: "평범한 가정용 또는 모바일 네트워크예요",
+  gpu_unknown: "모델명 없음", nt_dc: "데이터센터 네트워크라서 VPN이나 프록시를 쓰는 것처럼 보여요", nt_vpn: "VPN 업체 자체의 네트워크예요", nt_tor: "Tor 네트워크예요", nt_home: "일반 네트워크예요(가정, 사무실, 모바일 중 어느 것인지는 이 페이지에서 구분할 수 없어요)",
   age_v: "어느 사이트도 여기서는 알아낼 수 없어요", age_why: "브라우저는 나이를 알려 주지 않아요. 광고 네트워크는 여러 사이트에서 무엇을 읽고 보고 샀는지로 나이를 짐작하는데, 이 페이지에는 그런 데이터가 없어요.",
   pt_dark: "다크 모드", pt_light: "라이트 모드", pt_ab: "광고는 차단해요", pt_noab: "광고는 차단하지 않아요",
   jb_dev: "개발자", jb_design: "디자이너", jb_office: "Microsoft Office 사용자", jb_none: "특별한 단서 없음",

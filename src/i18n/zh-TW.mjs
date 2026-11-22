@@ -56,7 +56,7 @@ export default {
   rtc_off: "WebRTC 已關閉", rtc_none: "沒有公開位址",
 
   dv_pc: "{os} 電腦", dv_mac: "Mac（{os}）", dv_phone: "{os} 手機", dv_tablet: "{os} 平板", dv_model: "{model}（{os}）", dv_unknown: "一台認不出的裝置",
-  gpu_unknown: "認不出型號", nt_dc: "走的是機房網路，看起來像在用 VPN 或代理", nt_vpn: "走的是 VPN 服務商自己的網路", nt_tor: "走的是 Tor 網路", nt_home: "走的是一般家用或行動網路",
+  gpu_unknown: "認不出型號", nt_dc: "走的是機房網路，看起來像在用 VPN 或代理", nt_vpn: "走的是 VPN 服務商自己的網路", nt_tor: "走的是 Tor 網路", nt_home: "走的是普通網路（家庭、辦公或手機都可能，頁面看不出區別）",
   age_v: "網站從這些資訊裡看不出來", age_why: "瀏覽器不會透露年齡。廣告商是根據你在各個網站上看了什麼、買了什麼來猜的；這個頁面不讀這些。",
   pt_dark: "深色模式", pt_light: "淺色模式", pt_ab: "裝了廣告封鎖擴充功能", pt_noab: "沒裝廣告封鎖擴充功能",
   jb_dev: "你可能會寫程式", jb_design: "你可能在做設計", jb_office: "你在用 Microsoft Office", jb_none: "看不出什麼",

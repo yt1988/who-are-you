@@ -56,7 +56,7 @@ export default {
   rtc_off: "WebRTC ist aus", rtc_none: "keine öffentliche Adresse",
 
   dv_pc: "einen PC mit {os}", dv_mac: "einen Mac ({os})", dv_phone: "ein Smartphone mit {os}", dv_tablet: "ein Tablet mit {os}", dv_model: "ein {model} ({os})", dv_unknown: "irgendein Gerät",
-  gpu_unknown: "unbekannt", nt_dc: "ein Rechenzentrumsnetz, ein Zeichen für VPN oder Proxy", nt_vpn: "das eigene Netz eines VPN-Anbieters", nt_tor: "das Tor-Netzwerk", nt_home: "ein normales Heim- oder Mobilfunknetz",
+  gpu_unknown: "unbekannt", nt_dc: "ein Rechenzentrumsnetz, ein Zeichen für VPN oder Proxy", nt_vpn: "das eigene Netz eines VPN-Anbieters", nt_tor: "das Tor-Netzwerk", nt_home: "ein gewöhnliches Netz (zuhause, im Büro oder mobil; diese Seite kann das nicht unterscheiden)",
   age_v: "Das kann keine Website daraus ablesen", age_why: "Browser verraten dein Alter nicht. Werbenetzwerke schätzen es danach, was du auf verschiedenen Websites liest, ansiehst und kaufst; diese Seite hat keine solchen Daten.",
   pt_dark: "den dunklen Modus", pt_light: "den hellen Modus", pt_ab: "du blockierst Werbung", pt_noab: "du blockierst keine Werbung",
   jb_dev: "du programmierst", jb_design: "du machst Design", jb_office: "du nutzt Microsoft Office", jb_none: "nichts Besonderes",

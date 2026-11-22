@@ -56,7 +56,7 @@ export default {
   rtc_off: "WebRTC 已关闭", rtc_none: "没有公网地址",
 
   dv_pc: "{os} 电脑", dv_mac: "Mac（{os}）", dv_phone: "{os} 手机", dv_tablet: "{os} 平板", dv_model: "{model}（{os}）", dv_unknown: "一台认不出的设备",
-  gpu_unknown: "认不出型号", nt_dc: "走的是机房网络，像是在用 VPN 或代理", nt_vpn: "走的是 VPN 服务商自己的网络", nt_tor: "走的是 Tor 网络", nt_home: "走的是普通家庭或手机网络",
+  gpu_unknown: "认不出型号", nt_dc: "走的是机房网络，像是在用 VPN 或代理", nt_vpn: "走的是 VPN 服务商自己的网络", nt_tor: "走的是 Tor 网络", nt_home: "走的是普通网络（家庭、办公或手机都可能，页面看不出区别）",
   age_v: "网站从这些信息里看不出来", age_why: "浏览器不会透露年龄。广告公司是根据你在各个网站上看了什么、买了什么来猜的；这个页面不读这些。",
   pt_dark: "深色模式", pt_light: "浅色模式", pt_ab: "装了广告拦截插件", pt_noab: "没装广告拦截插件",
   jb_dev: "你可能写代码", jb_design: "你可能做设计", jb_office: "你在用 Microsoft Office", jb_none: "看不出什么",

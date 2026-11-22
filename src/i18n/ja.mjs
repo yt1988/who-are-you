@@ -56,7 +56,7 @@ export default {
   rtc_off: "WebRTC はオフ", rtc_none: "公開アドレスなし",
 
   dv_pc: "{os} の PC", dv_mac: "Mac（{os}）", dv_phone: "{os} のスマホ", dv_tablet: "{os} のタブレット", dv_model: "{model}（{os}）", dv_unknown: "不明な端末",
-  gpu_unknown: "型番不明", nt_dc: "データセンターの回線です。VPN かプロキシを使っているようです", nt_vpn: "VPN プロバイダー自身の回線です", nt_tor: "Tor ネットワークです", nt_home: "ふつうの家庭用かモバイルの回線です",
+  gpu_unknown: "型番不明", nt_dc: "データセンターの回線です。VPN かプロキシを使っているようです", nt_vpn: "VPN プロバイダー自身の回線です", nt_tor: "Tor ネットワークです", nt_home: "普通の回線です（家庭・オフィス・モバイルのどれかは、このページでは区別できません）",
   age_v: "ここからは分かりません", age_why: "ブラウザは年齢を教えません。広告ネットワークは、あなたがいろいろなサイトで何を読み、見て、買ったかから推測します。このページはそうしたデータを持っていません。",
   pt_dark: "ダークモード", pt_light: "ライトモード", pt_ab: "広告をブロックしています", pt_noab: "広告はブロックしていません",
   jb_dev: "コードを書く人", jb_design: "デザインの仕事をする人", jb_office: "Microsoft Office の利用者", jb_none: "特になし",
