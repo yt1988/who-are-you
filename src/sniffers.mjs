@@ -118,7 +118,7 @@ export const GROUPS = [
     { id: "idstr", m: "navigator.vendor · productSub · plugins" },
     { id: "agent", m: "mousemove → pointerdown · isTrusted" },
     { id: "worker", m: "Worker · navigator" },
-    { id: "adblock", m: "bait element" },
+    { id: "adblock", m: "bait element + ad-script HEAD" },
     { id: "trackers", m: "7 tracker scripts (on request)" },
     { id: "ext", m: "window.ethereum · DOM marks" },
     { id: "extwar", m: "chrome-extension:// files" },

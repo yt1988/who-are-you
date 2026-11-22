@@ -703,3 +703,16 @@ served by a probe built before this fix can still receive the old `"unix"` fallb
 probe release `server-8ff6ff7` carries the real fix.
 #130 (Windows read as Linux) had a Linux-looking layout plus a 582 ms round trip, so it was a different signature, not
 this TTL-only path; it stays closed.
+
+## 2026-11-23 — the ad-block probe's requests are disclosed (#139)
+
+The ad-block reading also sends two HEAD requests — to pagead2.googlesyndication.com (Google's ad script) and
+www.google.com/generate_204 — when the bait element is not hidden. The privacy FAQ named every external service
+except these, and the row's source said only "bait element". The FAQ now names both requests and says those servers
+see the visitor's address; the row's source says "bait element + ad-script HEAD". Disclosure (the audit's option a)
+was chosen over making the probes on demand, so the reading stays automatic; an owner could later move it behind a
+click.
+
+The topic-page render test already covered all 20 pages × 10 languages for title, one h1, canonical and hreflang;
+it now also asserts each page's meta description. (The shell's patrol spot list still samples two URLs; who's CI
+test covers every page on each push.)
