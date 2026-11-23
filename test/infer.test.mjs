@@ -373,11 +373,14 @@ test("split routing: different networks over the same IP version", () => {
   assert.equal(tunnelOf(1410), "openvpn"); assert.equal(tunnelOf(1360), "ipsec"); assert.equal(tunnelOf(1300), "other"); assert.equal(tunnelOf(null), null);
   // a phone network's NAT gives Radar's IPv4 test another address: no split (1ms-shell#63)
   assert.equal(splitOf([["ip", "172.58.1.1"], ["ex_intl", "172.58.1.1"], ["stack", "100.40.2.2"], ["stack", "2607:fb90::1"]]), null);   // same /16, and IPv6 beside IPv4
-  assert.deepEqual(splitOf([["ip", "45.76.1.1"], ["ex_cn", "114.254.73.157"], ["ex_gpt", "45.76.1.1"]]), { a: "ip", b: "ex_cn", ipA: "45.76.1.1", ipB: "114.254.73.157", n: 2 });
+  assert.deepEqual(splitOf([["anchor_cn", "114.254.73.157"], ["anchor_intl", "45.76.1.1"], ["ip", "45.76.1.1"], ["ex_cn", "114.254.73.157"], ["ex_gpt", "45.76.1.1"]]),
+    { a: "ex_cn", b: "ip", ipA: "114.254.73.157", ipB: "45.76.1.1", n: 2 });
+  // no anchor, no verdict: a network difference alone is not proof of different paths
+  assert.equal(splitOf([["ip", "45.76.1.1"], ["ex_cn", "114.254.73.157"]]), null);
   assert.equal(netOf("2406:da14:3c2:6400:f4b7:e910:7738:7af1"), "2406:da14:03c2:6400");
   const base = { ipcc: "JP" };
-  assert.equal(checks({ ...base, exits: [["ip", "1.1.1.1"], ["ex_cn", "8.8.8.8"]] }).split[0], "warn");
-  assert.equal(checks({ ...base, exits: [["ip", "1.1.1.1"], ["ex_cn", "1.1.2.2"]] }).split[0], "ok");
+  assert.equal(checks({ ...base, exits: [["anchor_cn", "8.8.8.8"], ["anchor_intl", "1.1.1.1"], ["ip", "1.1.1.1"], ["ex_cn", "8.8.8.8"]] }).split[0], "warn");
+  assert.equal(checks({ ...base, exits: [["anchor_cn", "1.1.2.2"], ["anchor_intl", "1.1.1.1"], ["ip", "1.1.1.1"], ["ex_cn", "1.1.2.2"]] }).split[0], "ok");
   assert.equal(checks(base).split, null);
 });
 
