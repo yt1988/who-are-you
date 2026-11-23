@@ -1,7 +1,7 @@
 // What the raw readings say about the visitor: the system and browser behind the user agent, the graphics card behind
 // the WebGL string, the keyboard layout, whether the network is a data center's, a guess at nationality, and the
 // disguise checks. Pure functions (no DOM), so they run in tests too.
-import { TZ_CC } from "./tz.mjs";
+import { tzCountry } from "./egress.js";
 import { DC_RE, DC_ASN, VPN_RE, groupExits, pathOf, kindOf } from "./egress.js";
 
 // the country a language tag points at: its own region (zh-CN, pt-BR), else the one country most speakers of a
@@ -43,7 +43,7 @@ export function langCC(tag) {
   if (base === "zh") return /hant/i.test(tag) ? "TW" : "CN";
   return LANG_CC[base] || null;
 }
-export const tzCC = tz => TZ_CC[tz] || null;
+export const tzCC = tz => { const cc = tzCountry(tz); return cc === "UN" ? null : cc; };
 
 // nationality: the browser language says most about it, unless it is plain (US) English, which is every device's
 // default; then the system time zone (where the device was set up), then the address.

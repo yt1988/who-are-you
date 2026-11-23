@@ -8,7 +8,6 @@
     "test": "node scripts/build.mjs --check && node --test \"test/*.test.mjs\"",
     "dev": "wrangler dev --port 8795",
     "deploy": "wrangler deploy",
-    "tz": "node scripts/tz.mjs",
     "og": "node scripts/og.mjs",
     "smoke": "node scripts/smoke.mjs",
     "touch": "node scripts/touch.mjs",

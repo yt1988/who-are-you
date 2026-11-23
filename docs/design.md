@@ -343,7 +343,7 @@ fit. Cost: the reading column narrows from 225 to 173 px, 11 more readings take 
 
 - A new iPhone or iPad screen size (usually each September) needs a row in src/models.mjs; until then the page says
   it can't name the model, never a wrong one.
-- `npm run models` monthly (Android model names); `npm run tz` when the tz database changes.
+- `npm run models` monthly (Android model names); the time zone → country table comes from the shared egress core.
 - `src/wasm.mjs` is wasm-feature-detect 1.10.0's fixtures (Apache-2.0; the notice is in the file). A new WebAssembly
   feature worth probing is copied from that package's release, modules only, and the count in the row follows.
 - MobileModels is CC BY-NC-SA 4.0 (non-commercial, share-alike): public/assets/m/ carries that license; a commercial
@@ -732,7 +732,7 @@ interception. The order is deliberate: avoid a false proxy verdict first, then r
 
 ## 2026-11-23 — who's exits use the site-wide egress core
 
-`src/egress.js` is vendored from `1ms.dog/src/egress.js` VERSION 3 (73f1272), with the header naming the commit. The
+`src/egress.js` is vendored from `1ms.dog/src/egress.js` VERSION 4 (3d6aad3), with the header naming the commit. The
 local `DC_ASN`/`DC_NAME`/`VPN_NAME`, `netKind` and `splitOf` are gone: `netKind` reads the core's `kindOf()` (VPN brand
 first, then data center/cloud) and `isDataCenter` its `DC_RE`/`DC_ASN`; `splitOf` groups the exits with
 `groupExits()` and compares the paths from `pathOf()`. Path and kind stay separate: an exit matching an anchor says

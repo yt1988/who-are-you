@@ -96,7 +96,7 @@ npm run og           # re-render the link-preview images (public/og/)
 npx wrangler deploy  # deploy the Worker "who"; then add a custom domain in the dashboard
 ```
 
-`npm run build` regenerates `public/` from `src/`. Set `SITE_URL` for your own domain (canonical links, sitemap, llms.txt). `npm run tz` refreshes the time zone → country table from the tz database.
+`npm run build` regenerates `public/` from `src/`. Set `SITE_URL` for your own domain (canonical links, sitemap, llms.txt). The time zone → country table lives in the shared egress core (`src/egress.js`).
 
 ## Layout
 

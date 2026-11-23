@@ -9,7 +9,7 @@ import { TW, flagCode } from "./regions.mjs";
 import { encode, decode, linkPath, parsePath } from "./share.mjs";
 import { nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, tzCC, langCC, sysLangs, SYS_FONT_LIST, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, isIntegratedGpu, discreteGpu, isRelayIp, rfpClock, idLies, FEATURES, engineRange, engineOff, rigOf, freshOf, isPublicDns, platformOff, glVendorOff, armSay, armGpu, tunnelOf, macOf, v6Type } from "./infer.mjs";
 import { wasmProbe, WASM_FEATURES } from "./wasm.mjs";
-import { TZ_CC } from "./tz.mjs";
+import { TZ_CC } from "./egress.js";
 import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
 import { exifOf } from "./exif.mjs";
 
@@ -2283,7 +2283,7 @@ import { exifOf } from "./exif.mjs";
   /* ---------- a country to pass for ---------- */
   // By default the one the address is in; pick another to see what still gives you away: the address, the system's
   // time zone, the browser's language, the DNS resolver, WebRTC
-  const CCS = [...new Set(Object.values(TZ_CC))].map(cc => [cc, country(cc)]).filter(([cc, n]) => n && n !== cc).sort((a, b) => { try { return a[1].localeCompare(b[1], LANG); } catch (e) { return a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0; } });
+  const CCS = [...new Set(Object.values(TZ_CC))].filter(cc => cc !== "UN").map(cc => [cc, country(cc)]).filter(([cc, n]) => n && n !== cc).sort((a, b) => { try { return a[1].localeCompare(b[1], LANG); } catch (e) { return a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0; } });
   // typed into, not scrolled: the name in the page's language or in English, or the code, narrows the list
   // ("jp", "japan", "日本"); names starting with what's typed come first
   const tgIn = $("#tgIn"), tgOpts = $("#tgOpts");
