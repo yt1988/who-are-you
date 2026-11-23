@@ -728,3 +728,17 @@ fails, the other is still shown and the card says which reading is unavailable; 
 no extra address goes to Tencent. The domestic probe uses a certificate pair from disk and a nonstandard port; the
 page's CSP allows its origin. Ten languages; the smoke test answers both probes (including one failing) with
 interception. The order is deliberate: avoid a false proxy verdict first, then restore the device family.
+
+
+## 2026-11-23 — who's exits use the site-wide egress core
+
+`src/egress.js` is vendored from `1ms.dog/src/egress.js` VERSION 1 (3b38822), with the header naming the commit. The
+local `DC_ASN`/`DC_NAME`/`VPN_NAME`, `netKind` and `splitOf` are gone: `netKind` reads the core's `kindOf()` (VPN brand
+first, then data center/cloud) and `isDataCenter` its `DC_RE`/`DC_ASN`; `splitOf` groups the exits with
+`groupExits()` and compares the paths from `pathOf()`. Path and kind stay separate: an exit matching an anchor says
+which route it took, not that it is direct. The two anchors (`probe.dog.1msapp.com:9443/conn` and
+`probe.1ms.dog/conn`) are rows in `EXITS` (not displayed) and are fetched for the main page's exit check; the
+domestic `/fp` reading stays for visitors in China. Missing anchors give no split verdict, not a network-difference
+guess. Tor, the tunnel MTU, WebRTC, Via, the UA/tamper checks, the giveaways and every fingerprint and string stay in
+this repository. Tests: the existing netKind/isDataCenter cases and split cases now include anchor addresses; the
+build and full smoke pass.

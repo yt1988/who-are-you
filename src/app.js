@@ -1458,6 +1458,9 @@ import { exifOf } from "./exif.mjs";
   // The address each kind of destination sees: a site in mainland China, an IP service abroad, two AI services and
   // Cloudflare (its trace on each service's own domain). A rule-based proxy or VPN picks the route by destination.
   const EXITS = [
+    // the two anchors of the site-wide egress contract: a probe inside China and one in Tokyo, /conn on each
+    ["anchor_cn", () => getJ("https://probe.dog.1msapp.com:9443/conn").then(b => ({ ip: b.ip, cc: null, note: "" }))],
+    ["anchor_intl", () => getJ("https://probe.1ms.dog/conn").then(b => ({ ip: b.ip, cc: null, note: "" }))],
     ["ex_cn", () => getJ("https://myip.ipip.net/json").then(b => ({ ip: b.data.ip, cc: null, note: (b.data.location || []).filter(Boolean).join(" ") }))],
     ["ex_intl", () => getJ("https://api.ip.sb/geoip").then(b => ({ ip: b.ip, cc: b.country_code, note: b.isp || b.asn_organization || "" }))],
     ...[["ex_gpt", "chatgpt.com"], ["ex_claude", "claude.ai"], ["ex_cf", "www.cloudflare.com"]].map(([id, host]) => [id, () => getT(`https://${host}/cdn-cgi/trace`).then(s => {

@@ -2,6 +2,7 @@
 // the WebGL string, the keyboard layout, whether the network is a data center's, a guess at nationality, and the
 // disguise checks. Pure functions (no DOM), so they run in tests too.
 import { TZ_CC } from "./tz.mjs";
+import { DC_RE, DC_ASN, VPN_RE, groupExits, pathOf, kindOf } from "./egress.js";
 
 // the country a language tag points at: its own region (zh-CN, pt-BR), else the one country most speakers of a
 // language without a region live in. English, Spanish, Arabic and the like are spoken too widely to say.
@@ -182,18 +183,10 @@ export function kbdLayout(map) {
   return q === "q" ? "QWERTY" : null;
 }
 
-// Data centers, clouds and VPN hosts: the networks sites can tell apart from home and mobile connections.
-const DC_ASN = new Set([13335, 209242, 16509, 14618, 15169, 396982, 19527, 8075, 8068, 14061, 63949, 20473, 16276, 24940, 31898, 45102, 37963,
-  132203, 45090, 9009, 60068, 212238, 51167, 136907, 55990, 906, 25820, 35916, 54600, 40065, 36352, 53667, 46562, 8100, 62904, 21859, 199524,
-  202422, 12876, 197540, 47583, 141995, 35913, 32613, 26496, 46606, 398101, 30633, 64267, 201814, 22612, 7979, 10439, 400328, 49981, 61317]);
-const DC_NAME = /amazon|\baws\b|google cloud|google llc|microsoft|azure|digitalocean|linode|akamai|vultr|choopa|\bovh|hetzner|oracle|alibaba|aliyun|tencent|huawei cloud|contabo|leaseweb|m247|datacamp|cdn77|g-?core|hostinger|hosting|\bhost|server|cloud|data ?cent|colo|\bvps\b|dedicated|ionos|scaleway|kamatera|racknerd|frantech|psychz|quadranet|zenlayer|dmit|cloudflare|fastly|packet|equinix|terrahost|hostwinds|interserver|liquid web|ponynet|clouvider|tzulo|cogent|mullvad|proton|nordvpn|expressvpn|surfshark|private internet/i;
-export const isDataCenter = (asn, org) => DC_ASN.has(+asn) || DC_NAME.test(org || "");
-// The exit's kind, as its network's name tells it: a VPN provider's own network, a hosting or cloud network, or a
-// network that names neither (a home line, a mobile carrier, an office: nothing here can tell those apart, so the
-// value says "ordinary"). Naming a VPN provider is a reading of the AS organization, not proof the visitor uses it
-// (the office VPN's exit sits on the same kind of network).
-const VPN_NAME = /mullvad|proton ?vpn|proton ag|\bnordvpn\b|expressvpn|surfshark|private internet access|\bpia\b|windscribe|ipvanish|cyberghost|purevpn|vyprvpn|tunnelbear|hide\.?me|azirevpn|perfect privacy|\bivpn\b|\bovpn\b|airvpn|torguard|hotspot shield|zenmate|privatevpn|ivacy|atlas vpn|mozilla vpn|hide my ass|\bhma\b/i;
-export const netKind = (asn, org) => VPN_NAME.test(org || "") ? "vpn" : isDataCenter(asn, org) ? "dc" : "home";
+// The exit's network, through the site-wide core (src/egress.js): VPN brand, data center/cloud, or ordinary. The
+// local table and the VPN regex are gone; the core owns them.
+export const isDataCenter = (asn, org) => DC_ASN.has(+asn) || DC_RE.test(org || "");
+export const netKind = (asn, org) => VPN_RE.test(org || "") ? "vpn" : kindOf({ asn: asn == null ? null : +asn, org: org || "" }).kind === "proxy" ? "dc" : "home";
 
 // hints about what the visitor does, from the fonts only certain software installs
 export const FONT_HINTS = [
@@ -238,20 +231,28 @@ export function v6Type(ips) {
   return [...byNet.values()].some(s => s.size > 1) ? "temporary" : "other";
 }
 export const netOf = ip => ip.includes(":") ? v6g(ip).slice(0, 4).join(":") : ip.split(".").slice(0, 2).join(".");
-// Split routing: two destinations that saw different networks over the same IP version. IPv4 next to IPv6 is just a
-// dual-stack connection. exits: [[row id, address]] in the order the rows are drawn; the first pair that differs.
-// (Cloudflare Radar's IPv4 address isn't compared: a phone network's NAT (464XLAT, carrier-grade NAT) can give each
-// connection another IPv4 address from its pool, and no split tunnel sends Radar its own way)
+// Split routing, through the core: the exits are grouped by ASN or network, and each one's path is which anchor it
+// follows (cn, intl, both, other). `exits` is [[row id, address]]; the two anchor rows (anchor_cn, anchor_intl) are
+// the /conn addresses, not exits themselves. A split is a domestic destination and a cross-border one on different
+// paths; anchors missing means no verdict, not a guess.
+const SPLIT_GROUP = { ip: "stack", stack: "stack", ex_cn: "cn", ex_intl: "intl", ex_gpt: "ai", ex_claude: "ai", ex_cf: "web" };
 export function splitOf(exits) {
-  const seen = [];
-  exits = exits.filter(([id, ip]) => !(id === "stack" && ip && !ip.includes(":")));
-  for (const [id, ip] of exits) {
+  const anchors = {}, answers = [];
+  for (const [id, ip] of exits || []) {
     if (!ip) continue;
-    const other = seen.find(([, x]) => (x.includes(":") === ip.includes(":")) && netOf(x) !== netOf(ip));
-    if (other) return { a: other[0], b: id, ipA: other[1], ipB: ip, n: new Set(exits.filter(([, x]) => x).map(([, x]) => netOf(x))).size };
-    seen.push([id, ip]);
+    if (id === "anchor_cn") { anchors.cn = ip; continue; }
+    if (id === "anchor_intl") { anchors.intl = ip; continue; }
+    answers.push({ id, group: SPLIT_GROUP[id] || "stack", ip });
   }
-  return null;
+  if (!answers.length || (!anchors.cn && !anchors.intl)) return null;
+  const groups = groupExits(answers).map(e => ({ ...e, groups: [...e.groups], path: pathOf(e, anchors) }));
+  const cn = groups.find(e => e.groups.includes("cn"));
+  const intl = groups.find(e => e.groups.includes("intl") || e.groups.includes("ai") || e.groups.includes("web") || e.groups.includes("stack"));
+  if (!cn || !intl || cn.key === intl.key || cn.path === intl.path) return null;
+  if (cn.path === "unknown-path" || intl.path === "unknown-path") return null;
+  const a = cn.seenBy.find(id => SPLIT_GROUP[id] === "cn") || cn.seenBy[0];
+  const b = intl.seenBy.find(id => SPLIT_GROUP[id] === "intl") || intl.seenBy[0];
+  return { a, b, ipA: cn.ip, ipB: intl.ip, n: groups.length };
 }
 
 // The tunnel a connection's MSS points to (probe.1ms.dog): the path's MTU is the MSS plus the headers (40 bytes on
