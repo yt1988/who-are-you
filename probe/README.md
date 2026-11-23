@@ -11,7 +11,10 @@ is left out, never null.
 
 - DNS: the probe's name has A (and AAAA) records straight to the server, not proxied: the browser has to reach this
   machine itself, or there is no SYN of its own to read.
-- Certificate: Let's Encrypt through autocert (TLS-ALPN-01 on 443), cached in the directory `-certs` names.
+- Certificate: by default Let's Encrypt through autocert (TLS-ALPN-01 on 443), cached in the directory `-certs` names.
+  On a host whose 80/443 are blocked (or on a nonstandard port), give `-certfile` and `-keyfile`: the pair is used as
+  is and autocert is off. Both flags go together; `-domain` is not enforced for a file pair (a wildcard renewed
+  elsewhere, e.g. with DNS-01).
 - Logs: only startup and errors. net/http, HTTP/2 and quic-go would write client addresses on connection errors, so
   their loggers are discarded (main.go, quic.go); after any change to the servers, check `journalctl` for addresses.
 
@@ -22,5 +25,6 @@ go build -o /opt/<app>/probe . && systemctl restart <app>
 ```
 
 `1ms-who.service` is the unit one deployment uses (its paths and name are that deployment's): a dynamic user with
-only the capabilities it needs (port 443, the raw socket for the SYN capture). Testing by IP: `probe -dev -addr :8443`
-serves a self-signed certificate.
+only the capabilities it needs (port 443, the raw socket for the SYN capture). The SYN capture's BPF filter uses the
+port from `-addr`, so `-addr :9443` captures SYNs to 9443 (with `-iface` or the default route's interface). Testing by
+IP: `probe -dev -addr :8443` serves a self-signed certificate.

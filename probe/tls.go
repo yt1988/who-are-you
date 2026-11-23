@@ -20,17 +20,17 @@ import (
 
 // The ClientHello as the browser sent it, GREASE values left out (they change every time on purpose)
 type helloInfo struct {
-	version    uint16   // the record's legacy version
-	ciphers    []uint16 // in the browser's order
-	exts       []uint16 // in the browser's order (Chrome shuffles it per connection)
-	groups     []uint16
-	points     []uint8
-	sigalgs    []uint16
-	alpn       []string
-	versions   []uint16 // supported_versions
-	sni        bool
-	keyShares  []uint16
-	quic       bool // read from a QUIC handshake (JA4's "q")
+	version   uint16   // the record's legacy version
+	ciphers   []uint16 // in the browser's order
+	exts      []uint16 // in the browser's order (Chrome shuffles it per connection)
+	groups    []uint16
+	points    []uint8
+	sigalgs   []uint16
+	alpn      []string
+	versions  []uint16 // supported_versions
+	sni       bool
+	keyShares []uint16
+	quic      bool // read from a QUIC handshake (JA4's "q")
 }
 
 func grease(v uint16) bool { return v&0x0f0f == 0x0a0a && v>>8 == v&0xff }

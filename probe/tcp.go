@@ -80,6 +80,12 @@ func defaultIface() string {
 	return "eth0"
 }
 
+// SYNs to the listening port, IPv4 or IPv6 (the IPv6 TCP header starts at byte 40: its flags at 53). The port comes
+// from -addr, so a probe on 9443 captures 9443, not 443.
+func synFilter(port int) string {
+	return fmt.Sprintf("tcp dst port %d and ((ip and tcp[13] & 0x12 == 2) or (ip6 and ip6[6] == 6 and ip6[53] & 0x12 == 2))", port)
+}
+
 func captureSyns(iface string, port int, t *synTable) error {
 	if iface == "" {
 		iface = defaultIface()
@@ -88,9 +94,7 @@ func captureSyns(iface string, port int, t *synTable) error {
 	if err != nil {
 		return err
 	}
-	// SYNs to the port, IPv4 or IPv6 (the IPv6 TCP header starts at byte 40: its flags at 53)
-	f := fmt.Sprintf("tcp dst port %d and ((ip and tcp[13] & 0x12 == 2) or (ip6 and ip6[6] == 6 and ip6[53] & 0x12 == 2))", port)
-	if err := h.SetBPFFilter(f); err != nil {
+	if err := h.SetBPFFilter(synFilter(port)); err != nil {
 		return err
 	}
 	src := gopacket.NewPacketSource(h, h.LinkType())

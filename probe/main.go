@@ -10,6 +10,7 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"flag"
+	"fmt"
 	"io"
 	"log"
 	"net"
@@ -35,6 +36,8 @@ func main() {
 	addr := flag.String("addr", ":443", "listen address")
 	domain := flag.String("domain", "probe.1ms.dog", "certificate name")
 	cache := flag.String("certs", "/var/lib/probe/certs", "certificate cache")
+	certFile := flag.String("certfile", "", "TLS certificate file (PEM; with -keyfile; turns autocert off)")
+	keyFile := flag.String("keyfile", "", "TLS private key file (PEM; with -certfile)")
 	iface := flag.String("iface", "", "interface for the SYN capture (empty: the default route's)")
 	dev := flag.Bool("dev", false, "a self-signed certificate (testing by IP)")
 	flag.Parse()
@@ -46,20 +49,9 @@ func main() {
 		}
 	}()
 
-	tcfg := &tls.Config{NextProtos: []string{"h2", "http/1.1"}, MinVersion: tls.VersionTLS10}
-	if *dev {
-		tcfg.Certificates = []tls.Certificate{selfSigned(*domain)}
-	} else {
-		m := &autocert.Manager{Prompt: autocert.AcceptTOS, HostPolicy: autocert.HostWhitelist(*domain), Cache: autocert.DirCache(*cache)}
-		// (a certificate that can't be had is logged, its reason only: nothing about who asked)
-		tcfg.GetCertificate = func(h *tls.ClientHelloInfo) (*tls.Certificate, error) {
-			c, err := m.GetCertificate(h)
-			if err != nil && h.ServerName == *domain {
-				log.Printf("certificate: %v", err)
-			}
-			return c, err
-		}
-		tcfg.NextProtos = append(tcfg.NextProtos, "acme-tls/1")
+	tcfg, err := tlsSetup(*domain, *certFile, *keyFile, *cache, *dev)
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	h := handler()
@@ -115,6 +107,39 @@ func serve(c net.Conn, tcfg *tls.Config, syns *synTable, h1 *chanListener, h2s *
 	default:
 		h1.push(pc)
 	}
+}
+
+// The TLS configuration: -dev signs a certificate itself, -certfile/-keyfile use a pair from disk (a wildcard
+// renewed elsewhere, for a host whose 80/443 are blocked), and with neither the probe gets its own through autocert.
+// The two file flags go together; a file pair turns autocert off entirely.
+func tlsSetup(domain, certFile, keyFile, cache string, dev bool) (*tls.Config, error) {
+	tcfg := &tls.Config{NextProtos: []string{"h2", "http/1.1"}, MinVersion: tls.VersionTLS10}
+	if dev {
+		tcfg.Certificates = []tls.Certificate{selfSigned(domain)}
+		return tcfg, nil
+	}
+	if (certFile == "") != (keyFile == "") {
+		return nil, fmt.Errorf("-certfile and -keyfile must be given together")
+	}
+	if certFile != "" {
+		c, err := tls.LoadX509KeyPair(certFile, keyFile)
+		if err != nil {
+			return nil, fmt.Errorf("certificate: %w", err)
+		}
+		tcfg.Certificates = []tls.Certificate{c}
+		return tcfg, nil
+	}
+	m := &autocert.Manager{Prompt: autocert.AcceptTOS, HostPolicy: autocert.HostWhitelist(domain), Cache: autocert.DirCache(cache)}
+	// (a certificate that can't be had is logged, its reason only: nothing about who asked)
+	tcfg.GetCertificate = func(h *tls.ClientHelloInfo) (*tls.Certificate, error) {
+		c, err := m.GetCertificate(h)
+		if err != nil && h.ServerName == domain {
+			log.Printf("certificate: %v", err)
+		}
+		return c, err
+	}
+	tcfg.NextProtos = append(tcfg.NextProtos, "acme-tls/1")
+	return tcfg, nil
 }
 
 func handler() http.Handler {
@@ -237,11 +262,13 @@ type chanListener struct {
 	addr net.Addr
 }
 
-func newChanListener(a net.Addr) *chanListener      { return &chanListener{ch: make(chan net.Conn, 64), addr: a} }
-func (l *chanListener) push(c net.Conn)            { l.ch <- c }
-func (l *chanListener) Accept() (net.Conn, error)   { return <-l.ch, nil }
-func (l *chanListener) Close() error               { return nil }
-func (l *chanListener) Addr() net.Addr             { return l.addr }
+func newChanListener(a net.Addr) *chanListener {
+	return &chanListener{ch: make(chan net.Conn, 64), addr: a}
+}
+func (l *chanListener) push(c net.Conn)           { l.ch <- c }
+func (l *chanListener) Accept() (net.Conn, error) { return <-l.ch, nil }
+func (l *chanListener) Close() error              { return nil }
+func (l *chanListener) Addr() net.Addr            { return l.addr }
 
 // over TCP, the offer of HTTP/3 on the same port, which a browser takes up on its next connections
 func altSvc(w http.ResponseWriter, r *http.Request) {
