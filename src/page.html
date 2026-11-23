@@ -88,6 +88,25 @@
     <section class="probes card">
       <div class="probes-h"><h2 data-i="h_src"></h2><span class="m" data-i="src_sub"></span><button class="rp-btn" id="rpRead" type="button" hidden data-i="rp_read"></button></div>
       <div class="pgroups">{{groups}}</div>
+      <div class="probe2" id="probe2" hidden>
+        <div class="probe2-h"><h3 data-i="p2_h"></h3><span class="m" data-i="p2_sub"></span></div>
+        <div class="probe2-grid">
+          <div class="probe2-col"><h4 data-i="p2_near"></h4><dl id="p2Near">
+            <div><dt data-i="p2_os"></dt><dd data-k="os"><i class="skl"></i></dd></div>
+            <div><dt data-i="p2_mss"></dt><dd data-k="mss"><i class="skl"></i></dd></div>
+            <div><dt data-i="p2_mtu"></dt><dd data-k="mtu"><i class="skl"></i></dd></div>
+            <div><dt data-i="p2_ja4t"></dt><dd data-k="ja4t"><i class="skl"></i></dd></div>
+          </dl></div>
+          <div class="probe2-col"><h4 data-i="p2_far"></h4><dl id="p2Far">
+            <div><dt data-i="p2_os"></dt><dd data-k="os"><i class="skl"></i></dd></div>
+            <div><dt data-i="p2_mss"></dt><dd data-k="mss"><i class="skl"></i></dd></div>
+            <div><dt data-i="p2_mtu"></dt><dd data-k="mtu"><i class="skl"></i></dd></div>
+            <div><dt data-i="p2_ja4t"></dt><dd data-k="ja4t"><i class="skl"></i></dd></div>
+          </dl></div>
+        </div>
+        <p class="probe2-diff" id="p2Diff"></p>
+        <p class="probe2-na" id="p2Na" hidden></p>
+      </div>
     </section>
 
     <nav class="topics">{{topics}}</nav>

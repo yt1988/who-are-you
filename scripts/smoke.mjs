@@ -53,12 +53,16 @@ const CANDIDATES = [process.env.CHROME_PATH, "C:/Program Files/Google/Chrome/App
 let exe = null;
 for (const c of CANDIDATES) { try { await access(c); exe = c; break; } catch (e) {} }
 if (!exe) { console.error("No Chrome or Edge found; set CHROME_PATH."); process.exit(1); }
-const browser = await puppeteer.launch({ executablePath: exe, headless: true, args: ["--no-sandbox", "--use-fake-ui-for-media-stream",
+const browserArgs = ["--no-sandbox", "--use-fake-ui-for-media-stream",
   // pages run side by side: none is throttled for being in the background
   "--disable-background-timer-throttling", "--disable-renderer-backgrounding", "--disable-backgrounding-occluded-windows",
   // only these servers answer: every other name fails to resolve at once, as a blocked network would (in the browser, not
   // through request interception, which stalls with several pages at a time)
-  "--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE 127.0.0.1"] });
+  "--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE 127.0.0.1"];
+let browser = await puppeteer.launch({ executablePath: exe, headless: true, args: browserArgs });
+// after a group of pages the renderer can be left fat enough to crash a later one: start a clean browser for the
+// language and topic groups rather than make the tests depend on what ran before them
+async function freshBrowser() { await browser.close(); browser = await puppeteer.launch({ executablePath: exe, headless: true, args: browserArgs }); }
 
 const failures = [];
 const fail = (where, what) => { failures.push(where + ": " + what); console.log("  ✖ " + where + ": " + what); };
@@ -77,62 +81,69 @@ async function open(url, before, arg) {
   return { page, errors };
 }
 
-await pool(LANGS, N, async ([lang, slug], base) => {
-  console.log(lang);
-  const { page, errors } = await open(`${base}/${slug ? slug + "/" : ""}`);
-  // done when the rerun button is enabled again (the run, WebRTC included, is over)
-  await page.waitForFunction(() => !document.querySelector("#rerun").disabled, { timeout: 30000 }).catch(() => fail(lang, "the run never finished"));
+// WebGL blocked or stood in for by an extension: getContext("webgl") answers an object that is not a context. The GPU
+// rows must say so and the rest of the run must finish (17 front-end errors, `t.getExtension is not a function`)
+console.log("webgl: a stand-in context");
+{
+  const { page, errors } = await open(`${base}/?lang=en`, () => {
+    const orig = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (type, ...rest) {
+      return /^(experimental-)?webgl/.test(String(type)) ? {} : orig.call(this, type, ...rest);
+    };
+  });
+  await page.waitForFunction(() => !document.querySelector("#rerun").disabled, { timeout: 30000 }).catch(() => fail("webgl", "the run never finished"));
   const r = await page.evaluate(() => ({
-    rows: [...document.querySelectorAll(".pr[data-s]")].map(x => [x.dataset.s, x.querySelector(".pa").textContent]),
-    waiting: document.querySelectorAll(".bl.wait").length, blanks: document.querySelectorAll(".bl[data-b]").length,
-    story: document.querySelector("#story").textContent, checks: [...document.querySelectorAll(".ckr")].map(x => [x.dataset.c, x.className]),
-    num: document.querySelector("#mNum").textContent, fp: document.querySelector("#fpId").textContent, ret: document.querySelector("#fpRet").textContent,
+    rows: Object.fromEntries(["gpu", "webgl", "glx", "glimg"].map(id => [id, (document.querySelector(`.pr[data-s="${id}"] .pa`) || {}).textContent || ""])),
+    waiting: document.querySelectorAll(".bl.wait").length,
   }));
-  for (const e of errors) fail(lang, "script error: " + e);
-  if (r.rows.length !== SNIFFERS.length) fail(lang, `${r.rows.length} rows, expected ${SNIFFERS.length}`);
-  for (const [id, v] of r.rows) if (!v.trim() || v === "…") fail(lang, `row ${id} not filled ("${v}")`);
-  if (r.blanks !== Object.keys(BLANKS).length) fail(lang, `${r.blanks} blanks, expected ${Object.keys(BLANKS).length}`);
-  if (r.waiting) fail(lang, `${r.waiting} blanks still waiting`);
-  if (/\{\w+\}|undefined|null|NaN/.test(r.story)) fail(lang, "portrait has a leftover: " + r.story.match(/.{0,20}(\{\w+\}|undefined|null|NaN).{0,20}/)[0]);
-  for (const [id, cls] of r.checks) if (!/st-/.test(cls)) fail(lang, `check ${id} not judged`);
-  if (r.checks.length !== CHECKS.length + PROTO.length) fail(lang, `${r.checks.length} checks, expected ${CHECKS.length + PROTO.length}`);
-  if (!/^\d+$/.test(r.num)) fail(lang, `count "${r.num}"`);
-  if (!r.fp.trim() || !r.ret.trim()) fail(lang, "ID card not filled");
-
-  if (lang === "zh-CN") {
-    // share (1ms.dog's share dialog), then open the link as someone else would
-    await page.click("#share");
-    // the link, in this language's folder, and the image card, made in the page
-    await page.waitForFunction(() => { const d = document.querySelector("dialog.ms-share"); return d && d.open && /\/zh-cn\/r\/\d+\./.test(d.querySelector(".ms-share-link input").value) && d.querySelector(".ms-share-img").src; }, { timeout: 8000 })
-      .catch(() => fail("share", "no link or no image"));
-    // the whole dialog on one screen: a card taller than the window put every action below the fold (2026-11-17)
-    const fit = await page.evaluate(() => { const d = document.querySelector("dialog.ms-share"), b = s => Math.round(d.querySelector(s).getBoundingClientRect().bottom);
-      return { vh: innerHeight, link: b(".ms-share-link"), acts: b(".ms-share-acts") }; });
-    if (fit.link > fit.vh || fit.acts > fit.vh) fail("share", `the actions sit below the fold (link ${fit.link}, actions ${fit.acts}, window ${fit.vh})`);
-    const link = await page.$eval("dialog.ms-share .ms-share-link input", x => x.value), P = decode(link.split("/r/")[1] || "");
-    if (!P) fail("share", "the link doesn't decode");
-    else {
-      if (/203\.0\.113\.7|Tokyo|KDDI/.test(JSON.stringify(P))) fail("share", "the link carries the address, city or network");
-      if ("fp" in P || "x" in P) fail("share", "the link carries the fingerprint");
-    }
-    const s = await open(link, () => { window.msOpenReport = () => {}; });
-    await s.page.waitForSelector("html.shared", { timeout: 5000 }).catch(() => fail("share", "shared view not shown"));
-    await s.page.waitForSelector(".ms-recv", { timeout: 5000 }).catch(() => {});   // the banner comes with the component
-    const v = await s.page.evaluate(() => ({ waiting: document.querySelectorAll(".bl.wait").length, city: document.querySelector('.bl[data-b="city"]').textContent, fp: document.querySelector("#fpId").textContent,
-      story: document.querySelector("#story").textContent, mine: !document.querySelector("#mine").hidden, reportHidden: document.querySelector("#rpRead").hidden,
-      banner: !!document.querySelector(".ms-recv .ms-recv-b") }));
-    if (!v.reportHidden) fail("share", "the report entry showed on a shared portrait, where there is no result of the viewer's own");
-    for (const e of s.errors) fail("share", "script error: " + e);
-    if (v.waiting) fail("share", `${v.waiting} blanks still waiting`);
-    if (v.city !== "•••") fail("share", `city shows "${v.city}"`);
-    if (v.fp !== "•••") fail("share", `fingerprint shows "${v.fp}"`);
-    if (/\{\w+\}|undefined|null|NaN/.test(v.story)) fail("share", "portrait has a leftover");
-    if (!v.mine) fail("share", "no \"check mine\" button");
-    if (!v.banner) fail("share", "no banner from the share component above the shared portrait");
-    await s.page.close();
-  }
+  for (const e of errors) fail("webgl", "script error: " + e);
+  for (const [id, v] of Object.entries(r.rows)) if (!v.trim() || v === "…") fail("webgl", `the ${id} row is empty ("${v}")`);
+  if (r.waiting) fail("webgl", `${r.waiting} blanks still waiting`);
   await page.close();
-});
+}
+
+// Two measuring points for a visitor in China: the domestic probe's device reading and the Tokyo probe's cross-border
+// reading, with an MSS difference called out, and one side failing leaving the other. The probes and /api/me are
+// answered by the test (the browser's host rules otherwise cut every outside name).
+console.log("two probes: domestic and cross-border");
+{
+  const page = await browser.newPage(), errors = [];
+  page.on("pageerror", e => errors.push(String(e.message || e)));
+  await page.setViewport({ width: 1280, height: 900 });
+  await page.setRequestInterception(true);
+  let nearFail = false, nearCalls = 0;
+  const json = (body) => ({ status: 200, contentType: "application/json", headers: { "Access-Control-Allow-Origin": "*" }, body: JSON.stringify(body) });
+  const tcp = (mss, mtu) => ({ proto: "HTTP/2.0", ip: "203.0.113.7", tcp: { os: "windows", mss, mtu, ja4t: `65535_2-1-3-1-1-4_${mss}_8`, initial_ttl: 64, hops: 0, window: 65535 }, http2: { pseudo: "m,a,s,p" }, tls: { ja4: "t13d1516h2" } });
+  page.on("request", req => {
+    const u = req.url();
+    if (u.includes("/api/me")) return req.respond(json({ ...ME, cf: { ...ME.cf, country: "CN", city: "Shanghai" }, at: Date.now() }));
+    if (u.includes("probe.1ms.dog/fp?h3")) return req.respond({ status: 404, body: "" });
+    if (u.includes("probe.1ms.dog/fp")) return req.respond(json(tcp(1400, 1440)));
+    if (u.includes("probe.dog.1msapp.com:9443/fp")) { nearCalls++; return req.respond(nearFail ? { status: 500, body: "no" } : json(tcp(1460, 1500))); }
+    req.continue();
+  });
+  await page.goto(`${base}/?lang=en`, { waitUntil: "load" });
+  await page.waitForFunction(() => !document.querySelector("#rerun").disabled, { timeout: 30000 }).catch(() => fail("two probes", "the run never finished"));
+  let r = await page.evaluate(() => ({
+    visible: !document.querySelector("#probe2").hidden,
+    near: [...document.querySelectorAll("#p2Near dd")].map(x => x.textContent.trim()),
+    far: [...document.querySelectorAll("#p2Far dd")].map(x => x.textContent.trim()),
+    diff: (document.querySelector("#p2Diff") || {}).textContent || "",
+    na: (document.querySelector("#p2Na") || {}).textContent || "",
+  }));
+  for (const e of errors) fail("two probes", "script error: " + e);
+  if (!r.visible) fail("two probes", "the card is hidden for a visitor in China");
+  if (r.near[1] !== "1460" || r.far[1] !== "1400") fail("two probes", `MSS columns read ${r.near[1]} / ${r.far[1]}`);
+  if (!/1400/.test(r.diff)) fail("two probes", "the MSS difference is not called out: " + r.diff);
+  if (!nearCalls) fail("two probes", "the domestic probe was not asked");
+  nearFail = true;
+  await page.reload({ waitUntil: "load" });
+  await page.waitForFunction(() => !document.querySelector("#rerun").disabled, { timeout: 30000 }).catch(() => fail("two probes", "the fallback run never finished"));
+  r = await page.evaluate(() => ({ visible: !document.querySelector("#probe2").hidden, na: (document.querySelector("#p2Na") || {}).textContent || "", far: [...document.querySelectorAll("#p2Far dd")].map(x => x.textContent.trim()) }));
+  if (!r.visible || !/domestic reading is unavailable/.test(r.na)) fail("two probes", "a failed domestic probe should say so: " + r.na);
+  if (r.far[1] !== "1400") fail("two probes", "the cross-border reading should remain: " + r.far[1]);
+  await page.close();
+}
 
 // Intro fields settle independently of a deliberately slow, unrelated sniffer.
 // Voices must still block nationality; returnVisit must run only once per completed measurement.
@@ -203,32 +214,70 @@ for (const broken of [false, true]) {
   await page.close();
 }
 
-// WebGL blocked or stood in for by an extension: getContext("webgl") answers an object that is not a context. The GPU
-// rows must say so and the rest of the run must finish (17 front-end errors, `t.getExtension is not a function`)
-console.log("webgl: a stand-in context");
-{
-  const { page, errors } = await open(`${base}/?lang=en`, () => {
-    const orig = HTMLCanvasElement.prototype.getContext;
-    HTMLCanvasElement.prototype.getContext = function (type, ...rest) {
-      return /^(experimental-)?webgl/.test(String(type)) ? {} : orig.call(this, type, ...rest);
-    };
-  });
-  await page.waitForFunction(() => !document.querySelector("#rerun").disabled, { timeout: 30000 }).catch(() => fail("webgl", "the run never finished"));
+await freshBrowser();
+await pool(LANGS, N, async ([lang, slug], base) => {
+  console.log(lang);
+  const { page, errors } = await open(`${base}/${slug ? slug + "/" : ""}`);
+  // done when the rerun button is enabled again (the run, WebRTC included, is over)
+  await page.waitForFunction(() => !document.querySelector("#rerun").disabled, { timeout: 30000 }).catch(() => fail(lang, "the run never finished"));
   const r = await page.evaluate(() => ({
-    rows: Object.fromEntries(["gpu", "webgl", "glx", "glimg"].map(id => [id, (document.querySelector(`.pr[data-s="${id}"] .pa`) || {}).textContent || ""])),
-    waiting: document.querySelectorAll(".bl.wait").length,
+    rows: [...document.querySelectorAll(".pr[data-s]")].map(x => [x.dataset.s, x.querySelector(".pa").textContent]),
+    waiting: document.querySelectorAll(".bl.wait").length, blanks: document.querySelectorAll(".bl[data-b]").length,
+    story: document.querySelector("#story").textContent, checks: [...document.querySelectorAll(".ckr")].map(x => [x.dataset.c, x.className]),
+    num: document.querySelector("#mNum").textContent, fp: document.querySelector("#fpId").textContent, ret: document.querySelector("#fpRet").textContent,
   }));
-  for (const e of errors) fail("webgl", "script error: " + e);
-  for (const [id, v] of Object.entries(r.rows)) if (!v.trim() || v === "…") fail("webgl", `the ${id} row is empty ("${v}")`);
-  if (r.waiting) fail("webgl", `${r.waiting} blanks still waiting`);
+  for (const e of errors) fail(lang, "script error: " + e);
+  if (r.rows.length !== SNIFFERS.length) fail(lang, `${r.rows.length} rows, expected ${SNIFFERS.length}`);
+  for (const [id, v] of r.rows) if (!v.trim() || v === "…") fail(lang, `row ${id} not filled ("${v}")`);
+  if (r.blanks !== Object.keys(BLANKS).length) fail(lang, `${r.blanks} blanks, expected ${Object.keys(BLANKS).length}`);
+  if (r.waiting) fail(lang, `${r.waiting} blanks still waiting`);
+  if (/\{\w+\}|undefined|null|NaN/.test(r.story)) fail(lang, "portrait has a leftover: " + r.story.match(/.{0,20}(\{\w+\}|undefined|null|NaN).{0,20}/)[0]);
+  for (const [id, cls] of r.checks) if (!/st-/.test(cls)) fail(lang, `check ${id} not judged`);
+  if (r.checks.length !== CHECKS.length + PROTO.length) fail(lang, `${r.checks.length} checks, expected ${CHECKS.length + PROTO.length}`);
+  if (!/^\d+$/.test(r.num)) fail(lang, `count "${r.num}"`);
+  if (!r.fp.trim() || !r.ret.trim()) fail(lang, "ID card not filled");
+
+  if (lang === "zh-CN") {
+    // share (1ms.dog's share dialog), then open the link as someone else would
+    await page.click("#share");
+    // the link, in this language's folder, and the image card, made in the page
+    await page.waitForFunction(() => { const d = document.querySelector("dialog.ms-share"); return d && d.open && /\/zh-cn\/r\/\d+\./.test(d.querySelector(".ms-share-link input").value) && d.querySelector(".ms-share-img").src; }, { timeout: 8000 })
+      .catch(() => fail("share", "no link or no image"));
+    // the whole dialog on one screen: a card taller than the window put every action below the fold (2026-11-17)
+    const fit = await page.evaluate(() => { const d = document.querySelector("dialog.ms-share"), b = s => Math.round(d.querySelector(s).getBoundingClientRect().bottom);
+      return { vh: innerHeight, link: b(".ms-share-link"), acts: b(".ms-share-acts") }; });
+    if (fit.link > fit.vh || fit.acts > fit.vh) fail("share", `the actions sit below the fold (link ${fit.link}, actions ${fit.acts}, window ${fit.vh})`);
+    const link = await page.$eval("dialog.ms-share .ms-share-link input", x => x.value), P = decode(link.split("/r/")[1] || "");
+    if (!P) fail("share", "the link doesn't decode");
+    else {
+      if (/203\.0\.113\.7|Tokyo|KDDI/.test(JSON.stringify(P))) fail("share", "the link carries the address, city or network");
+      if ("fp" in P || "x" in P) fail("share", "the link carries the fingerprint");
+    }
+    const s = await open(link, () => { window.msOpenReport = () => {}; });
+    await s.page.waitForSelector("html.shared", { timeout: 5000 }).catch(() => fail("share", "shared view not shown"));
+    await s.page.waitForSelector(".ms-recv", { timeout: 5000 }).catch(() => {});   // the banner comes with the component
+    const v = await s.page.evaluate(() => ({ waiting: document.querySelectorAll(".bl.wait").length, city: document.querySelector('.bl[data-b="city"]').textContent, fp: document.querySelector("#fpId").textContent,
+      story: document.querySelector("#story").textContent, mine: !document.querySelector("#mine").hidden, reportHidden: document.querySelector("#rpRead").hidden,
+      banner: !!document.querySelector(".ms-recv .ms-recv-b") }));
+    if (!v.reportHidden) fail("share", "the report entry showed on a shared portrait, where there is no result of the viewer's own");
+    for (const e of s.errors) fail("share", "script error: " + e);
+    if (v.waiting) fail("share", `${v.waiting} blanks still waiting`);
+    if (v.city !== "•••") fail("share", `city shows "${v.city}"`);
+    if (v.fp !== "•••") fail("share", `fingerprint shows "${v.fp}"`);
+    if (/\{\w+\}|undefined|null|NaN/.test(v.story)) fail("share", "portrait has a leftover");
+    if (!v.mine) fail("share", "no \"check mine\" button");
+    if (!v.banner) fail("share", "no banner from the share component above the shared portrait");
+    await s.page.close();
+  }
   await page.close();
-}
+});
 
 // the topic pages: their focus panel fills with the verdict and every row it repeats
 // (a sample: every topic in Chinese and English, and one topic in every language; their texts in every language are the
 // unit tests', and the page script is the same in all of them)
 const SAMPLE = [...Object.keys(PAGES).flatMap(topic => LANGS.filter(([l]) => l === "zh-CN" || l === "en").map(l => [topic, ...l])),
   ...LANGS.filter(([l]) => l !== "zh-CN" && l !== "en").map(l => ["dns-leak", ...l])];
+await freshBrowser();
 await pool(quick ? [] : SAMPLE, 3, async ([topic, lang, slug], base) => {
   const where = `${lang} ${topic}`;
   const t0 = Date.now();

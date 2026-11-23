@@ -272,6 +272,8 @@ import { exifOf } from "./exif.mjs";
     } catch (e) { for (const id of ids) na(id, "v_fail"); R.srv = {}; return; }
     const c = j.cf || {}, h = j.h || {};
     R.srv = j;
+    // a visitor in China gets the second measuring point (TX.SHA); make its place before the probes answer
+    if (c.country === "CN") { const p2 = $("#probe2"); if (p2) p2.hidden = false; }
     row("ip", flagged(null, j.ip + " · IPv" + j.v, ipqsOf(j.ip)));
     // (the place and the point are an IP database's guess for the address, said so on the row itself)
     await within(citiesP, 1500, null);
@@ -781,11 +783,19 @@ import { exifOf } from "./exif.mjs";
   // The probe: this browser's own connection, read whole by a server Cloudflare doesn't stand in front of
   // (probe.1ms.dog, DNS only): the SYN the system opened it with, the TLS ClientHello, the HTTP/2 preface
   const PROBE = "https://probe.1ms.dog/fp";
+  const PROBE_CN = "https://probe.dog.1msapp.com:9443/fp";
   const h2Engine = p => ({ "m,a,s,p": "blink", "m,p,a,s": "gecko", "m,s,p,a": "webkit", "m,s,a,p": "webkit" })[p] || (p ? "tool" : null);
+  // The two measuring points: Tokyo sees the connection after the international path (MSS clamps and all); TX.SHA
+  // sees a visitor in China before it. Both are read for a visitor whose address Cloudflare places in China; the
+  // domestic one is the device for the portrait and the checks, the cross-border one is what the path does to it.
   async function probe() {
-    let j = null;
-    try { const r = await within(fetch(PROBE, { cache: "no-store" }), 6000, null); j = r && r.ok ? await r.json() : null; } catch (e) {}
-    R.probe = j;
+    await Promise.race([R.srvP || Promise.resolve(), new Promise(r => setTimeout(r, 8000))]).catch(() => {});
+    const isCN = !!(R.srv && R.srv.cf && R.srv.cf.country === "CN");
+    const get = async (u, ms) => { try { const r = await within(fetch(u, { cache: "no-store" }), ms, null); return r && r.ok ? await r.json() : null; } catch (e) { return null; } };
+    const [far, near] = await Promise.all([get(PROBE, 6000), isCN ? get(PROBE_CN, 7000) : Promise.resolve(null)]);
+    const j = far;
+    R.probe = near || far;
+    paintProbe2(near, far, isCN);
     const tc = j && j.tcp, tl = j && j.tls, h2 = j && j.http2;
     if (tc) txt("tcpfp", t("tcp_v", { os: t("tos_" + (tc.os === "unix" ? "other" : tc.os || "other")), ttl: tc.initial_ttl, hops: tc.hops, mtu: tc.mtu || "?" }), { why: t("tcp_why") + "\nJA4T " + tc.ja4t });
     else na("tcpfp", j ? "v_empty" : "v_fail");
@@ -804,6 +814,32 @@ import { exifOf } from "./exif.mjs";
     R.quic = q && q.proto === "HTTP/3.0" ? (q.tls || {}) : null;
     if (R.quic && R.quic.ja4) txt("quicfp", "HTTP/3 · " + R.quic.ja4, { why: t("qf_why") });
     else txt("quicfp", t(q && q.proto === "HTTP/3.0" ? "qf_noja4" : "qf_tcp"), { why: t("qf_why") });
+  }
+
+  // The two-point card: one column for the domestic probe and one for the cross-border one, with the MSS difference
+  // called out; a failed side leaves its column blank and says which reading is unavailable.
+  function paintProbe2(near, far, isCN) {
+    const box = $("#probe2"); if (!box) return;
+    if (!isCN) { box.hidden = true; return; }
+    box.hidden = false;
+    const put = (sel, p) => {
+      const dl = $(sel); if (!dl) return;
+      const tc = p && p.tcp, set = (k, v) => { const el = dl.querySelector(`[data-k="${k}"]`); if (el) el.textContent = v; };
+      set("os", tc && tc.os ? t("tos_" + (tc.os === "unix" ? "other" : tc.os)) : "—");
+      set("mss", tc && tc.mss ? tc.mss : "—");
+      set("mtu", tc && tc.mtu ? tc.mtu : "—");
+      set("ja4t", tc && tc.ja4t ? tc.ja4t : "—");
+    };
+    put("#p2Near", near); put("#p2Far", far);
+    const nm = near && near.tcp && near.tcp.mss, fm = far && far.tcp && far.tcp.mss;
+    const diff = $("#p2Diff"), na = $("#p2Na");
+    if (nm && fm) {
+      diff.hidden = false; na.hidden = true;
+      diff.textContent = nm !== fm ? t("p2_diff", { a: nm, b: fm }) : t("p2_same");
+    } else {
+      diff.hidden = true; na.hidden = false;
+      na.textContent = t(!near && !far ? "p2_na_both" : !near ? "p2_na_cn" : "p2_na_far");
+    }
   }
 
   // Lies: the APIs a spoofer rewrites (what navigator and screen say, how canvas, WebGL and audio draw, the clock,
@@ -2923,6 +2959,7 @@ import { exifOf } from "./exif.mjs";
     const h3 = on("http3") ? http3().then(() => { R.h3done = true; }) : null;
     // the page's own request, and the probes that ask other sites who you are
     const srv = on("server") ? server() : Promise.resolve();
+    R.srvP = srv;
     const probes = [on("stack") && guard("stack", stack), on("exits") && guard(EXITS.map(([id]) => id), exits),
       on("dns") && guard("dns", () => dnsResolver().catch(e => { R.dnsCC = null; throw e; }))].filter(Boolean);
     // the round trip, measured once the connection is open

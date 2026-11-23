@@ -716,3 +716,15 @@ click.
 The topic-page render test already covered all 20 pages × 10 languages for title, one h1, canonical and hreflang;
 it now also asserts each page's meta description. (The shell's patrol spot list still samples two URLs; who's CI
 test covers every page on each push.)
+
+## 2026-11-23 — two measuring points for a visitor in China
+
+The Tokyo probe sees a connection after the international path, so a mainland visitor's MSS/MTU and SYN can be
+changed by the border. A second probe in TX.SHA (Tencent Cloud, `probe.dog.1msapp.com:9443`) reads the same browser
+before it leaves the country. For a visitor whose address Cloudflare places in China, the page asks both in parallel
+(6 s and 7 s caps): the domestic reading is the primary for the portrait and the connection check, the cross-border
+reading is shown beside it in a two-column card, with an MSS difference called out (`MSS 1460 → 1400`). If one side
+fails, the other is still shown and the card says which reading is unavailable; outside China only Tokyo is asked, so
+no extra address goes to Tencent. The domestic probe uses a certificate pair from disk and a nonstandard port; the
+page's CSP allows its origin. Ten languages; the smoke test answers both probes (including one failing) with
+interception. The order is deliberate: avoid a false proxy verdict first, then restore the device family.
