@@ -732,7 +732,7 @@ interception. The order is deliberate: avoid a false proxy verdict first, then r
 
 ## 2026-11-23 — who's exits use the site-wide egress core
 
-`src/egress.js` is vendored from `1ms.dog/src/egress.js` VERSION 2 (662db31), with the header naming the commit. The
+`src/egress.js` is vendored from `1ms.dog/src/egress.js` VERSION 3 (73f1272), with the header naming the commit. The
 local `DC_ASN`/`DC_NAME`/`VPN_NAME`, `netKind` and `splitOf` are gone: `netKind` reads the core's `kindOf()` (VPN brand
 first, then data center/cloud) and `isDataCenter` its `DC_RE`/`DC_ASN`; `splitOf` groups the exits with
 `groupExits()` and compares the paths from `pathOf()`. Path and kind stay separate: an exit matching an anchor says

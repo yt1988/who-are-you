@@ -536,8 +536,8 @@ test("the exit's kind, and a virtual machine's, from the names they report", () 
   assert.equal(netKind(13335, "Cloudflare, Inc."), "dc");
   assert.equal(netKind(2516, "KDDI Corporation"), "home");
   assert.equal(netKind(null, ""), "home");
-  // the vendored core VERSION 2: Cloudflare is a proxy either way, and WARP on is the precise reason
-  assert.equal(EGRESS_VERSION, "2");
+  // the vendored core VERSION 3: Cloudflare is a proxy either way, and WARP on is the precise reason
+  assert.equal(EGRESS_VERSION, "3");
   assert.deepEqual(kindOf({ asn: 13335, org: "Cloudflare, Inc." }, { warp: "on" }), { kind: "proxy", why: "warp" });
   assert.deepEqual(kindOf({ asn: 13335, org: "Cloudflare, Inc." }, { warp: "off" }), { kind: "proxy", why: "dc" });
   assert.equal(netKind(13335, "Cloudflare, Inc."), "dc");
