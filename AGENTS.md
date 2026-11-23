@@ -129,7 +129,7 @@ src/worker.js      /api/me, share previews
 src/tally.mjs      anonymous counts (Durable Object)
 src/sniffers.mjs   every reading's row, the portrait's blanks, the checks
 src/infer.mjs      what the readings mean (unit tested)
-src/egress.js      the site-wide exit rules, vendored from 1ms.dog (VERSION 4)
+src/egress.js      the site-wide exit rules, vendored from 1ms.dog (VERSION 6)
 src/models.mjs     device models (unit tested)
 src/app.js         the page script
 src/page.html      the page; src/style.css its styles
