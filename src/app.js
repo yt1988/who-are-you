@@ -2366,6 +2366,16 @@ import { exifOf } from "./exif.mjs";
     const left = items.filter(([, ok]) => ok === false).length;
     $("#tgSum").textContent = left ? t("tg_left", { n: left, c: name }) : t("tg_all", { c: name });
     $("#tgSum").className = "tg-sum " + (left ? "bad" : "ok");
+    // the exits the page itself found: a second carrier or a split path is one line, linking to EgressLens
+    const ex = allExits(), more = $("#egressMore");
+    if (more) {
+      const n = ex ? new Set(ex.filter(([id]) => id !== "stack" && !id.startsWith("anchor_")).map(([, ip]) => ip)).size : 0;
+      if (n >= 2 && EGRESS && $("#egLink")) {
+        $("#egLink").textContent = t("eg_more", { n });
+        $("#egLink").href = inLang(EGRESS);
+        more.hidden = false;
+      } else more.hidden = true;
+    }
   }
 
   /* ---------- the disguise checks ---------- */

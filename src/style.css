@@ -669,6 +669,9 @@ html.shared .idc, html.shared #copyTxt, html.shared #mine { display: none; }
 @media (max-width: 640px) { .tg-sel input { font-size: 16px; } }   /* (under 16px, iOS zooms in on focus) */
 .tg-sum { margin-left: auto; font-size: 13px; font-weight: 600; color: var(--muted); }
 .tg-sum.ok { color: var(--t1); } .tg-sum.bad { color: var(--t5); }
+.eg-more { margin: 6px 0 0; }
+.eg-more[hidden] { display: none; }
+.eg-more a { color: var(--ink); font-size: 12.5px; text-decoration: underline; text-underline-offset: 2px; }
 .tg-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; }
 .tg-list li { display: flex; gap: 8px; align-items: flex-start; padding: 9px 11px; border-radius: 11px; border: 1px solid var(--line); font-size: 13px; line-height: 1.45; min-height: 56px; }
 .tg-i { flex: none; width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: #fff; background: var(--line); margin-top: 1px; }
