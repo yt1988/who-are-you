@@ -229,6 +229,7 @@ await pool(LANGS, N, async ([lang, slug], base) => {
     waiting: document.querySelectorAll(".bl.wait").length, blanks: document.querySelectorAll(".bl[data-b]").length,
     story: document.querySelector("#story").textContent, checks: [...document.querySelectorAll(".ckr")].map(x => [x.dataset.c, x.className]),
     num: document.querySelector("#mNum").textContent, fp: document.querySelector("#fpId").textContent, ret: document.querySelector("#fpRet").textContent,
+    firstBody: ((document.querySelector("#p2firstBody") || {}).textContent || "").trim(),
   }));
   for (const e of errors) fail(lang, "script error: " + e);
   if (r.rows.length !== SNIFFERS.length) fail(lang, `${r.rows.length} rows, expected ${SNIFFERS.length}`);
@@ -240,6 +241,7 @@ await pool(LANGS, N, async ([lang, slug], base) => {
   if (r.checks.length !== CHECKS.length + PROTO.length) fail(lang, `${r.checks.length} checks, expected ${CHECKS.length + PROTO.length}`);
   if (!/^\d+$/.test(r.num)) fail(lang, `count "${r.num}"`);
   if (!r.fp.trim() || !r.ret.trim()) fail(lang, "ID card not filled");
+  if (!r.firstBody) fail(lang, "the first-screen connection line is empty");
 
   if (lang === "zh-CN") {
     // share (1ms.dog's share dialog), then open the link as someone else would

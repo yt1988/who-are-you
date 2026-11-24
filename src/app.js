@@ -820,6 +820,7 @@ import { exifOf } from "./exif.mjs";
   // called out; a failed side leaves its column blank and says which reading is unavailable.
   function paintProbe2(near, far, isCN) {
     const box = $("#probe2"); if (!box) return;
+    paintProbeFirst(near, far, isCN);
     if (!isCN) { box.hidden = true; return; }
     box.hidden = false;
     const put = (sel, p) => {
@@ -841,7 +842,6 @@ import { exifOf } from "./exif.mjs";
       diff.hidden = true; na.hidden = false;
       na.textContent = t(!near && !far ? "p2_na_both" : !near ? "p2_na_cn" : "p2_na_far");
     }
-    paintProbeFirst(near, far, isCN);
   }
 
   // The first-screen connection line: for a visitor in China, the domestic device/access reading (OS, MTU, initial
