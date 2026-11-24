@@ -130,17 +130,21 @@ console.log("two probes: domestic and cross-border");
     far: [...document.querySelectorAll("#p2Far dd")].map(x => x.textContent.trim()),
     diff: (document.querySelector("#p2Diff") || {}).textContent || "",
     na: (document.querySelector("#p2Na") || {}).textContent || "",
+    first: !document.querySelector("#p2first").hidden,
+    firstText: (document.querySelector("#p2firstBody") || {}).textContent || "",
   }));
   for (const e of errors) fail("two probes", "script error: " + e);
   if (!r.visible) fail("two probes", "the card is hidden for a visitor in China");
   if (r.near[1] !== "1460" || r.far[1] !== "1400") fail("two probes", `MSS columns read ${r.near[1]} / ${r.far[1]}`);
   if (!/1400/.test(r.diff)) fail("two probes", "the MSS difference is not called out: " + r.diff);
+  if (!r.first || !/TTL|1400/.test(r.firstText)) fail("two probes", "the first-screen conclusion is missing: " + r.firstText);
   if (!nearCalls) fail("two probes", "the domestic probe was not asked");
   nearFail = true;
   await page.reload({ waitUntil: "load" });
   await page.waitForFunction(() => !document.querySelector("#rerun").disabled, { timeout: 30000 }).catch(() => fail("two probes", "the fallback run never finished"));
-  r = await page.evaluate(() => ({ visible: !document.querySelector("#probe2").hidden, na: (document.querySelector("#p2Na") || {}).textContent || "", far: [...document.querySelectorAll("#p2Far dd")].map(x => x.textContent.trim()) }));
+  r = await page.evaluate(() => ({ visible: !document.querySelector("#probe2").hidden, na: (document.querySelector("#p2Na") || {}).textContent || "", far: [...document.querySelectorAll("#p2Far dd")].map(x => x.textContent.trim()), firstText: (document.querySelector("#p2firstBody") || {}).textContent || "" }));
   if (!r.visible || !/domestic reading is unavailable/.test(r.na)) fail("two probes", "a failed domestic probe should say so: " + r.na);
+  if (!/domestic reading is unavailable/.test(r.firstText)) fail("two probes", "the first screen should say the domestic reading is unavailable: " + r.firstText);
   if (r.far[1] !== "1400") fail("two probes", "the cross-border reading should remain: " + r.far[1]);
   await page.close();
 }

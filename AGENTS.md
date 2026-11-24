@@ -116,9 +116,10 @@ probe has to see the browser's own packets); the libpcap runtime library (Debian
    before calling it done). Before DNS is set: `probe -dev -addr :8443` serves a self-signed certificate.
 7. Point the page at it: the probe's host name is the `PROBE` constant in `src/app.js`, the CSP's `connect-src` in
    `scripts/build.mjs`, and the four probe rows' labels in `src/sniffers.mjs`; change them and rebuild. A second probe
-   (`PROBE_CN`, `probe.dog.1msapp.com:9443`) is read for visitors whose address is in China and shown in the
-   two-point card; it needs its own `connect-src` entry and the same `/fp` contract. Its certificate comes from
-   `-certfile`/`-keyfile` (see step 4).
+   (`PROBE_CN`, a mainland probe whose host is the configured default) is read for visitors whose address is in
+   China and shown in the two-point card; it needs its own `connect-src` entry and the same `/fp` contract. Its
+   certificate comes from `-certfile`/`-keyfile` (see step 4); its host, operator and location are in the private ops
+   notes, not this public file.
 
 Other tools may read `/fp` and `/conn`: keep their field names as `probe/README.md` lists them.
 

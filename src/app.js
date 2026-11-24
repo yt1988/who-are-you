@@ -273,7 +273,7 @@ import { exifOf } from "./exif.mjs";
     const c = j.cf || {}, h = j.h || {};
     R.srv = j;
     // a visitor in China gets the second measuring point (TX.SHA); make its place before the probes answer
-    if (c.country === "CN") { const p2 = $("#probe2"); if (p2) p2.hidden = false; }
+    if (c.country === "CN") { const p2 = $("#probe2"), p1 = $("#p2first"); if (p2) p2.hidden = false; if (p1) p1.hidden = false; }
     row("ip", flagged(null, j.ip + " · IPv" + j.v, ipqsOf(j.ip)));
     // (the place and the point are an IP database's guess for the address, said so on the row itself)
     await within(citiesP, 1500, null);
@@ -828,6 +828,7 @@ import { exifOf } from "./exif.mjs";
       set("os", tc && tc.os ? t("tos_" + (tc.os === "unix" ? "other" : tc.os)) : "—");
       set("mss", tc && tc.mss ? tc.mss : "—");
       set("mtu", tc && tc.mtu ? tc.mtu : "—");
+      set("ttl", tc && tc.initial_ttl ? tc.initial_ttl : "—");
       set("ja4t", tc && tc.ja4t ? tc.ja4t : "—");
     };
     put("#p2Near", near); put("#p2Far", far);
@@ -840,6 +841,22 @@ import { exifOf } from "./exif.mjs";
       diff.hidden = true; na.hidden = false;
       na.textContent = t(!near && !far ? "p2_na_both" : !near ? "p2_na_cn" : "p2_na_far");
     }
+    paintProbeFirst(near, far, isCN);
+  }
+
+  // The first-screen conclusion: the domestic device/access reading (OS, MTU, initial TTL) and the cross-border MSS,
+  // with the full two tables a link away. Only a visitor in China has it.
+  function paintProbeFirst(near, far, isCN) {
+    const box = $("#p2first"); if (!box) return;
+    if (!isCN) { box.hidden = true; return; }
+    box.hidden = false;
+    const body = $("#p2firstBody"); if (!body) return;
+    const tc = near && near.tcp, fc = far && far.tcp;
+    if (!near && !far) { body.textContent = t("p2_na_both"); return; }
+    if (!near) { body.textContent = t("p2_na_cn"); return; }
+    const os = tc && tc.os ? t("tos_" + (tc.os === "unix" ? "other" : tc.os)) : "—";
+    const vals = tc ? `${os} · MTU ${tc.mtu || "?"} · TTL ${tc.initial_ttl || "?"}` : "—";
+    body.textContent = far ? t("p2_first", { vals, mss: fc && fc.mss ? fc.mss : "?" }) : `${t("p2_near")}: ${vals} — ${t("p2_na_far")}`;
   }
 
   // Lies: the APIs a spoofer rewrites (what navigator and screen say, how canvas, WebGL and audio draw, the clock,

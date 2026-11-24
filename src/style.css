@@ -475,6 +475,11 @@ html.shared .todo, html[data-who-embed] .todo { display: none; }
 .probes-h { display: flex; align-items: baseline; gap: 6px 12px; flex-wrap: wrap; }
 .probes h2 { font-size: 16px; letter-spacing: -.01em; }
 .probes-h .m { color: var(--muted); font-size: 12.5px; }
+.p2first { margin-top: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--ink-soft); }
+.p2first[hidden] { display: none; }
+.p2first-h { display: flex; align-items: baseline; justify-content: space-between; gap: 8px 12px; flex-wrap: wrap; font-size: 12px; font-weight: 600; }
+.p2first-h a { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; font-weight: 500; }
+.p2first-b { margin: 4px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; min-height: 3em; font-variant-numeric: tabular-nums; }
 .pgroups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; align-items: start; }
 .probe2 { border-top: 1px solid var(--line); padding-top: 12px; display: flex; flex-direction: column; gap: 10px; }
 .probe2[hidden] { display: none; }
