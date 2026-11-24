@@ -187,7 +187,9 @@ test("no string says the same sentence twice", async () => {
 
 // The probe hosts are deployment details; user-facing copy names the sites instead (Tokyo, Shanghai).
 test("page copy and the README do not name the probe hosts", async () => {
-  const files = ["README.md", "src/pages.mjs", "src/sniffers.mjs"];
+  const files = ["src/pages.mjs", "src/sniffers.mjs"];
+  const root = new URL("../", import.meta.url);
+  for (const f of await readdir(root)) if (/^README.*\.md$/.test(f)) files.push(f);
   for (const [lang] of LANGS) files.push(`src/i18n/${lang}.mjs`);
   for (const f of files) {
     const s = await read(f);
