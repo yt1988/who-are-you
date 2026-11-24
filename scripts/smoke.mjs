@@ -130,7 +130,7 @@ console.log("two probes: domestic and cross-border");
     far: [...document.querySelectorAll("#p2Far dd")].map(x => x.textContent.trim()),
     diff: (document.querySelector("#p2Diff") || {}).textContent || "",
     na: (document.querySelector("#p2Na") || {}).textContent || "",
-    first: !document.querySelector("#p2first").hidden,
+    first: !document.querySelector("#p2first").hidden && !!document.querySelector("#p2firstBody").textContent.trim(),
     firstText: (document.querySelector("#p2firstBody") || {}).textContent || "",
   }));
   for (const e of errors) fail("two probes", "script error: " + e);

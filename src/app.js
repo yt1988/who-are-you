@@ -273,7 +273,7 @@ import { exifOf } from "./exif.mjs";
     const c = j.cf || {}, h = j.h || {};
     R.srv = j;
     // a visitor in China gets the second measuring point (TX.SHA); make its place before the probes answer
-    if (c.country === "CN") { const p2 = $("#probe2"), p1 = $("#p2first"); if (p2) p2.hidden = false; if (p1) p1.hidden = false; }
+    if (c.country === "CN") { const p2 = $("#probe2"); if (p2) p2.hidden = false; }
     row("ip", flagged(null, j.ip + " · IPv" + j.v, ipqsOf(j.ip)));
     // (the place and the point are an IP database's guess for the address, said so on the row itself)
     await within(citiesP, 1500, null);
@@ -844,19 +844,26 @@ import { exifOf } from "./exif.mjs";
     paintProbeFirst(near, far, isCN);
   }
 
-  // The first-screen conclusion: the domestic device/access reading (OS, MTU, initial TTL) and the cross-border MSS,
-  // with the full two tables a link away. Only a visitor in China has it.
+  // The first-screen connection line: for a visitor in China, the domestic device/access reading (OS, MTU, initial
+  // TTL) beside the cross-border MSS; outside China, the one Tokyo reading. Both link to the full two tables.
   function paintProbeFirst(near, far, isCN) {
-    const box = $("#p2first"); if (!box) return;
-    if (!isCN) { box.hidden = true; return; }
-    box.hidden = false;
-    const body = $("#p2firstBody"); if (!body) return;
+    const heading = $("#p2firstH"), body = $("#p2firstBody"); if (!heading || !body) return;
+    const link = document.querySelector("#p2first .p2first-h a"); if (link) link.hidden = !isCN;
     const tc = near && near.tcp, fc = far && far.tcp;
-    if (!near && !far) { body.textContent = t("p2_na_both"); return; }
+    const vals = p => {
+      const c = p && p.tcp; if (!c) return "—";
+      const os = c.os ? t("tos_" + (c.os === "unix" ? "other" : c.os)) : "—";
+      return `${os} · MTU ${c.mtu || "?"} · TTL ${c.initial_ttl || "?"}`;
+    };
+    if (!near && !far) { heading.textContent = t("p2_h"); body.textContent = t("p2_na_both"); return; }
+    if (!isCN) {
+      heading.textContent = t("p2_h_single");
+      body.textContent = fc ? t("p2_first_far", { vals: vals(far) }) : t("p2_na_far");
+      return;
+    }
+    heading.textContent = t("p2_h");
     if (!near) { body.textContent = t("p2_na_cn"); return; }
-    const os = tc && tc.os ? t("tos_" + (tc.os === "unix" ? "other" : tc.os)) : "—";
-    const vals = tc ? `${os} · MTU ${tc.mtu || "?"} · TTL ${tc.initial_ttl || "?"}` : "—";
-    body.textContent = far ? t("p2_first", { vals, mss: fc && fc.mss ? fc.mss : "?" }) : `${t("p2_near")}: ${vals} — ${t("p2_na_far")}`;
+    body.textContent = far ? t("p2_first", { vals: vals(near), mss: fc && fc.mss ? fc.mss : "?" }) : `${t("p2_near")}: ${vals(near)} — ${t("p2_na_far")}`;
   }
 
   // Lies: the APIs a spoofer rewrites (what navigator and screen say, how canvas, WebGL and audio draw, the clock,
