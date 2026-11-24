@@ -44,6 +44,9 @@ export function langCC(tag) {
   return LANG_CC[base] || null;
 }
 export const tzCC = tz => { const cc = tzCountry(tz); return cc === "UN" ? null : cc; };
+// A visitor in China even behind a foreign exit: Cloudflare's country, or a device clock on China time. Windows
+// often names UTC+8 as Etc/GMT-8, which the IANA table does not map to a country.
+export const inChina = (cc, tz) => cc === "CN" || (!!tz && (tzCC(tz) === "CN" || /^Etc\/GMT-8$/.test(tz)));
 
 // nationality: the browser language says most about it, unless it is plain (US) English, which is every device's
 // default; then the system time zone (where the device was set up), then the address.

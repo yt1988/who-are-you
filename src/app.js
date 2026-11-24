@@ -7,7 +7,7 @@ import { GROUPS, SNIFFERS, BLANKS, CHECKS, PROTO, COUNTED, TODO_SK } from "./sni
 import { TRAITS, rarity, MIN_TOTAL, durOf, STUCK_MS } from "./traits.mjs";
 import { TW, flagCode } from "./regions.mjs";
 import { encode, decode, linkPath, parsePath } from "./share.mjs";
-import { nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, tzCC, langCC, sysLangs, SYS_FONT_LIST, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, isIntegratedGpu, discreteGpu, isRelayIp, rfpClock, idLies, FEATURES, engineRange, engineOff, rigOf, freshOf, isPublicDns, platformOff, glVendorOff, armSay, armGpu, tunnelOf, macOf, v6Type } from "./infer.mjs";
+import { nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, tzCC, inChina, langCC, sysLangs, SYS_FONT_LIST, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, isIntegratedGpu, discreteGpu, isRelayIp, rfpClock, idLies, FEATURES, engineRange, engineOff, rigOf, freshOf, isPublicDns, platformOff, glVendorOff, armSay, armGpu, tunnelOf, macOf, v6Type } from "./infer.mjs";
 import { wasmProbe, WASM_FEATURES } from "./wasm.mjs";
 import { TZ_CC } from "./egress.js";
 import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
@@ -273,7 +273,7 @@ import { exifOf } from "./exif.mjs";
     const c = j.cf || {}, h = j.h || {};
     R.srv = j;
     // a visitor in China gets the second measuring point (TX.SHA); make its place before the probes answer
-    if (c.country === "CN") { const p2 = $("#probe2"); if (p2) p2.hidden = false; }
+    if (inChina(c.country, R.tz)) { const p2 = $("#probe2"); if (p2) p2.hidden = false; }
     row("ip", flagged(null, j.ip + " · IPv" + j.v, ipqsOf(j.ip)));
     // (the place and the point are an IP database's guess for the address, said so on the row itself)
     await within(citiesP, 1500, null);
@@ -790,7 +790,7 @@ import { exifOf } from "./exif.mjs";
   // domestic one is the device for the portrait and the checks, the cross-border one is what the path does to it.
   async function probe() {
     await Promise.race([R.srvP || Promise.resolve(), new Promise(r => setTimeout(r, 8000))]).catch(() => {});
-    const isCN = !!(R.srv && R.srv.cf && R.srv.cf.country === "CN");
+    const isCN = !!(R.srv && R.srv.cf && inChina(R.srv.cf.country, R.tz));
     const get = async (u, ms) => { try { const r = await within(fetch(u, { cache: "no-store" }), ms, null); return r && r.ok ? await r.json() : null; } catch (e) { return null; } };
     const [far, near] = await Promise.all([get(PROBE, 6000), isCN ? get(PROBE_CN, 7000) : Promise.resolve(null)]);
     const j = far;
@@ -862,8 +862,9 @@ import { exifOf } from "./exif.mjs";
       return;
     }
     heading.textContent = t("p2_h");
-    if (!near) { body.textContent = t("p2_na_cn"); return; }
-    body.textContent = far ? t("p2_first", { vals: vals(near), mss: fc && fc.mss ? fc.mss : "?" }) : `${t("p2_near")}: ${vals(near)} — ${t("p2_na_far")}`;
+    const line1 = near ? `${t("p2_near")}: ${vals(near)}` : t("p2_na_cn");
+    const line2 = far ? `${t("p2_far")}: MSS ${fc && fc.mss ? fc.mss : "?"}` : t("p2_na_far");
+    body.innerHTML = `<span class="p2line">${esc(line1)}</span><span class="p2line">${esc(line2)}</span>`;
   }
 
   // Lies: the APIs a spoofer rewrites (what navigator and screen say, how canvas, WebGL and audio draw, the clock,
@@ -1519,7 +1520,8 @@ import { exifOf } from "./exif.mjs";
 
   // The DNS resolver: a name nobody looked up before goes to the visitor's resolver, and ip-api's name server tells
   // who asked (and the client subnet the resolver passed along, if any). Its answer names the country in English.
-  const CC_ALIAS = { "Hong Kong": "HK", Macao: "MO", Macau: "MO", Taiwan: "TW", "South Korea": "KR", Russia: "RU", Vietnam: "VN", Turkey: "TR", "Türkiye": "TR",
+  const CC_ALIAS = { China: "CN", "China mainland": "CN", "Mainland China": "CN", "People's Republic of China": "CN",
+    "Hong Kong": "HK", "Hong Kong SAR": "HK", Macao: "MO", Macau: "MO", "Macao SAR": "MO", "Macau SAR": "MO", Taiwan: "TW", "South Korea": "KR", Russia: "RU", Vietnam: "VN", Turkey: "TR", "Türkiye": "TR",
     Czechia: "CZ", "The Netherlands": "NL", Netherlands: "NL", "United States": "US", "United Kingdom": "GB" };
   let EN_CC;
   function ccOfName(name) {
@@ -1545,7 +1547,7 @@ import { exifOf } from "./exif.mjs";
     if (!text) return null;
     const exact = ccOfName(text); if (exact) return exact;
     if (!EN_CC) ccOfName("");
-    for (const [name, cc] of Object.entries(EN_CC)) {
+    for (const [name, cc] of [...Object.entries(EN_CC), ...Object.entries(CC_ALIAS)]) {
       if (name.length < 5) continue;
       if (new RegExp(`(^|[^A-Za-z])${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}([^A-Za-z]|$)`, "i").test(text)) return cc;
     }

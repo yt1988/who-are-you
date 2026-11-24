@@ -1,7 +1,7 @@
 // What the readings are taken to mean: system and browser, graphics card, keyboard, network, nationality, checks.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { macOf, v6Type, tunnelOf, langCC, nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, netOf, sysLangs, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, discreteGpu, isRelayIp, rfpClock, isIntegratedGpu, FEATURES, engineRange, engineOff, rigOf, freshOf, isPublicDns, platformOff, glVendorOff, idLies, armSay, armGpu } from "../src/infer.mjs";
+import { macOf, v6Type, tunnelOf, langCC, nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, netOf, sysLangs, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, discreteGpu, isRelayIp, rfpClock, isIntegratedGpu, FEATURES, engineRange, engineOff, rigOf, freshOf, isPublicDns, inChina, platformOff, glVendorOff, idLies, armSay, armGpu } from "../src/infer.mjs";
 import { cleanSeen, rarity, durOf } from "../src/traits.mjs";
 import { kindOf, VERSION as EGRESS_VERSION } from "../src/egress.js";
 import { regionName, flagCode } from "../src/regions.mjs";
@@ -534,6 +534,11 @@ test("a WebKit browser on Linux is neither Safari nor an Apple device", () => {
 test("the exit's kind, and a virtual machine's, from the names they report", () => {
   assert.equal(netKind(9009, "Mullvad VPN AB"), "vpn");
   assert.equal(netKind(13335, "Cloudflare, Inc."), "dc");
+  // a China visitor behind a foreign exit still gets the domestic reading; the clock is the fallback
+  assert.equal(inChina("JP", "Asia/Shanghai"), true);
+  assert.equal(inChina("JP", "Etc/GMT-8"), true);
+  assert.equal(inChina("JP", "Asia/Tokyo"), false);
+  assert.equal(inChina("CN", "Asia/Tokyo"), true);
   assert.equal(netKind(2516, "KDDI Corporation"), "home");
   assert.equal(netKind(null, ""), "home");
   // the vendored core VERSION 6: Cloudflare is a proxy either way, and WARP on is the precise reason
@@ -541,6 +546,11 @@ test("the exit's kind, and a virtual machine's, from the names they report", () 
   assert.deepEqual(kindOf({ asn: 13335, org: "Cloudflare, Inc." }, { warp: "on" }), { kind: "proxy", why: "warp" });
   assert.deepEqual(kindOf({ asn: 13335, org: "Cloudflare, Inc." }, { warp: "off" }), { kind: "proxy", why: "dc" });
   assert.equal(netKind(13335, "Cloudflare, Inc."), "dc");
+  // a China visitor behind a foreign exit still gets the domestic reading; the clock is the fallback
+  assert.equal(inChina("JP", "Asia/Shanghai"), true);
+  assert.equal(inChina("JP", "Etc/GMT-8"), true);
+  assert.equal(inChina("JP", "Asia/Tokyo"), false);
+  assert.equal(inChina("CN", "Asia/Tokyo"), true);
   assert.deepEqual(checks({ ip: "1.2.3.4", asn: 9009, org: "Mullvad VPN AB" }).dc, ["warn", "c_dc_vpn", { org: "Mullvad VPN AB" }]);
   assert.equal(vmOf("ANGLE (VMware, Inc., VMware SVGA 3D Direct3D11 vs_5_0 ps_5_0, D3D11)"), "vmware");
   assert.equal(vmOf("VirtualBox Graphics Adapter"), "virtualbox");
