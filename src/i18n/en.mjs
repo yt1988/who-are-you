@@ -250,7 +250,7 @@ export default {
   xs_share: "a site on another domain can recognise you here",
   xs_chips: "third-party cookies blocked · known only on this site",
   xs_block: "third-party cookies blocked",
-  xs_why: "This page loads cross.1ms.one, another domain of this tool, in the background to see whether another site can still store something here and read it back. Nothing about you is kept, and its cookie expires in 30 seconds.",
+  xs_why: "This page loads a second domain of this tool in the background to see whether another site can still store something here and read it back. Nothing about you is kept, and its cookie expires in 30 seconds.",
   xs_why2: "SameSite=None cookie: {c} · Partitioned: {p} · localStorage: {s}",
   xs_yes: "yes",
   xs_no: "no",

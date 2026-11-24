@@ -248,7 +248,7 @@ export default {
   xs_share: "別的網站也能在這裡認出你",
   xs_chips: "第三方 cookie 被擋，只在本站認得你",
   xs_block: "第三方 cookie 被擋",
-  xs_why: "這個頁面會在背景載入 cross.1ms.one（本站自己的另一個網域），看另一個網站還能不能在這裡存下東西、再讀回來。不保存你的任何資訊，它寫的 cookie 30 秒就過期。",
+  xs_why: "這個頁面會在背景載入本站的另一個網域，看另一個網站還能不能在這裡存下東西、再讀回來。不保存你的任何資訊，它寫的 cookie 30 秒就過期。",
   xs_why2: "SameSite=None cookie：{c} · Partitioned：{p} · localStorage：{s}",
   xs_yes: "能",
   xs_no: "不能",

@@ -249,7 +249,7 @@ export default {
   xs_share: "別のサイトからも、ここであなたを特定できます",
   xs_chips: "サードパーティ cookie は遮断 · このサイトの中でだけ分かります",
   xs_block: "サードパーティ cookie は遮断",
-  xs_why: "このページは cross.1ms.one（このツール自身の別ドメイン）を背後で読み込み、別のサイトがここに何かを保存し、読み返せるかを見ます。あなたの情報は保存しません。書き込む cookie は 30 秒で消えます。",
+  xs_why: "このページはこのツール自身の別ドメインを背後で読み込み、別のサイトがここに何かを保存し、読み返せるかを見ます。あなたの情報は保存しません。書き込む cookie は 30 秒で消えます。",
   xs_why2: "SameSite=None cookie: {c} · Partitioned: {p} · localStorage: {s}",
   xs_yes: "可",
   xs_no: "不可",

@@ -249,7 +249,7 @@ export default {
   xs_share: "otro sitio puede reconocerte aquí",
   xs_chips: "cookies de terceros bloqueadas · solo te reconocen en este sitio",
   xs_block: "cookies de terceros bloqueadas",
-  xs_why: "Esta página carga cross.1ms.one, otro dominio de esta misma herramienta, en segundo plano, para ver si otro sitio puede guardar algo aquí y volver a leerlo. No se guarda nada sobre ti y su cookie caduca en 30 segundos.",
+  xs_why: "Esta página carga otro dominio de esta misma herramienta en segundo plano, para ver si otro sitio puede guardar algo aquí y volver a leerlo. No se guarda nada sobre ti y su cookie caduca en 30 segundos.",
   xs_why2: "cookie SameSite=None: {c} · Partitioned: {p} · localStorage: {s}",
   xs_yes: "sí",
   xs_no: "no",

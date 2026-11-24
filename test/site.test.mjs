@@ -193,6 +193,6 @@ test("page copy and the README do not name the probe hosts", async () => {
   for (const [lang] of LANGS) files.push(`src/i18n/${lang}.mjs`);
   for (const f of files) {
     const s = await read(f);
-    assert.ok(!/probe\.1ms\.dog|probe\.dog\.1msapp\.com/.test(s), f + " names a probe host");
+    assert.ok(!/probe\.1ms\.dog|probe\.dog\.1msapp\.com|cross\.1ms\.one/.test(s), f + " names a probe host");
   }
 });
