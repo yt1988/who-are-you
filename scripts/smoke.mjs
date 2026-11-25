@@ -41,7 +41,7 @@ const handle = async (req, res) => {
     let body = await readFile(new URL("." + (path.endsWith("/") ? path + "index.html" : path), pub));
     // a test page can opt into deploy anchors; the normal pages stay on the no-meta fallback
     if ((path.endsWith("/") || extname(path) === ".html") && new URL(req.url, "http://x").searchParams.has("anchors"))
-      body = Buffer.from(String(body).replace("</head>", '<meta name="ms-anchors" content="cn=https://cn.test;intl=https://intl.test"></head>'));
+      body = Buffer.from(String(body).replace("</head>", '<meta name="ms-anchors" content="cn=https://cn.test/conn;intl=https://intl.test/conn"></head>'));
     res.writeHead(200, { "content-type": TYPES[extname(path)] || (path.endsWith("/") ? TYPES[".html"] : "application/octet-stream") }); res.end(body);
   } catch (e) { res.writeHead(404); res.end(); }
 };

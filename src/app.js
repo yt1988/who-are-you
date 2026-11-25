@@ -783,7 +783,8 @@ import { exifOf } from "./exif.mjs";
   // The probe: this browser's own connection, read whole by a server Cloudflare doesn't stand in front of
   // The probes are deploy-time data: `<meta name="ms-anchors" content="cn=…;intl=…">` (Worker env or build).
   // Without it the page has no measuring points: the probe rows say so and the connection card is hidden.
-  const ANCHORS = readAnchors();
+  // The shell may hand over a base or the full /conn URL; either way the page builds /fp and /conn itself.
+  const ANCHORS = Object.fromEntries(Object.entries(readAnchors()).map(([k, v]) => [k, String(v).replace(/\/(?:conn|fp)\/?$/, "")]));
   const endpoint = (base, path) => base ? `${String(base).replace(/\/+$/, "")}/${path}` : "";
   const PROBE = endpoint(ANCHORS.intl, "fp");
   const PROBE_CN = endpoint(ANCHORS.cn, "fp");
