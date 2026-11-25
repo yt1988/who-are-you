@@ -876,9 +876,20 @@ import { exifOf } from "./exif.mjs";
       return;
     }
     heading.textContent = t("p2_h");
-    const line1 = near ? `${t("p2_near")}: ${vals(near)}` : t("p2_na_cn");
-    const line2 = far ? `${t("p2_far")}: ${vals(far)}` : t("p2_na_far");
-    body.innerHTML = `<span class="p2line">${esc(line1)}</span><span class="p2line">${esc(line2)}</span>`;
+    const cell = (p, k) => {
+      const c = p && p.tcp; if (!c) return "—";
+      if (k === "os") return t("tos_" + (c.os === "unix" ? "other" : c.os || "other"));
+      if (k === "ttl") return c.initial_ttl || "?";
+      return c[k] || "?";
+    };
+    const cols = isCN ? [near, far] : [far], heads = isCN ? [t("p2_near"), t("p2_far")] : [t("p2_far")];
+    const rows = [["p2_os", "os"], ["p2_mss", "mss"], ["p2_mtu", "mtu"], ["p2_ttl", "ttl"]];
+    let html = `<table class="p2t"><thead><tr><th></th>${heads.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>` +
+      rows.map(([label, k]) => `<tr><th>${esc(t(label))}</th>${cols.map(p => `<td>${esc(cell(p, k))}</td>`).join("")}</tr>`).join("") + `</tbody></table>`;
+    const notes = [];
+    if (!near && !far) notes.push(t("p2_na_both")); else { if (!near) notes.push(t("p2_na_cn")); if (!far) notes.push(t("p2_na_far")); }
+    if (notes.length) html += `<p class="p2first-na">${esc(notes.join(" "))}</p>`;
+    body.innerHTML = html;
   }
 
   // Lies: the APIs a spoofer rewrites (what navigator and screen say, how canvas, WebGL and audio draw, the clock,
