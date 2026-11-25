@@ -25,7 +25,7 @@ func authHandler(secret string, next http.Handler) http.Handler {
 		// The page will send Authorization, which is not a simple header: answer the CORS preflight here even
 		// before this service has a secret, so the page can be rolled out before the secrets are set.
 		if r.Method == http.MethodOptions {
-			w.Header().Set("Access-Control-Allow-Origin", "*")
+			cors(w, r)
 			w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 			w.Header().Set("Access-Control-Allow-Headers", "Authorization")
 			w.Header().Set("Access-Control-Max-Age", "600")
@@ -40,9 +40,9 @@ func authHandler(secret string, next http.Handler) http.Handler {
 		case "":
 			next.ServeHTTP(w, r)
 		case "no_token":
-			unauthorized(w, "no_token")
+			unauthorized(w, r, "no_token")
 		default:
-			unauthorized(w, "bad_token")
+			unauthorized(w, r, "bad_token")
 		}
 	})
 }
@@ -87,11 +87,22 @@ func scopeHas(scope, want string) bool {
 	return false
 }
 
-func unauthorized(w http.ResponseWriter, code string) {
+func unauthorized(w http.ResponseWriter, r *http.Request, code string) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Cache-Control", "no-store")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	cors(w, r)
 	w.Header().Set("WWW-Authenticate", "Bearer")
 	w.WriteHeader(http.StatusUnauthorized)
 	io.WriteString(w, `{"error":"`+code+`"}`)
+}
+
+// cors reflects the requesting page's origin (and says so in Vary); a non-browser caller with no Origin gets *.
+// A 401 without these headers reaches the page as a network error, so its token refresh never runs.
+func cors(w http.ResponseWriter, r *http.Request) {
+	if origin := r.Header.Get("Origin"); origin != "" {
+		w.Header().Set("Access-Control-Allow-Origin", origin)
+		w.Header().Add("Vary", "Origin")
+		return
+	}
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 }

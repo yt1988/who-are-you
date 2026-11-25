@@ -21,6 +21,7 @@ func tokenFor(secret, scope string, exp int64) string {
 
 func authRequest(handler http.Handler, header string) *httptest.ResponseRecorder {
 	r := httptest.NewRequest(http.MethodGet, "/fp", nil)
+	r.Header.Set("Origin", "https://who.1ms.dog")
 	if header != "" {
 		r.Header.Set("Authorization", header)
 	}
@@ -43,6 +44,17 @@ func TestAuthDisabledPreflight(t *testing.T) {
 	authHandler("", ok).ServeHTTP(w, r)
 	if w.Code != http.StatusNoContent || w.Header().Get("Access-Control-Allow-Headers") != "Authorization" {
 		t.Fatalf("disabled preflight: got %d %q", w.Code, w.Header().Get("Access-Control-Allow-Headers"))
+	}
+}
+
+func TestAuth401CORS(t *testing.T) {
+	ok := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
+	w := authRequest(authHandler("secret", ok), "Bearer bad")
+	if w.Header().Get("Access-Control-Allow-Origin") != "https://who.1ms.dog" {
+		t.Fatalf("401 CORS origin: got %q", w.Header().Get("Access-Control-Allow-Origin"))
+	}
+	if !strings.Contains(w.Header().Get("Vary"), "Origin") {
+		t.Fatalf("401 Vary: got %q", w.Header().Get("Vary"))
 	}
 }
 
