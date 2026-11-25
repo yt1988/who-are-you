@@ -449,7 +449,7 @@ import { exifOf } from "./exif.mjs";
     if (!screen.width) await within(new Promise(r => { const f = () => screen.width ? r() : setTimeout(f, 200); f(); }), 3000, null);
     const s = screen, dpr = Math.round((devicePixelRatio || 1) * 100) / 100;
     // in physical pixels: screen.width is after the system's scaling (a 4K monitor at 150% reports 2560×1440)
-    const [pw, ph] = s.width ? physicalScreen(s.width, s.height, devicePixelRatio || 1) : [0, 0];
+    const [pw, ph] = s.width ? physicalScreen(s.width, s.height, devicePixelRatio || 1, { w: innerWidth, h: innerHeight }) : [0, 0];
     R.screen = s.width ? pw + "×" + ph : t("v_unknown");
     if (!s.width) na("screen");
     else txt("screen", t("scr_v", { w: pw, h: ph, dpr, d: s.colorDepth }), { why: t("scr_which") + "\n" + t("scr_css", { w: s.width, h: s.height }) + "\n" + t("scr_avail", { w: s.availWidth, h: s.availHeight, iw: innerWidth, ih: innerHeight }) });
@@ -2215,7 +2215,7 @@ import { exifOf } from "./exif.mjs";
       const one = checkReport; checkReport = null;
       const c = (R.srv && R.srv.cf) || {}, gr = grade(R.ck, COUNTED.filter(id => R.ck[id])), hi = R.hi || {};
       // the screen as it is now, in physical pixels with the CSS size and ratio (the most reported reading)
-      const sc = screen.width ? physicalScreen(screen.width, screen.height, devicePixelRatio || 1).join("×") + " (" + screen.width + "×" + screen.height + " @" + (devicePixelRatio || 1) + "x)" : R.screen;
+      const sc = screen.width ? physicalScreen(screen.width, screen.height, devicePixelRatio || 1, { w: innerWidth, h: innerHeight }).join("×") + " (" + screen.width + "×" + screen.height + " @" + (devicePixelRatio || 1) + "x)" : R.screen;
       const summary = [$("#vHead").textContent, t("grade_v", { g: gr.grade }), R.osTxt, R.browser, sc, R.gpuSoft ? R.gpuRaw : R.gpu].filter(Boolean).join(" · ").slice(0, 300);
       const data = { portrait: sharedPortrait(false), raw: { wgpu: R.wgpu ? [R.wgpuLo, R.wgpu] : null,
         gpu: R.gpuRaw || null, screen: [screen.width, screen.height, devicePixelRatio], hints: { platform: hi.platform, platformVersion: hi.platformVersion, model: hi.model, mobile: hi.mobile },

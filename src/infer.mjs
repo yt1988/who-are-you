@@ -543,9 +543,17 @@ const SIZES = [[7680, 4320], [6016, 3384], [5120, 2880], [5120, 2160], [5120, 14
   [2560, 1080], [2496, 1664], [2256, 1504], [2160, 1440], [1920, 1200], [1920, 1080], [1680, 1050], [1600, 900], [1440, 900], [1366, 768], [1280, 1024],
   [1280, 800], [1280, 720]];
 const near = (w, h) => SIZES.find(([a, b]) => (Math.abs(a - w) <= a * 0.01 && Math.abs(b - h) <= b * 0.01) || (Math.abs(a - h) <= a * 0.01 && Math.abs(b - w) <= b * 0.01));
-export function physicalScreen(w, h, dpr = 1) {
+const close = (a, b) => Math.abs(a - b) <= Math.max(2, b * 0.02);
+export function physicalScreen(w, h, dpr = 1, win = null) {
   const pw = Math.round(w * dpr), ph = Math.round(h * dpr), hit = near(pw, ph);
-  if (hit) return w >= h === hit[0] >= hit[1] ? [hit[0], hit[1]] : [hit[1], hit[0]];
+  if (hit) {
+    // Both the CSS size and its product are standard panels: a window that fills the screen at the CSS size is
+    // the system's scale (a 4K at 150%), while a window of CSS/dpr is the page zoomed on a 1x panel. The screen's
+    // own CSS size is 2560×1440 in both, so only the window's size tells them apart.
+    const css = near(w, h);
+    if (win && css && close(win.w, w / dpr) && close(win.h, h / dpr)) return w >= h === css[0] >= css[1] ? [css[0], css[1]] : [css[1], css[0]];
+    return w >= h === hit[0] >= hit[1] ? [hit[0], hit[1]] : [hit[1], hit[0]];
+  }
   // a whole ratio of 2 or 3 is the screen's own (a Mac's or a phone's), not a zoomed page: a Mac set to a scaled
   // resolution ("looks like 1680×1050") draws at twice that, whatever the panel is
   if (dpr > 1 && Number.isInteger(dpr)) return [pw, ph];

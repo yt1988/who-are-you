@@ -498,6 +498,8 @@ test("the system's languages and the grade", () => {
 
 test("the screen in physical pixels", () => {
   assert.deepEqual(physicalScreen(2560, 1440, 1.5), [3840, 2160]);    // 4K at Windows' default 150%
+  assert.deepEqual(physicalScreen(2560, 1440, 1.25, { w: 2048, h: 1151 }), [2560, 1440]); // 1x panel with the page at 125%, not a 3200×1800 panel
+  assert.deepEqual(physicalScreen(2560, 1440, 1.5, { w: 2560, h: 1400 }), [3840, 2160]);   // a maximized window on the 4K at 150%
   assert.deepEqual(physicalScreen(1920, 1080, 2), [3840, 2160]);      // 4K at 200%
   assert.deepEqual(physicalScreen(2560, 1440, 1.875), [3840, 2160]);  // the same, with the page zoomed to 125%
   assert.deepEqual(physicalScreen(2560, 1440, 1), [2560, 1440]);
