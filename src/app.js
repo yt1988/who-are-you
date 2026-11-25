@@ -791,6 +791,31 @@ import { exifOf } from "./exif.mjs";
   const ANCHOR_CN = endpoint(ANCHORS.cn, "conn");
   const ANCHOR_INTL = endpoint(ANCHORS.intl, "conn");
   if (PROBE) { const p1 = $("#p2first"); if (p1) p1.hidden = false; }
+  // The shell writes a short-lived token into `<meta name="ms-auth">`; only our own endpoints get it. A 401 means it
+  // expired or was issued before a restart: ask the shell for a fresh one once, then let the usual fallback take over.
+  const AUTH_META = 'meta[name="ms-auth"]';
+  let AUTH = (document.querySelector(AUTH_META) || {}).content || "";
+  let AUTH_REFRESH = null;
+  const setAuth = t => {
+    AUTH = t;
+    let m = document.querySelector(AUTH_META);
+    if (!m) { m = document.createElement("meta"); m.name = "ms-auth"; document.head.appendChild(m); }
+    m.content = t;
+  };
+  const refreshAuth = () => AUTH_REFRESH || (AUTH_REFRESH = fetch("/_ms/token", { cache: "no-store" }).then(r => r.ok ? r.json() : null).then(b => {
+    if (b && b.token) { setAuth(b.token); return b.token; }
+    return "";
+  }).catch(() => "").finally(() => { AUTH_REFRESH = null; }));
+  const probeFetch = async (u, ms) => {
+    const once = () => fetch(u, { cache: "no-store", headers: AUTH ? { Authorization: "Bearer " + AUTH } : {}, signal: AbortSignal.timeout(ms) });
+    let r = await once().catch(() => null);
+    if (r && r.status === 401) {
+      const t = await refreshAuth();
+      if (t) r = await once().catch(() => null);
+    }
+    return r;
+  };
+  const getProbeJ = (u, ms = 5000) => probeFetch(u, ms).then(r => r && r.ok ? r.json() : Promise.reject());
   const h2Engine = p => ({ "m,a,s,p": "blink", "m,p,a,s": "gecko", "m,s,p,a": "webkit", "m,s,a,p": "webkit" })[p] || (p ? "tool" : null);
   // The two measuring points: Tokyo sees the connection after the international path (MSS clamps and all); TX.SHA
   // sees a visitor in China before it. Both are read for a visitor whose address Cloudflare places in China; the
@@ -803,7 +828,7 @@ import { exifOf } from "./exif.mjs";
     }
     await Promise.race([R.srvP || Promise.resolve(), new Promise(r => setTimeout(r, 8000))]).catch(() => {});
     const isCN = !!(R.srv && R.srv.cf && inChina(R.srv.cf.country, R.tz));
-    const get = async (u, ms) => { try { const r = await within(fetch(u, { cache: "no-store" }), ms, null); return r && r.ok ? await r.json() : null; } catch (e) { return null; } };
+    const get = async (u, ms) => { try { const r = await probeFetch(u, ms); return r && r.ok ? await r.json() : null; } catch (e) { return null; } };
     const [far, near] = await Promise.all([get(PROBE, 6000), isCN ? get(PROBE_CN, 7000) : Promise.resolve(null)]);
     const j = far;
     R.probe = near || far;
@@ -821,7 +846,7 @@ import { exifOf } from "./exif.mjs";
     let q = null;
     for (let i = 0; i < 3 && !(q && q.proto === "HTTP/3.0"); i++) {
       await new Promise(r => setTimeout(r, 700));
-      try { const r = await within(fetch(PROBE + "?h3", { cache: "no-store" }), 4000, null); q = r && r.ok ? await r.json() : q; } catch (e) {}
+      try { const r = await probeFetch(PROBE + "?h3", 4000); q = r && r.ok ? await r.json() : q; } catch (e) {}
     }
     R.quic = q && q.proto === "HTTP/3.0" ? (q.tls || {}) : null;
     if (R.quic && R.quic.ja4) txt("quicfp", "HTTP/3 · " + R.quic.ja4, { why: t("qf_why") });
@@ -1522,8 +1547,8 @@ import { exifOf } from "./exif.mjs";
   // Cloudflare (its trace on each service's own domain). A rule-based proxy or VPN picks the route by destination.
   const EXITS = [
     // the two anchors of the site-wide egress contract: a probe inside China and one in Tokyo, /conn on each
-    ["anchor_cn", () => ANCHOR_CN ? getJ(ANCHOR_CN).then(b => ({ ip: b.ip, cc: null, note: "" })) : Promise.resolve(null)],
-    ["anchor_intl", () => ANCHOR_INTL ? getJ(ANCHOR_INTL).then(b => ({ ip: b.ip, cc: null, note: "" })) : Promise.resolve(null)],
+    ["anchor_cn", () => ANCHOR_CN ? getProbeJ(ANCHOR_CN).then(b => ({ ip: b.ip, cc: null, note: "" })) : Promise.resolve(null)],
+    ["anchor_intl", () => ANCHOR_INTL ? getProbeJ(ANCHOR_INTL).then(b => ({ ip: b.ip, cc: null, note: "" })) : Promise.resolve(null)],
     ["ex_cn", () => getJ("https://myip.ipip.net/json").then(b => ({ ip: b.data.ip, cc: null, note: (b.data.location || []).filter(Boolean).join(" ") }))],
     ["ex_intl", () => getJ("https://api.ip.sb/geoip").then(b => ({ ip: b.ip, cc: b.country_code, note: b.isp || b.asn_organization || "" }))],
     ...[["ex_gpt", "chatgpt.com"], ["ex_claude", "claude.ai"], ["ex_cf", "www.cloudflare.com"]].map(([id, host]) => [id, () => getT(`https://${host}/cdn-cgi/trace`).then(s => {

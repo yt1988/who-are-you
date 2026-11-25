@@ -40,8 +40,12 @@ const handle = async (req, res) => {
   try {
     let body = await readFile(new URL("." + (path.endsWith("/") ? path + "index.html" : path), pub));
     // a test page can opt into deploy anchors; the normal pages stay on the no-meta fallback
-    if ((path.endsWith("/") || extname(path) === ".html") && new URL(req.url, "http://x").searchParams.has("anchors"))
+    const q = new URL(req.url, "http://x").searchParams;
+    if ((path.endsWith("/") || extname(path) === ".html") && q.has("anchors"))
       body = Buffer.from(String(body).replace("</head>", '<meta name="ms-anchors" content="cn=https://cn.test/conn;intl=https://intl.test/conn"></head>'));
+    // a test page can also opt into a page token; normal pages and self-hosted copies keep no meta and no header
+    if ((path.endsWith("/") || extname(path) === ".html") && q.has("auth"))
+      body = Buffer.from(String(body).replace("</head>", '<meta name="ms-auth" content="v1.test"></head>'));
     res.writeHead(200, { "content-type": TYPES[extname(path)] || (path.endsWith("/") ? TYPES[".html"] : "application/octet-stream") }); res.end(body);
   } catch (e) { res.writeHead(404); res.end(); }
 };
@@ -114,11 +118,12 @@ console.log("two probes: domestic and cross-border");
   page.on("pageerror", e => errors.push(String(e.message || e)));
   await page.setViewport({ width: 1280, height: 900 });
   await page.setRequestInterception(true);
-  let nearFail = false, nearCalls = 0;
+  let nearFail = false, nearCalls = 0, authSeen = false;
   const json = (body) => ({ status: 200, contentType: "application/json", headers: { "Access-Control-Allow-Origin": "*" }, body: JSON.stringify(body) });
   const tcp = (mss, mtu) => ({ proto: "HTTP/2.0", ip: "203.0.113.7", tcp: { os: "windows", mss, mtu, ja4t: `65535_2-1-3-1-1-4_${mss}_8`, initial_ttl: 64, hops: 0, window: 65535 }, http2: { pseudo: "m,a,s,p" }, tls: { ja4: "t13d1516h2" } });
   page.on("request", req => {
     const u = req.url();
+    if ((u.includes("intl.test/fp") || u.includes("cn.test/fp")) && req.headers()["authorization"]) authSeen = true;
     if (u.includes("/api/me")) return req.respond(json({ ...ME, cf: { ...ME.cf, country: "CN", city: "Shanghai" }, at: Date.now() }));
     if (u.includes("intl.test/fp?h3")) return req.respond({ status: 404, body: "" });
     if (u.includes("intl.test/fp")) return req.respond(json(tcp(1400, 1440)));
@@ -144,6 +149,7 @@ console.log("two probes: domestic and cross-border");
   if (!/1400/.test(r.diff)) fail("two probes", "the MSS difference is not called out: " + r.diff);
   if (!r.first || !/TTL|1400/.test(r.firstText)) fail("two probes", "the first-screen conclusion is missing: " + r.firstText);
   if (!nearCalls) fail("two probes", "the domestic probe was not asked");
+  if (authSeen) fail("two probes", "no ms-auth meta must send no Authorization");
   nearFail = true;
   await page.reload({ waitUntil: "load" });
   await page.waitForFunction(() => !document.querySelector("#rerun").disabled, { timeout: 30000 }).catch(() => fail("two probes", "the fallback run never finished"));
@@ -151,6 +157,54 @@ console.log("two probes: domestic and cross-border");
   if (!r.visible || !/Shanghai reading is unavailable/.test(r.na)) fail("two probes", "a failed domestic probe should say so: " + r.na);
   if (!/Shanghai reading is unavailable/.test(r.firstText)) fail("two probes", "the first screen should say the domestic reading is unavailable: " + r.firstText);
   if (r.farMss !== "1400") fail("two probes", "the cross-border reading should remain: " + r.farMss);
+  await page.close();
+}
+
+// Page auth: the meta token goes on our own probe requests, a 401 asks /_ms/token once and retries once, and a
+// page without the meta sends nothing. The probes are intercepted; the same-origin token endpoint is answered here.
+console.log("probe auth: token header and one retry");
+{
+  const page = await browser.newPage(), errors = [];
+  page.on("pageerror", e => errors.push(String(e.message || e)));
+  await page.setViewport({ width: 1280, height: 900 });
+  await page.setRequestInterception(true);
+  let farCalls = 0, nearCalls = 0, tokenCalls = 0, preflights = 0, firstAuth = "", retryAuth = "", nearAuth = "";
+  const json = (body) => ({ status: 200, contentType: "application/json", headers: { "Access-Control-Allow-Origin": "*" }, body: JSON.stringify(body) });
+  const tcp = (mss, mtu) => ({ proto: "HTTP/2.0", ip: "203.0.113.7", tcp: { os: "windows", mss, mtu, ja4t: `65535_2-1-3-1-1-4_${mss}_8`, initial_ttl: 64, hops: 0, window: 65535 }, http2: { pseudo: "m,a,s,p" }, tls: { ja4: "t13d1516h2" } });
+  page.on("request", req => {
+    const u = req.url();
+    if (req.method() === "OPTIONS") {
+      preflights++;
+      return req.respond({ status: 204, headers: { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Authorization", "Access-Control-Allow-Methods": "GET, OPTIONS" } });
+    }
+    if (u.includes("/api/me")) return req.respond(json({ ...ME, cf: { ...ME.cf, country: "CN", city: "Shanghai" }, at: Date.now() }));
+    if (u.includes("/_ms/token")) { tokenCalls++; return req.respond({ status: 200, contentType: "application/json", headers: { "Cache-Control": "no-store", "Access-Control-Allow-Origin": "*" }, body: JSON.stringify({ token: "v1.fresh" }) }); }
+    if (u.includes("intl.test/fp?h3")) return req.respond({ status: 404, body: "" });
+    if (u.includes("intl.test/fp")) {
+      farCalls++;
+      const a = req.headers()["authorization"] || "";
+      if (farCalls === 1) { firstAuth = a; return req.respond({ status: 401, contentType: "application/json", headers: { "Access-Control-Allow-Origin": "*", "WWW-Authenticate": "Bearer" }, body: '{"error":"bad_token"}' }); }
+      retryAuth = a; return req.respond(json(tcp(1400, 1440)));
+    }
+    if (u.includes("cn.test/fp")) { nearCalls++; nearAuth = req.headers()["authorization"] || ""; return req.respond(json(tcp(1460, 1500))); }
+    req.continue();
+  });
+  await page.goto(`${base}/?lang=en&anchors=test&auth=test`, { waitUntil: "load" });
+  await page.waitForFunction(() => !document.querySelector("#rerun").disabled, { timeout: 30000 }).catch(() => fail("probe auth", "the run never finished"));
+  const r = await page.evaluate(() => ({
+    meta: ((document.querySelector('meta[name="ms-auth"]') || {}).content || ""),
+    visible: !document.querySelector("#probe2").hidden,
+    farMss: ((document.querySelector('#p2Far [data-k="mss"]') || {}).textContent || "").trim(),
+  }));
+  for (const e of errors) fail("probe auth", "script error: " + e);
+  if (firstAuth !== "Bearer v1.test") fail("probe auth", "the meta token was not sent: " + JSON.stringify(firstAuth));
+  if (tokenCalls !== 1) fail("probe auth", "the 401 should ask for a token exactly once: " + tokenCalls);
+  if (retryAuth !== "Bearer v1.fresh") fail("probe auth", "the retry did not use the fresh token: " + JSON.stringify(retryAuth));
+  if (farCalls !== 2) fail("probe auth", "the 401 should be retried exactly once: " + farCalls);
+  if (nearAuth !== "Bearer v1.test") fail("probe auth", "the other probe should keep the original token: " + JSON.stringify(nearAuth));
+  if (r.meta !== "v1.fresh") fail("probe auth", "the meta was not updated: " + JSON.stringify(r.meta));
+  if (!r.visible || r.farMss !== "1400") fail("probe auth", "the retried reading did not render: " + JSON.stringify(r));
+  if (!preflights) fail("probe auth", "the Authorization header should have produced a preflight");
   await page.close();
 }
 

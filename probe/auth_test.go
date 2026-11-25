@@ -36,6 +36,16 @@ func TestAuthDisabledAllows(t *testing.T) {
 	}
 }
 
+func TestAuthDisabledPreflight(t *testing.T) {
+	ok := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
+	r := httptest.NewRequest(http.MethodOptions, "/fp", nil)
+	w := httptest.NewRecorder()
+	authHandler("", ok).ServeHTTP(w, r)
+	if w.Code != http.StatusNoContent || w.Header().Get("Access-Control-Allow-Headers") != "Authorization" {
+		t.Fatalf("disabled preflight: got %d %q", w.Code, w.Header().Get("Access-Control-Allow-Headers"))
+	}
+}
+
 func TestAuthNoToken(t *testing.T) {
 	ok := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
 	w := authRequest(authHandler("secret", ok), "")

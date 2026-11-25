@@ -21,17 +21,19 @@ import (
 const probeScope = "probe"
 
 func authHandler(secret string, next http.Handler) http.Handler {
-	if secret == "" {
-		return next
-	}
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// The page will send Authorization, which is not a simple header: answer the CORS preflight here.
+		// The page will send Authorization, which is not a simple header: answer the CORS preflight here even
+		// before this service has a secret, so the page can be rolled out before the secrets are set.
 		if r.Method == http.MethodOptions {
 			w.Header().Set("Access-Control-Allow-Origin", "*")
 			w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 			w.Header().Set("Access-Control-Allow-Headers", "Authorization")
 			w.Header().Set("Access-Control-Max-Age", "600")
 			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+		if secret == "" {
+			next.ServeHTTP(w, r)
 			return
 		}
 		switch authError(secret, r.Header.Get("Authorization"), probeScope, time.Now()) {
