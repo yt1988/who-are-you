@@ -847,8 +847,10 @@ import { exifOf } from "./exif.mjs";
   // The first-screen connection line: for a visitor in China, the domestic device/access reading (OS, MTU, initial
   // TTL) beside the cross-border MSS; outside China, the one Tokyo reading. Both link to the full two tables.
   function paintProbeFirst(near, far, isCN) {
-    const heading = $("#p2firstH"), body = $("#p2firstBody"); if (!heading || !body) return;
+    const heading = $("#p2firstH"), body = $("#p2firstBody"), sub = $("#p2firstSub");
+    if (!heading || !body) return;
     const link = document.querySelector("#p2first .p2first-h a"); if (link) link.hidden = !isCN;
+    if (sub) sub.hidden = !isCN;
     const tc = near && near.tcp, fc = far && far.tcp;
     const vals = p => {
       const c = p && p.tcp; if (!c) return "—";
