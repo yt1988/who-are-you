@@ -839,12 +839,25 @@ import { exifOf } from "./exif.mjs";
       const dl = $(sel); if (!dl) return;
       const tc = p && p.tcp, set = (k, v) => { const el = dl.querySelector(`[data-k="${k}"]`); if (el) el.textContent = v; };
       set("os", tc && tc.os ? t("tos_" + (tc.os === "unix" ? "other" : tc.os)) : "—");
+      set("ip", p && p.ip ? p.ip : "—");
       set("mss", tc && tc.mss ? tc.mss : "—");
       set("mtu", tc && tc.mtu ? tc.mtu : "—");
       set("ttl", tc && tc.initial_ttl ? tc.initial_ttl : "—");
+      set("hops", tc && tc.hops != null ? tc.hops : "—");
+      set("win", tc && tc.window ? tc.window : "—");
+      set("ws", tc && tc.wscale != null ? tc.wscale : "—");
       set("ja4t", tc && tc.ja4t ? tc.ja4t : "—");
+      set("ja4", p && p.tls && p.tls.ja4 ? p.tls.ja4 : "—");
+      set("h2", p && p.http2 && p.http2.pseudo ? p.http2.pseudo : "—");
     };
     put("#p2Near", near); put("#p2Far", far);
+    const v = $("#p2Verdict");
+    if (v) {
+      if (near && far) {
+        const sig = p => [p.tcp && p.tcp.os, p.tcp && p.tcp.options, p.tls && p.tls.ja4, p.http2 && p.http2.pseudo].filter(Boolean).join("|");
+        v.hidden = false; v.textContent = t(sig(near) === sig(far) ? "p2_verdict_same" : "p2_verdict_diff");
+      } else v.hidden = true;
+    }
     const nm = near && near.tcp && near.tcp.mss, fm = far && far.tcp && far.tcp.mss;
     const diff = $("#p2Diff"), na = $("#p2Na");
     if (nm && fm) {
