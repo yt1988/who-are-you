@@ -855,7 +855,7 @@ import { exifOf } from "./exif.mjs";
     const vals = p => {
       const c = p && p.tcp; if (!c) return "—";
       const os = c.os ? t("tos_" + (c.os === "unix" ? "other" : c.os)) : "—";
-      return `${os} · MTU ${c.mtu || "?"} · TTL ${c.initial_ttl || "?"}`;
+      return `${os} · MSS ${c.mss || "?"} · MTU ${c.mtu || "?"} · TTL ${c.initial_ttl || "?"}`;
     };
     if (!near && !far) { heading.textContent = t("p2_h"); body.textContent = t("p2_na_both"); return; }
     if (!isCN) {
@@ -865,7 +865,7 @@ import { exifOf } from "./exif.mjs";
     }
     heading.textContent = t("p2_h");
     const line1 = near ? `${t("p2_near")}: ${vals(near)}` : t("p2_na_cn");
-    const line2 = far ? `${t("p2_far")}: MSS ${fc && fc.mss ? fc.mss : "?"}` : t("p2_na_far");
+    const line2 = far ? `${t("p2_far")}: ${vals(far)}` : t("p2_na_far");
     body.innerHTML = `<span class="p2line">${esc(line1)}</span><span class="p2line">${esc(line2)}</span>`;
   }
 
