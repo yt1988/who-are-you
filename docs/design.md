@@ -748,10 +748,8 @@ build and full smoke pass.
 
 `src/egress.js` is VERSION 7 (414073e): the `ANCHORS` constant is gone, `endpoints(name, doc)` parses a
 `<meta name="ms-anchors" content="cn=…;intl=…">` and `readAnchors(doc)` returns the two base URLs. who's page reads
-those bases and appends `/fp` and `/conn`; no host literal remains in the page or infer. The Worker writes the meta
-into `<head>` from `env.MS_ANCHORS` and adds the two origins to `connect-src` (the header and the meta), and HTML
-pages now pass through the Worker first (`run_worker_first`); the share page gets the same treatment. A static build
-can set `MS_ANCHORS` instead; `scripts/build.mjs` writes the meta and CSP origins. With neither, the probe rows say
-"no measuring point configured", the connection cards are hidden, the anchors are not fetched, and the rest of the
-portrait is unchanged. The smoke test covers both the no-meta fallback (every language page) and a test-injected
-meta; the Worker was checked locally with `wrangler dev --var MS_ANCHORS`.
+those bases and appends `/fp` and `/conn`; no host literal remains in the page or infer. The 1ms.dog shell Worker
+proxies the pages and writes the four `ms-*` metas (and the CSP origins) itself; this repository has no Worker-side
+injection, ASSETS binding or `run_worker_first`. Without the meta the probe rows say "no measuring point configured",
+the connection cards are hidden, the anchors are not fetched, and the rest of the portrait is unchanged. The smoke
+test covers both the no-meta fallback (every language page) and a test-injected meta.

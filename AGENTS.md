@@ -114,12 +114,12 @@ probe has to see the browser's own packets); the libpcap runtime library (Debian
 6. Verify: `curl https://<probe-domain>/fp` answers JSON with `tcp`, `tls` and `http2` readings;
    `journalctl -u <app>` shows only startup and errors, and no client address (`journalctl -u <app> | grep` for one
    before calling it done). Before DNS is set: `probe -dev -addr :8443` serves a self-signed certificate.
-7. Point the page at it: set `MS_ANCHORS` (`cn=https://<mainland>;intl=https://<overseas>`) as a Worker secret; the
-   Worker writes `<meta name="ms-anchors">` into the head and adds the two origins to the CSP. A static build can set
-   the same `MS_ANCHORS` at build time instead. Without it the probe rows say "no measuring point configured" and the
-   connection cards are hidden; self-hosted copies work unchanged. The page has no host constants. The city names in
-   the copy stay as display names. The mainland probe's certificate comes from `-certfile`/`-keyfile` (see step 4);
-   its host, operator and location are in the private ops notes, not this public file.
+7. Point the page at it: the 1ms.dog shell Worker proxies each tool's pages, writes the four `ms-*` metas (including
+   `ms-anchors`: `cn=…;intl=…`) and adds their origins to the CSP. This repository has no host constants and no
+   Worker-side injection. Without the meta the probe rows say "no measuring point configured" and the connection
+   cards are hidden; self-hosted copies work unchanged. The city names in the copy stay as display names. The
+   mainland probe's certificate comes from `-certfile`/`-keyfile` (see step 4); its host, operator and location are
+   in the private ops notes, not this public file.
 
 Other tools may read `/fp` and `/conn`: keep their field names as `probe/README.md` lists them.
 

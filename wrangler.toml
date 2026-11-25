@@ -10,9 +10,6 @@ preview_urls = false
 [assets]
 directory = "./public"
 binding = "ASSETS"
-# HTML pages run the Worker first so env.MS_ANCHORS can be written into the head; assets stay static.
-# MS_ANCHORS is a Worker secret (cn=https://<mainland>;intl=https://<overseas>), never in this file.
-run_worker_first = ["/", "/*/"]
 
 # The counter behind "how common are you" (src/tally.mjs): one Durable Object, SQLite-backed, numbers only
 [[durable_objects.bindings]]
