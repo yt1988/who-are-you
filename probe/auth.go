@@ -4,7 +4,6 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
-	"encoding/hex"
 	"fmt"
 	"io"
 	"net/http"
@@ -14,8 +13,10 @@ import (
 )
 
 // Endpoint auth (platform/tool-contract.md, "端点鉴权"): the shell signs a short-lived
-// `v1.<exp>.<nonce>.<hmac>` token over `v1|exp|nonce|scope`, and the two probe routes accept it only when it is
-// signed with this service's secret, unexpired and scoped to `probe`. No secret means no check: the self-hosted
+// `v1.<exp>.<nonce>.<scope>.<hmac>` token, the HMAC over `v1|exp|nonce|scope` with the scope exactly as it appears
+// in the token, and the two probe routes accept it only when it is signed with this service's secret, unexpired and
+// this service's capability (`probe`) is one of the comma-separated scope names. The token carries the scope, so its
+// order is the signer's business and no candidate list is guessed here. No secret means no check: the self-hosted
 // default and the rollout switch. The token is not issued yet, so with no secret the server behaves as before.
 const probeScope = "probe"
 
@@ -46,35 +47,42 @@ func authHandler(secret string, next http.Handler) http.Handler {
 
 // authError returns "" for a valid token, "no_token" when none was sent, and "bad_token" for anything else:
 // wrong shape, version, expiry, signature or scope.
-func authError(secret, header, scope string, now time.Time) string {
+func authError(secret, header, own string, now time.Time) string {
 	const prefix = "Bearer "
 	if !strings.HasPrefix(header, prefix) || strings.TrimSpace(strings.TrimPrefix(header, prefix)) == "" {
 		return "no_token"
 	}
 	token := strings.TrimSpace(strings.TrimPrefix(header, prefix))
 	parts := strings.Split(token, ".")
-	if len(parts) != 4 || parts[0] != "v1" || parts[2] == "" {
+	if len(parts) != 5 || parts[0] != "v1" || parts[2] == "" || parts[3] == "" {
 		return "bad_token"
 	}
 	exp, err := strconv.ParseInt(parts[1], 10, 64)
 	if err != nil || now.Unix() > exp {
 		return "bad_token"
 	}
-	if !strings.Contains(","+scope+",", ","+probeScope+",") {
-		return "bad_token"
-	}
-	msg := fmt.Sprintf("v1|%s|%s|%s", parts[1], parts[2], scope)
+	msg := fmt.Sprintf("v1|%s|%s|%s", parts[1], parts[2], parts[3])
 	mac := hmac.New(sha256.New, []byte(secret))
 	mac.Write([]byte(msg))
 	want := mac.Sum(nil)
-	got, err := hex.DecodeString(parts[3])
-	if err != nil {
-		got, err = base64.RawURLEncoding.DecodeString(parts[3])
-	}
+	got, err := base64.RawURLEncoding.DecodeString(parts[4])
 	if err != nil || !hmac.Equal(got, want) {
 		return "bad_token"
 	}
+	if !scopeHas(parts[3], own) {
+		return "bad_token"
+	}
 	return ""
+}
+
+// scopeHas reports whether one capability is in a comma-separated scope list, exactly as written.
+func scopeHas(scope, want string) bool {
+	for _, s := range strings.Split(scope, ",") {
+		if strings.TrimSpace(s) == want {
+			return true
+		}
+	}
+	return false
 }
 
 func unauthorized(w http.ResponseWriter, code string) {

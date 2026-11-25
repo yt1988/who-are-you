@@ -3,7 +3,7 @@ package main
 import (
 	"crypto/hmac"
 	"crypto/sha256"
-	"encoding/hex"
+	"encoding/base64"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -16,7 +16,7 @@ func tokenFor(secret, scope string, exp int64) string {
 	msg := fmt.Sprintf("v1|%d|nonce|%s", exp, scope)
 	m := hmac.New(sha256.New, []byte(secret))
 	m.Write([]byte(msg))
-	return fmt.Sprintf("v1.%d.nonce.%s", exp, hex.EncodeToString(m.Sum(nil)))
+	return fmt.Sprintf("v1.%d.nonce.%s.%s", exp, scope, base64.RawURLEncoding.EncodeToString(m.Sum(nil)))
 }
 
 func authRequest(handler http.Handler, header string) *httptest.ResponseRecorder {
@@ -57,6 +57,16 @@ func TestAuthScopeMismatch(t *testing.T) {
 	w := authRequest(authHandler("secret", ok), "Bearer "+tokenFor("secret", "reach", time.Now().Add(time.Minute).Unix()))
 	if w.Code != http.StatusUnauthorized || !strings.Contains(w.Body.String(), `"bad_token"`) {
 		t.Fatalf("scope mismatch: got %d %s", w.Code, w.Body.String())
+	}
+}
+
+func TestAuthScopeList(t *testing.T) {
+	token, exp := tokenFor("secret", "probe,reach", time.Now().Add(time.Minute).Unix()), time.Now()
+	if err := authError("secret", "Bearer "+token, "probe", exp); err != "" {
+		t.Fatalf("probe in scope: got %q, want valid", err)
+	}
+	if err := authError("secret", "Bearer "+token, "ipv6", exp); err != "bad_token" {
+		t.Fatalf("ipv6 not in scope: got %q, want bad_token", err)
 	}
 }
 
