@@ -36,7 +36,7 @@ func TestPortOfAndSynFilterNonstandard(t *testing.T) {
 // autocert path as it was; one flag alone is a mistake.
 func TestTLSSetup(t *testing.T) {
 	cert, key := testPair(t)
-	cfg, err := tlsSetup("probe.dog.1msapp.com", cert, key, "", false)
+	cfg, err := tlsSetup("probe.example.com", cert, key, "", false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -48,7 +48,7 @@ func TestTLSSetup(t *testing.T) {
 			t.Fatal("acme-tls/1 should be off with a file pair")
 		}
 	}
-	cfg, err = tlsSetup("probe.1ms.dog", "", "", t.TempDir(), false)
+	cfg, err = tlsSetup("probe.example.com", "", "", t.TempDir(), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,10 +58,10 @@ func TestTLSSetup(t *testing.T) {
 	if !strings.Contains(strings.Join(cfg.NextProtos, ","), "acme-tls/1") {
 		t.Fatal("autocert needs acme-tls/1")
 	}
-	if _, err := tlsSetup("probe.1ms.dog", cert, "", "", false); err == nil {
+	if _, err := tlsSetup("probe.example.com", cert, "", "", false); err == nil {
 		t.Fatal("certfile without keyfile should be an error")
 	}
-	if _, err := tlsSetup("probe.1ms.dog", "", key, "", false); err == nil {
+	if _, err := tlsSetup("probe.example.com", "", key, "", false); err == nil {
 		t.Fatal("keyfile without certfile should be an error")
 	}
 }
@@ -72,8 +72,8 @@ func testPair(t *testing.T) (string, string) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	tmpl := &x509.Certificate{SerialNumber: big.NewInt(1), Subject: pkix.Name{CommonName: "probe.dog.1msapp.com"},
-		DNSNames: []string{"probe.dog.1msapp.com"}, NotBefore: time.Now().Add(-time.Hour), NotAfter: time.Now().Add(time.Hour)}
+	tmpl := &x509.Certificate{SerialNumber: big.NewInt(1), Subject: pkix.Name{CommonName: "probe.example.com"},
+		DNSNames: []string{"probe.example.com"}, NotBefore: time.Now().Add(-time.Hour), NotAfter: time.Now().Add(time.Hour)}
 	der, err := x509.CreateCertificate(rand.Reader, tmpl, tmpl, &k.PublicKey, k)
 	if err != nil {
 		t.Fatal(err)

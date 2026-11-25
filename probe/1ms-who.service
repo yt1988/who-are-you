@@ -1,12 +1,12 @@
-# /etc/systemd/system/1ms-who.service: probe.1ms.dog (see probe/main.go). Directory, ports and service name are as
+# /etc/systemd/system/1ms-who.service: the probe (see probe/main.go). Directory, ports and service name are as
 # registered in 1ms-shell docs/processes.md, "VPS": /opt/1ms/who/, 443/tcp and 443/udp, 1ms-who
 [Unit]
-Description=probe.1ms.dog: connection readings for who.1ms.dog
+Description=connection readings probe for the who page
 After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=/opt/1ms/who/probe -addr :443 -domain probe.1ms.dog -certs /var/lib/1ms-who
+ExecStart=/opt/1ms/who/probe -addr :443 -domain <your-domain> -certs /var/lib/1ms-who
 Restart=always
 RestartSec=2
 # (only what it needs: port 443 and a raw socket for the SYN capture; its own output is startup and errors only)

@@ -108,8 +108,9 @@ probe has to see the browser's own packets); the libpcap runtime library (Debian
 4. Certificate: none to bring. The probe gets one from Let's Encrypt itself (autocert, TLS-ALPN-01 on 443) and keeps
    it in `/var/lib/<app>`; port 443 must be reachable from the internet. Losing that directory only means a new
    certificate on the next start. Where 80/443 are blocked (a mainland host before filing) or the port is not 443,
-   pass `-certfile` and `-keyfile` instead: the pair is used as is, autocert is off, and `-domain` is not enforced
-   (a wildcard renewed elsewhere). The SYN capture's filter uses the `-addr` port, so `-addr :9443` captures 9443.
+   pass `-certfile` and `-keyfile` instead: the pair is used as is, autocert is off, and `-domain` only names the
+   certificate (it is required, but a wildcard renewed elsewhere is fine). The SYN capture's filter uses the `-addr`
+   port, so `-addr :9443` captures 9443.
 5. Firewall: open 443/tcp and 443/udp (QUIC), in the host's firewall and the provider's.
 6. Verify: `curl https://<probe-domain>/fp` answers JSON with `tcp`, `tls` and `http2` readings;
    `journalctl -u <app>` shows only startup and errors, and no client address (`journalctl -u <app> | grep` for one

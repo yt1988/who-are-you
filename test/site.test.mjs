@@ -185,7 +185,10 @@ test("no string says the same sentence twice", async () => {
   }
 });
 
-// The probe hosts are deployment details; user-facing copy names the sites instead (Tokyo, Shanghai).
+// The probe hosts are deployment details; user-facing copy names the sites instead (Tokyo, Shanghai). The absolute
+// URLs in it may name this site (and the cross-site frame's second domain) or a third party: anything else is a
+// leaked endpoint.
+const COPY_HOSTS = new Set(["1ms.dog", "who.1ms.dog", "cross.1ms.one", "github.com", "localhost"]);
 test("page copy and the README do not name the probe hosts", async () => {
   const files = ["src/pages.mjs", "src/sniffers.mjs"];
   const root = new URL("../", import.meta.url);
@@ -193,6 +196,6 @@ test("page copy and the README do not name the probe hosts", async () => {
   for (const [lang] of LANGS) files.push(`src/i18n/${lang}.mjs`);
   for (const f of files) {
     const s = await read(f);
-    assert.ok(!/probe\.1ms\.dog|probe\.dog\.1msapp\.com|cross\.1ms\.one/.test(s), f + " names a probe host");
+    for (const [, host] of s.matchAll(/https?:\/\/([A-Za-z0-9.-]+)/g)) assert.ok(COPY_HOSTS.has(host.toLowerCase()), f + " links to " + host);
   }
 });

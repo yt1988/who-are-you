@@ -1,4 +1,4 @@
-// probe.1ms.dog: what a browser's own connection gives away, read where Cloudflare can't: the TCP SYN (initial TTL,
+// The probe: what a browser's own connection gives away, read where Cloudflare can't: the TCP SYN (initial TTL,
 // window, options, MSS), the TLS ClientHello (JA3, JA4) and the HTTP/2 preface (SETTINGS, window update, priorities,
 // pseudo-header order: the Akamai fingerprint). Browsers reach it directly (DNS only), the page asks GET /fp and gets
 // its own connection's readings back. Nothing is logged or kept: a SYN waits in memory for its connection, a minute
@@ -35,13 +35,16 @@ type connInfo struct {
 
 func main() {
 	addr := flag.String("addr", ":443", "listen address")
-	domain := flag.String("domain", "probe.1ms.dog", "certificate name")
+	domain := flag.String("domain", "", "certificate name (required)")
 	cache := flag.String("certs", "/var/lib/probe/certs", "certificate cache")
 	certFile := flag.String("certfile", "", "TLS certificate file (PEM; with -keyfile; turns autocert off)")
 	keyFile := flag.String("keyfile", "", "TLS private key file (PEM; with -certfile)")
 	iface := flag.String("iface", "", "interface for the SYN capture (empty: the default route's)")
 	dev := flag.Bool("dev", false, "a self-signed certificate (testing by IP)")
 	flag.Parse()
+	if *domain == "" {
+		log.Fatal("-domain is required: the certificate name")
+	}
 
 	syns := newSynTable()
 	go func() {
@@ -214,7 +217,7 @@ func handler() http.Handler {
 	})
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		w.Write([]byte("probe.1ms.dog: the connection readings of https://who.1ms.dog (GET /fp). Nothing is logged.\n"))
+		w.Write([]byte("the probe: the connection readings of the asking page (GET /fp). Nothing is logged.\n"))
 	})
 	return mux
 }
