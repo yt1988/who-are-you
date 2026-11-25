@@ -39,7 +39,7 @@ export default {
   v_clean: "Ninguna contradicción", v_clean_d: "Todo coincide. Si no te escondes, así te leen las webs con estos datos; si te escondes, el disfraz aguanta.",
   v_found_one: "{n} cosa podría delatarte", v_found_other: "{n} cosas podrían delatarte", v_found_d: "Si quieres pasar desapercibido, las filas en ámbar y en rojo son lo que una web notaría.",
 
-  v_join: ", ", v_none: "no se envía", v_empty: "ninguno", v_unsup: "este navegador no lo indica", v_fail: "no se pudo leer", v_unknown: "desconocido",
+  v_join: ", ", v_none: "no se envía", v_empty: "ninguno", v_unsup: "este navegador no lo indica", v_fail: "no se pudo leer", v_nocfg: "No hay punto de medición configurado", v_unknown: "desconocido",
   v_yes: "sí", v_no: "no", v_on: "activado", v_off: "desactivado",
   clk_ok: "en hora (desfase de {ms} ms)", clk_fast: "{s} s adelantado", clk_slow: "{s} s atrasado", hist_v_one: "{n} página en esta pestaña", hist_v_other: "{n} páginas en esta pestaña",
   ck_12: "12 horas", ck_24: "24 horas", week_v: "el {d}", voices_v: "{n}: {list}",

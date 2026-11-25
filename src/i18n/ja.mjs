@@ -39,7 +39,7 @@ export default {
   v_clean: "矛盾は見つかりませんでした", v_clean_d: "すべて一致しています。何も隠していなければ、サイトにはこの読み取りのとおりに見えます。隠しているなら、偽装はうまくいっています。",
   v_found_other: "ばれそうな点が {n} か所", v_found_d: "身元を隠したいなら、黄色と赤の行がサイトに気づかれる点です。",
 
-  v_join: "、", v_none: "送信なし", v_empty: "なし", v_unsup: "このブラウザは非公開", v_fail: "読み取れず", v_unknown: "不明",
+  v_join: "、", v_none: "送信なし", v_empty: "なし", v_unsup: "このブラウザは非公開", v_fail: "読み取れず", v_nocfg: "測定ポイントが設定されていません", v_unknown: "不明",
   v_yes: "はい", v_no: "いいえ", v_on: "オン", v_off: "オフ",
   clk_ok: "正確（ずれ {ms} ミリ秒）", clk_fast: "{s} 秒進んでいる", clk_slow: "{s} 秒遅れている", hist_v_other: "このタブで {n} ページ",
   ck_12: "12 時間", ck_24: "24 時間", week_v: "{d}", voices_v: "{n} 個：{list}",

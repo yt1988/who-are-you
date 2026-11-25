@@ -258,7 +258,7 @@ export function splitOf(exits) {
   return { a, b, ipA: cn.ip, ipB: intl.ip, n: groups.length };
 }
 
-// The tunnel a connection's MSS points to (probe.1ms.dog): the path's MTU is the MSS plus the headers (40 bytes on
+// The tunnel a connection's MSS points to (the probe): the path's MTU is the MSS plus the headers (40 bytes on
 // IPv4, 60 on IPv6). 1500 is a plain line, 1492 or 1480 PPPoE (home broadband, not a tunnel), 1420 or 1280 WireGuard
 // (its default, and WARP's), 1450 OpenVPN (its default mssfix), 1400 or 1438 IPsec; another value under 1500 some
 // other tunnel or a network that clamps. A guess from defaults: null when there is no MSS
@@ -304,7 +304,7 @@ export function checks(x) {
   if (!x.exits) out.split = null;
   else if (x.exits.filter(([, ip]) => ip).length < 2) out.split = ["info", "c_na", {}];
   else { const s = splitOf(x.exits); out.split = s ? ["warn", "c_split_warn", { a: s.a, b: s.b }] : ["ok", "c_split_ok", {}]; }
-  // The connection itself, as the probe read it (probe.1ms.dog, reached directly): an HTTP/2 preface unlike the
+  // The connection itself, as the probe read it (the probe, reached directly): an HTTP/2 preface unlike the
   // browser engine's own means something re-made the HTTPS on the way (a capture tool, a company gateway, antivirus);
   // a SYN from another OS family than the user agent's, that another machine opened the connection (a proxy or VPN
   // server; on a phone, a carrier's or a company Wi-Fi gateway's TCP proxy does the same, which is why the sentence

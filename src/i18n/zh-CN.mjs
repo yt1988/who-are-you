@@ -39,7 +39,7 @@ export default {
   v_clean: "没发现矛盾", v_clean_d: "各项信息互相对得上。没在伪装的话，网站从这些读数看到的就是这样；在伪装的话，伪装没有破绽。",
   v_found_other: "{n} 处可能暴露你", v_found_d: "想隐藏自己的话，标黄和标红的就是网站会注意到的地方，每一项都附了改法。",
 
-  v_join: "、", v_none: "没有发送", v_empty: "无", v_unsup: "这个浏览器不提供", v_fail: "没读到", v_unknown: "未知",
+  v_join: "、", v_none: "没有发送", v_empty: "无", v_unsup: "这个浏览器不提供", v_fail: "没读到", v_nocfg: "没有配置测量点", v_unknown: "未知",
   v_yes: "是", v_no: "否", v_on: "开", v_off: "关",
   clk_ok: "准（只差 {ms} 毫秒）", clk_fast: "快了 {s} 秒", clk_slow: "慢了 {s} 秒", hist_v_other: "这个标签页打开过 {n} 个页面",
   ck_12: "12 小时制", ck_24: "24 小时制", week_v: "{d}", voices_v: "{n} 个：{list}",

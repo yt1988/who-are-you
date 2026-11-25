@@ -39,7 +39,7 @@ export default {
   v_clean: "Aucune contradiction", v_clean_d: "Tout concorde. Si vous ne vous cachez pas, voilà comment un site vous lit à partir de ces mesures ; si vous vous cachez, le camouflage tient.",
   v_found_one: "{n} point peut vous trahir", v_found_other: "{n} points peuvent vous trahir", v_found_d: "Si vous voulez vous cacher, ce sont les lignes orange et rouges qu’un site remarquerait.",
 
-  v_join: ", ", v_none: "non envoyé", v_empty: "aucun", v_unsup: "ce navigateur ne le dit pas", v_fail: "lecture impossible", v_unknown: "inconnu",
+  v_join: ", ", v_none: "non envoyé", v_empty: "aucun", v_unsup: "ce navigateur ne le dit pas", v_fail: "lecture impossible", v_nocfg: "Aucun point de mesure configuré", v_unknown: "inconnu",
   v_yes: "oui", v_no: "non", v_on: "activé", v_off: "désactivé",
   clk_ok: "à l’heure ({ms} ms d’écart)", clk_fast: "{s} s d’avance", clk_slow: "{s} s de retard", hist_v_one: "{n} page dans cet onglet", hist_v_other: "{n} pages dans cet onglet",
   ck_12: "12 h", ck_24: "24 h", week_v: "le {d}", voices_v: "{n} : {list}",

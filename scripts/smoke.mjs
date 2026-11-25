@@ -38,7 +38,10 @@ const handle = async (req, res) => {
   }
   if (path === "/cdn-cgi/trace") { res.writeHead(200, { "content-type": "text/plain" }); return res.end("ip=203.0.113.7\nkex=X25519MLKEM768\nsni=plaintext\nwarp=off\ngateway=off\n"); }
   try {
-    const body = await readFile(new URL("." + (path.endsWith("/") ? path + "index.html" : path), pub));
+    let body = await readFile(new URL("." + (path.endsWith("/") ? path + "index.html" : path), pub));
+    // a test page can opt into deploy anchors; the normal pages stay on the no-meta fallback
+    if ((path.endsWith("/") || extname(path) === ".html") && new URL(req.url, "http://x").searchParams.has("anchors"))
+      body = Buffer.from(String(body).replace("</head>", '<meta name="ms-anchors" content="cn=https://cn.test;intl=https://intl.test"></head>'));
     res.writeHead(200, { "content-type": TYPES[extname(path)] || (path.endsWith("/") ? TYPES[".html"] : "application/octet-stream") }); res.end(body);
   } catch (e) { res.writeHead(404); res.end(); }
 };
@@ -117,12 +120,12 @@ console.log("two probes: domestic and cross-border");
   page.on("request", req => {
     const u = req.url();
     if (u.includes("/api/me")) return req.respond(json({ ...ME, cf: { ...ME.cf, country: "CN", city: "Shanghai" }, at: Date.now() }));
-    if (u.includes("probe.1ms.dog/fp?h3")) return req.respond({ status: 404, body: "" });
-    if (u.includes("probe.1ms.dog/fp")) return req.respond(json(tcp(1400, 1440)));
-    if (u.includes("probe.dog.1msapp.com:9443/fp")) { nearCalls++; return req.respond(nearFail ? { status: 500, body: "no" } : json(tcp(1460, 1500))); }
+    if (u.includes("intl.test/fp?h3")) return req.respond({ status: 404, body: "" });
+    if (u.includes("intl.test/fp")) return req.respond(json(tcp(1400, 1440)));
+    if (u.includes("cn.test/fp")) { nearCalls++; return req.respond(nearFail ? { status: 500, body: "no" } : json(tcp(1460, 1500))); }
     req.continue();
   });
-  await page.goto(`${base}/?lang=en`, { waitUntil: "load" });
+  await page.goto(`${base}/?lang=en&anchors=test`, { waitUntil: "load" });
   await page.waitForFunction(() => !document.querySelector("#rerun").disabled, { timeout: 30000 }).catch(() => fail("two probes", "the run never finished"));
   let r = await page.evaluate(() => ({
     visible: !document.querySelector("#probe2").hidden,
@@ -229,7 +232,8 @@ await pool(LANGS, N, async ([lang, slug], base) => {
     waiting: document.querySelectorAll(".bl.wait").length, blanks: document.querySelectorAll(".bl[data-b]").length,
     story: document.querySelector("#story").textContent, checks: [...document.querySelectorAll(".ckr")].map(x => [x.dataset.c, x.className]),
     num: document.querySelector("#mNum").textContent, fp: document.querySelector("#fpId").textContent, ret: document.querySelector("#fpRet").textContent,
-    firstBody: ((document.querySelector("#p2firstBody") || {}).textContent || "").trim(),
+    firstHidden: document.querySelector("#p2first").hidden,
+    probe2Hidden: document.querySelector("#probe2").hidden,
   }));
   for (const e of errors) fail(lang, "script error: " + e);
   if (r.rows.length !== SNIFFERS.length) fail(lang, `${r.rows.length} rows, expected ${SNIFFERS.length}`);
@@ -241,7 +245,7 @@ await pool(LANGS, N, async ([lang, slug], base) => {
   if (r.checks.length !== CHECKS.length + PROTO.length) fail(lang, `${r.checks.length} checks, expected ${CHECKS.length + PROTO.length}`);
   if (!/^\d+$/.test(r.num)) fail(lang, `count "${r.num}"`);
   if (!r.fp.trim() || !r.ret.trim()) fail(lang, "ID card not filled");
-  if (!r.firstBody) fail(lang, "the first-screen connection line is empty");
+  if (!r.firstHidden || !r.probe2Hidden) fail(lang, "without anchors the connection cards should be hidden");
 
   if (lang === "zh-CN") {
     // share (1ms.dog's share dialog), then open the link as someone else would

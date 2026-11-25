@@ -19,6 +19,8 @@ import { IN_APPS } from "../src/infer.mjs";
 import { PAGES, TEXT } from "../src/pages.mjs";
 
 const SITE = (process.env.SITE_URL || "https://who.1ms.dog").replace(/\/+$/, "");
+const MS_ANCHORS = process.env.MS_ANCHORS || "";
+const anchorOrigins = [...new Set(String(MS_ANCHORS).split(";").map(p => p.slice(p.indexOf("=") + 1).trim()).filter(Boolean).map(v => { try { return new URL(v).origin; } catch (e) { return ""; } }))].filter(Boolean);
 const pub = new URL("../public/", import.meta.url), src = new URL("../src/", import.meta.url);
 // language, URL folder, og:locale; the first is the root
 export const LANGS = [["en", "", "en_US"], ["zh-CN", "zh-cn", "zh_CN"], ["zh-TW", "zh-tw", "zh_TW"], ["ja", "ja", "ja_JP"], ["ko", "ko", "ko_KR"],
@@ -157,6 +159,7 @@ export async function build({ check = false } = {}) {
         `<meta name="application-name" content="${esc(T("app_name"))}">`,
         `<meta name="theme-color" content="#f6f6f7" media="(prefers-color-scheme: light)">`,
         `<meta name="theme-color" content="#1c1c1c" media="(prefers-color-scheme: dark)">`,
+        ...(MS_ANCHORS ? [`<meta name="ms-anchors" content="${esc(MS_ANCHORS)}">`] : []),
         // the faces the first screen draws with, fetched before the stylesheet asks for them: with font-display:
         // optional a font that is late is never swapped in, and a font that arrives in time is used from the start —
         // either way the text does not reflow when it lands
@@ -294,7 +297,7 @@ export async function build({ check = false } = {}) {
   // forbidding them would hide the devices from the media sniffer, which never asks for access.
   // Geolocation is this page's own (the precise location row, asked for behind its button only).
   const csp = ["default-src 'self'", `script-src 'self' 'sha256-${sha(PREPAINT)}'`, "style-src 'self' 'unsafe-inline'", "font-src 'self'", "img-src 'self' data:",
-    "connect-src 'self' https://myip.ipip.net https://api.ip.sb https://chatgpt.com https://claude.ai https://www.cloudflare.com https://ipv4-check-perf.radar.cloudflare.com https://ipv6-check-perf.radar.cloudflare.com https://*.edns.ip-api.com https://pagead2.googlesyndication.com https://www.google.com https://probe.1ms.dog https://probe.dog.1msapp.com:9443 https://www.google-analytics.com https://securepubads.g.doubleclick.net https://connect.facebook.net https://bat.bing.com https://analytics.tiktok.com https://hm.baidu.com https://static.hotjar.com chrome-extension:", "manifest-src 'self'", "worker-src 'self' blob:", "object-src 'none'", "base-uri 'none'", "form-action 'none'", "frame-ancestors 'none'",
+    `connect-src 'self' https://myip.ipip.net https://api.ip.sb https://chatgpt.com https://claude.ai https://www.cloudflare.com https://ipv4-check-perf.radar.cloudflare.com https://ipv6-check-perf.radar.cloudflare.com https://*.edns.ip-api.com https://pagead2.googlesyndication.com https://www.google.com ${anchorOrigins.join(" ")} https://www.google-analytics.com https://securepubads.g.doubleclick.net https://connect.facebook.net https://bat.bing.com https://analytics.tiktok.com https://hm.baidu.com https://static.hotjar.com chrome-extension:` , "manifest-src 'self'", "worker-src 'self' blob:", "object-src 'none'", "base-uri 'none'", "form-action 'none'", "frame-ancestors 'none'",
     // the cross-site row's frame: this tool's own second domain (2026-11-14), loaded only when the visitor clicks it
     "frame-src 'self' https://cross.1ms.one"].join("; ");
   // Every page names its stylesheet and scripts by content hash, and a deploy deletes the hashes of the build before it.

@@ -39,7 +39,7 @@ export default {
   v_clean: "Keine Widersprüche", v_clean_d: "Alles passt zusammen. Wenn du dich nicht tarnst, so liest eine Website dich aus diesen Messwerten; wenn doch, hält deine Tarnung.",
   v_found_one: "{n} Ding kann dich verraten", v_found_other: "{n} Dinge können dich verraten", v_found_d: "Willst du dich tarnen, sind die gelben und roten Zeilen genau das, was einer Website auffällt.",
 
-  v_join: ", ", v_none: "nicht gesendet", v_empty: "keine", v_unsup: "dieser Browser verrät es nicht", v_fail: "nicht lesbar", v_unknown: "unbekannt",
+  v_join: ", ", v_none: "nicht gesendet", v_empty: "keine", v_unsup: "dieser Browser verrät es nicht", v_fail: "nicht lesbar", v_nocfg: "Kein Messpunkt konfiguriert", v_unknown: "unbekannt",
   v_yes: "ja", v_no: "nein", v_on: "an", v_off: "aus",
   clk_ok: "genau ({ms} ms Abweichung)", clk_fast: "{s} s vor", clk_slow: "{s} s nach", hist_v_one: "{n} Seite in diesem Tab", hist_v_other: "{n} Seiten in diesem Tab",
   ck_12: "12-Stunden", ck_24: "24-Stunden", week_v: "am {d}", voices_v: "{n}: {list}",

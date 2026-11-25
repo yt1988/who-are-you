@@ -733,7 +733,7 @@ interception. The order is deliberate: avoid a false proxy verdict first, then r
 
 ## 2026-11-23 — who's exits use the site-wide egress core
 
-`src/egress.js` is vendored from `1ms.dog/src/egress.js` VERSION 6 (aa4e9f8), with the header naming the commit. The
+`src/egress.js` is vendored from `1ms.dog/src/egress.js` VERSION 7 (414073e), with the header naming the commit. The
 local `DC_ASN`/`DC_NAME`/`VPN_NAME`, `netKind` and `splitOf` are gone: `netKind` reads the core's `kindOf()` (VPN brand
 first, then data center/cloud) and `isDataCenter` its `DC_RE`/`DC_ASN`; `splitOf` groups the exits with
 `groupExits()` and compares the paths from `pathOf()`. Path and kind stay separate: an exit matching an anchor says
@@ -743,3 +743,15 @@ domestic `/fp` reading stays for visitors in China. Missing anchors give no spli
 guess. Tor, the tunnel MTU, WebRTC, Via, the UA/tamper checks, the giveaways and every fingerprint and string stay in
 this repository. Tests: the existing netKind/isDataCenter cases and split cases now include anchor addresses; the
 build and full smoke pass.
+
+## 2026-11-25 — measuring endpoints are deploy data (#142 三.7, option A)
+
+`src/egress.js` is VERSION 7 (414073e): the `ANCHORS` constant is gone, `endpoints(name, doc)` parses a
+`<meta name="ms-anchors" content="cn=…;intl=…">` and `readAnchors(doc)` returns the two base URLs. who's page reads
+those bases and appends `/fp` and `/conn`; no host literal remains in the page or infer. The Worker writes the meta
+into `<head>` from `env.MS_ANCHORS` and adds the two origins to `connect-src` (the header and the meta), and HTML
+pages now pass through the Worker first (`run_worker_first`); the share page gets the same treatment. A static build
+can set `MS_ANCHORS` instead; `scripts/build.mjs` writes the meta and CSP origins. With neither, the probe rows say
+"no measuring point configured", the connection cards are hidden, the anchors are not fetched, and the rest of the
+portrait is unchanged. The smoke test covers both the no-meta fallback (every language page) and a test-injected
+meta; the Worker was checked locally with `wrangler dev --var MS_ANCHORS`.

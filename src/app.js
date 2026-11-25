@@ -9,7 +9,7 @@ import { TW, flagCode } from "./regions.mjs";
 import { encode, decode, linkPath, parsePath } from "./share.mjs";
 import { nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, tzCC, inChina, langCC, sysLangs, SYS_FONT_LIST, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, isIntegratedGpu, discreteGpu, isRelayIp, rfpClock, idLies, FEATURES, engineRange, engineOff, rigOf, freshOf, isPublicDns, platformOff, glVendorOff, armSay, armGpu, tunnelOf, macOf, v6Type } from "./infer.mjs";
 import { wasmProbe, WASM_FEATURES } from "./wasm.mjs";
-import { TZ_CC } from "./egress.js";
+import { TZ_CC, readAnchors } from "./egress.js";
 import { appleModel, pcKind, bucket, batteryReading } from "./models.mjs";
 import { exifOf } from "./exif.mjs";
 
@@ -273,7 +273,7 @@ import { exifOf } from "./exif.mjs";
     const c = j.cf || {}, h = j.h || {};
     R.srv = j;
     // a visitor in China gets the second measuring point (TX.SHA); make its place before the probes answer
-    if (inChina(c.country, R.tz)) { const p2 = $("#probe2"); if (p2) p2.hidden = false; }
+    if (PROBE && inChina(c.country, R.tz)) { const p2 = $("#probe2"); if (p2) p2.hidden = false; }
     row("ip", flagged(null, j.ip + " · IPv" + j.v, ipqsOf(j.ip)));
     // (the place and the point are an IP database's guess for the address, said so on the row itself)
     await within(citiesP, 1500, null);
@@ -781,14 +781,25 @@ import { exifOf } from "./exif.mjs";
   }
 
   // The probe: this browser's own connection, read whole by a server Cloudflare doesn't stand in front of
-  // (probe.1ms.dog, DNS only): the SYN the system opened it with, the TLS ClientHello, the HTTP/2 preface
-  const PROBE = "https://probe.1ms.dog/fp";
-  const PROBE_CN = "https://probe.dog.1msapp.com:9443/fp";
+  // The probes are deploy-time data: `<meta name="ms-anchors" content="cn=…;intl=…">` (Worker env or build).
+  // Without it the page has no measuring points: the probe rows say so and the connection card is hidden.
+  const ANCHORS = readAnchors();
+  const endpoint = (base, path) => base ? `${String(base).replace(/\/+$/, "")}/${path}` : "";
+  const PROBE = endpoint(ANCHORS.intl, "fp");
+  const PROBE_CN = endpoint(ANCHORS.cn, "fp");
+  const ANCHOR_CN = endpoint(ANCHORS.cn, "conn");
+  const ANCHOR_INTL = endpoint(ANCHORS.intl, "conn");
+  if (PROBE) { const p1 = $("#p2first"); if (p1) p1.hidden = false; }
   const h2Engine = p => ({ "m,a,s,p": "blink", "m,p,a,s": "gecko", "m,s,p,a": "webkit", "m,s,a,p": "webkit" })[p] || (p ? "tool" : null);
   // The two measuring points: Tokyo sees the connection after the international path (MSS clamps and all); TX.SHA
   // sees a visitor in China before it. Both are read for a visitor whose address Cloudflare places in China; the
   // domestic one is the device for the portrait and the checks, the cross-border one is what the path does to it.
   async function probe() {
+    if (!PROBE) {
+      for (const id of ["tcpfp", "ja4", "h2fp", "quicfp"]) na(id, "v_nocfg");
+      const p2 = $("#probe2"), p1 = $("#p2first"); if (p2) p2.hidden = true; if (p1) p1.hidden = true;
+      return;
+    }
     await Promise.race([R.srvP || Promise.resolve(), new Promise(r => setTimeout(r, 8000))]).catch(() => {});
     const isCN = !!(R.srv && R.srv.cf && inChina(R.srv.cf.country, R.tz));
     const get = async (u, ms) => { try { const r = await within(fetch(u, { cache: "no-store" }), ms, null); return r && r.ok ? await r.json() : null; } catch (e) { return null; } };
@@ -1486,8 +1497,8 @@ import { exifOf } from "./exif.mjs";
   // Cloudflare (its trace on each service's own domain). A rule-based proxy or VPN picks the route by destination.
   const EXITS = [
     // the two anchors of the site-wide egress contract: a probe inside China and one in Tokyo, /conn on each
-    ["anchor_cn", () => getJ("https://probe.dog.1msapp.com:9443/conn").then(b => ({ ip: b.ip, cc: null, note: "" }))],
-    ["anchor_intl", () => getJ("https://probe.1ms.dog/conn").then(b => ({ ip: b.ip, cc: null, note: "" }))],
+    ["anchor_cn", () => ANCHOR_CN ? getJ(ANCHOR_CN).then(b => ({ ip: b.ip, cc: null, note: "" })) : Promise.resolve(null)],
+    ["anchor_intl", () => ANCHOR_INTL ? getJ(ANCHOR_INTL).then(b => ({ ip: b.ip, cc: null, note: "" })) : Promise.resolve(null)],
     ["ex_cn", () => getJ("https://myip.ipip.net/json").then(b => ({ ip: b.data.ip, cc: null, note: (b.data.location || []).filter(Boolean).join(" ") }))],
     ["ex_intl", () => getJ("https://api.ip.sb/geoip").then(b => ({ ip: b.ip, cc: b.country_code, note: b.isp || b.asn_organization || "" }))],
     ...[["ex_gpt", "chatgpt.com"], ["ex_claude", "claude.ai"], ["ex_cf", "www.cloudflare.com"]].map(([id, host]) => [id, () => getT(`https://${host}/cdn-cgi/trace`).then(s => {

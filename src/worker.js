@@ -1,5 +1,5 @@
-// who-are-you Worker. Pages and assets are static files (public/, served without running this script); this script
-// answers
+// who-are-you Worker. Pages and assets are static files (public/); HTML pages pass through this script only to add
+// the deploy-time `ms-anchors` meta (and its CSP origins) when env.MS_ANCHORS is set, then this script answers
 //   GET /api/me   what the server learns from the request alone: the address, Cloudflare's geolocation and network
 //                 data for it, the TLS and HTTP details, the headers the browser sent, the address's reverse DNS and
 //                 the server's clock.
@@ -83,6 +83,27 @@ const fill = (s, v) => { for (const k in v) s = s.split("{" + k + "}").join(v[k]
 // a count's own form in a language: k_one, k_few, k_many as Intl.PluralRules says, k_other otherwise (as the page does)
 const plural = (d, lang, k, n) => { let c = "other"; try { c = new Intl.PluralRules(lang).select(n); } catch (e) {} return d[k + "_" + c] ?? d[k + "_other"]; };
 const attr = (name, value) => ({ element(el) { el.setAttribute(name, value); } });
+const escAttr = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+// Deploy-time measuring points: env.MS_ANCHORS is written into the head and its origins added to connect-src.
+// With no value nothing is added, the page's probe rows say "not configured", and the connection card stays hidden.
+function anchorOrigins(v) {
+  return [...new Set(String(v || "").split(";").map(p => p.slice(p.indexOf("=") + 1).trim()).filter(Boolean)
+    .map(x => { try { return new URL(x).origin; } catch (e) { return ""; } }))].filter(Boolean);
+}
+function withAnchors(res, env) {
+  const value = env && env.MS_ANCHORS;
+  if (!value || !/text\/html/i.test(res.headers.get("content-type") || "")) return res;
+  const origins = anchorOrigins(value), h = new Headers(res.headers), csp = h.get("Content-Security-Policy");
+  if (csp && origins.length) h.set("Content-Security-Policy", csp.replace(/connect-src([^;]*)/, `connect-src$1 ${origins.join(" ")}`));
+  const meta = `<meta name="ms-anchors" content="${escAttr(value)}">`;
+  return new HTMLRewriter()
+    .on("head", { element(el) { el.append(meta, { html: true }); } })
+    .on('meta[http-equiv="Content-Security-Policy"]', { element(el) {
+      const c = el.getAttribute("content") || "";
+      if (origins.length) el.setAttribute("content", c.replace(/connect-src([^;]*)/, `connect-src$1 ${origins.join(" ")}`));
+    } })
+    .transform(new Response(res.body, { status: res.status, headers: h }));
+}
 async function result(request, env, { code, lang: dir }, url) {
   const P = decode(code);
   if (!P) return new Response(null, { status: 404 });
@@ -114,7 +135,7 @@ async function result(request, env, { code, lang: dir }, url) {
   // would then ask for a file that is gone (1ms.dog#112), so it revalidates like every other page
   h.set("Cache-Control", "no-cache");
   h.delete("ETag");
-  return new Response(res.body, { status: 200, headers: h });
+  return withAnchors(new Response(res.body, { status: 200, headers: h }), env);
 }
 
 // the counter: counts only from this site's own pages (the Origin a browser sends with a POST), the stats for anyone
@@ -172,6 +193,8 @@ export default {
       try { return json({ ok: true, tor: (await torExits(request)).has(ip) }); }
       catch (e) { return json({ ok: false }); }
     }
+    // every other path is a static page or asset: HTML gets the deploy-time anchors, everything else passes through
+    if (!url.pathname.startsWith("/api/")) return withAnchors(await env.ASSETS.fetch(request), env);
     if (url.pathname !== "/api/me") return new Response(null, { status: 404 });
     if (request.method !== "GET") return new Response(null, { status: 405, headers: { Allow: "GET" } });
     const at = Date.now();

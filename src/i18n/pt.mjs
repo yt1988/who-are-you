@@ -39,7 +39,7 @@ export default {
   v_clean: "Nenhuma contradição", v_clean_d: "Tudo bate. Se você não está se escondendo, é assim que os sites te leem a partir destes dados; se está, o disfarce se sustenta.",
   v_found_one: "{n} coisa pode te entregar", v_found_other: "{n} coisas podem te entregar", v_found_d: "Se você quer se esconder, as linhas em amarelo e vermelho são o que um site perceberia.",
 
-  v_join: ", ", v_none: "não enviado", v_empty: "nenhum", v_unsup: "este navegador não informa", v_fail: "não deu para ler", v_unknown: "desconhecido",
+  v_join: ", ", v_none: "não enviado", v_empty: "nenhum", v_unsup: "este navegador não informa", v_fail: "não deu para ler", v_nocfg: "Nenhum ponto de medição configurado", v_unknown: "desconhecido",
   v_yes: "sim", v_no: "não", v_on: "ligado", v_off: "desligado",
   clk_ok: "certo (diferença de {ms} ms)", clk_fast: "{s} s adiantado", clk_slow: "{s} s atrasado", hist_v_one: "{n} página nesta aba", hist_v_other: "{n} páginas nesta aba",
   ck_12: "12 horas", ck_24: "24 horas", week_v: "{d}", voices_v: "{n}: {list}",

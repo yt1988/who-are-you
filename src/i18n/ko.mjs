@@ -39,7 +39,7 @@ export default {
   v_clean: "모순이 없어요", v_clean_d: "모든 정보가 서로 맞아요. 숨기는 게 없다면 사이트는 이 읽기값들을 이렇게 해석하고, 위장 중이라면 위장이 잘 유지되고 있어요.",
   v_found_other: "들통날 수 있는 곳 {n}개", v_found_d: "정체를 숨기고 싶다면, 노란색과 빨간색 줄이 사이트가 알아챌 부분이에요.",
 
-  v_join: ", ", v_none: "보내지 않음", v_empty: "없음", v_unsup: "이 브라우저는 제공하지 않음", v_fail: "읽지 못함", v_unknown: "알 수 없음",
+  v_join: ", ", v_none: "보내지 않음", v_empty: "없음", v_unsup: "이 브라우저는 제공하지 않음", v_fail: "읽지 못함", v_nocfg: "측정 지점이 설정되지 않았어요", v_unknown: "알 수 없음",
   v_yes: "예", v_no: "아니요", v_on: "켜짐", v_off: "꺼짐",
   clk_ok: "정확함({ms}ms 차이)", clk_fast: "{s}초 빠름", clk_slow: "{s}초 느림", hist_v_other: "이 탭에서 {n}페이지 열람",
   ck_12: "12시간제", ck_24: "24시간제", week_v: "{d}", voices_v: "{n}개: {list}",

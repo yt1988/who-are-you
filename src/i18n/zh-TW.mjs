@@ -39,7 +39,7 @@ export default {
   v_clean: "沒發現矛盾", v_clean_d: "各項資訊彼此對得上。沒在偽裝的話，網站從這些讀數看到的就是這樣；有在偽裝的話，目前看不出破綻。",
   v_found_other: "{n} 處可能讓你露餡", v_found_d: "想隱藏自己的話，標黃和標紅的就是網站會注意到的地方，每一項都附了改法。",
 
-  v_join: "、", v_none: "沒有送出", v_empty: "無", v_unsup: "這個瀏覽器不提供", v_fail: "沒讀到", v_unknown: "不明",
+  v_join: "、", v_none: "沒有送出", v_empty: "無", v_unsup: "這個瀏覽器不提供", v_fail: "沒讀到", v_nocfg: "沒有設定測量點", v_unknown: "不明",
   v_yes: "是", v_no: "否", v_on: "開", v_off: "關",
   clk_ok: "準（只差 {ms} 毫秒）", clk_fast: "快了 {s} 秒", clk_slow: "慢了 {s} 秒", hist_v_other: "這個分頁開過 {n} 個頁面",
   ck_12: "12 小時制", ck_24: "24 小時制", week_v: "{d}", voices_v: "{n} 個：{list}",

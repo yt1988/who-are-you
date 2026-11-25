@@ -40,7 +40,7 @@ export default {
   v_clean: "No contradictions found", v_clean_d: "Everything agrees. If you aren't hiding anything, this is how a site reads you from these readings. If you are, your disguise holds up.",
   v_found_one: "{n} thing could give you away", v_found_other: "{n} things could give you away", v_found_d: "If you want to hide, the amber and red rows are what a site would notice.",
 
-  v_join: ", ", v_none: "not sent", v_empty: "none", v_unsup: "this browser doesn't say", v_fail: "couldn't read", v_unknown: "unknown",
+  v_join: ", ", v_none: "not sent", v_empty: "none", v_unsup: "this browser doesn't say", v_fail: "couldn't read", v_nocfg: "No measuring point configured", v_unknown: "unknown",
   v_yes: "yes", v_no: "no", v_on: "on", v_off: "off",
   clk_ok: "accurate ({ms} ms off)", clk_fast: "{s} s fast", clk_slow: "{s} s slow", hist_v_one: "{n} page in this tab", hist_v_other: "{n} pages in this tab",
   ck_12: "12-hour", ck_24: "24-hour", week_v: "on {d}", voices_v: "{n}: {list}",
