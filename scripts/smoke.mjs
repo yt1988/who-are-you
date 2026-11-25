@@ -148,8 +148,8 @@ console.log("two probes: domestic and cross-border");
   await page.reload({ waitUntil: "load" });
   await page.waitForFunction(() => !document.querySelector("#rerun").disabled, { timeout: 30000 }).catch(() => fail("two probes", "the fallback run never finished"));
   r = await page.evaluate(() => ({ visible: !document.querySelector("#probe2").hidden, na: (document.querySelector("#p2Na") || {}).textContent || "", far: [...document.querySelectorAll("#p2Far dd")].map(x => x.textContent.trim()), farMss: ((document.querySelector('#p2Far [data-k="mss"]') || {}).textContent || "").trim(), firstText: (document.querySelector("#p2firstBody") || {}).textContent || "" }));
-  if (!r.visible || !/domestic reading is unavailable/.test(r.na)) fail("two probes", "a failed domestic probe should say so: " + r.na);
-  if (!/domestic reading is unavailable/.test(r.firstText)) fail("two probes", "the first screen should say the domestic reading is unavailable: " + r.firstText);
+  if (!r.visible || !/Shanghai reading is unavailable/.test(r.na)) fail("two probes", "a failed domestic probe should say so: " + r.na);
+  if (!/Shanghai reading is unavailable/.test(r.firstText)) fail("two probes", "the first screen should say the domestic reading is unavailable: " + r.firstText);
   if (r.farMss !== "1400") fail("two probes", "the cross-border reading should remain: " + r.farMss);
   await page.close();
 }
