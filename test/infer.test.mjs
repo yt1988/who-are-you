@@ -3,7 +3,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { macOf, v6Type, tunnelOf, langCC, nationality, device, browser, gpuName, gpuOS, kbdLayout, isDataCenter, netKind, fontHints, checks, giveaways, protocols, offTxt, splitOf, netOf, sysLangs, grade, physicalScreen, isSoftGpu, vmOf, looksLikeAddress, discreteGpu, isRelayIp, rfpClock, isIntegratedGpu, FEATURES, engineRange, engineOff, rigOf, freshOf, isPublicDns, inChina, platformOff, glVendorOff, idLies, armSay, armGpu } from "../src/infer.mjs";
 import { cleanSeen, rarity, durOf } from "../src/traits.mjs";
-import { kindOf, VERSION as EGRESS_VERSION } from "../src/egress.js";
+import { kindOf, endpoints, readAnchors, VERSION as EGRESS_VERSION } from "../src/egress.js";
 import { regionName, flagCode } from "../src/regions.mjs";
 
 const WIN = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36";
@@ -541,8 +541,13 @@ test("the exit's kind, and a virtual machine's, from the names they report", () 
   assert.equal(inChina("CN", "Asia/Tokyo"), true);
   assert.equal(netKind(2516, "KDDI Corporation"), "home");
   assert.equal(netKind(null, ""), "home");
-  // the vendored core VERSION 6: Cloudflare is a proxy either way, and WARP on is the precise reason
-  assert.equal(EGRESS_VERSION, "6");
+  // the vendored core VERSION 7: Cloudflare is a proxy either way, and WARP on is the precise reason
+  assert.equal(EGRESS_VERSION, "7");
+  // deploy-time anchors: the meta parser, and no meta means no measuring points
+  const doc = { querySelector: () => ({ getAttribute: () => "cn=https://cn.test;intl=https://intl.test" }) };
+  assert.deepEqual(endpoints("ms-anchors", doc), { cn: "https://cn.test", intl: "https://intl.test" });
+  assert.deepEqual(readAnchors(doc), { cn: "https://cn.test", intl: "https://intl.test" });
+  assert.deepEqual(readAnchors({ querySelector: () => null }), { cn: "", intl: "" });
   assert.deepEqual(kindOf({ asn: 13335, org: "Cloudflare, Inc." }, { warp: "on" }), { kind: "proxy", why: "warp" });
   assert.deepEqual(kindOf({ asn: 13335, org: "Cloudflare, Inc." }, { warp: "off" }), { kind: "proxy", why: "dc" });
   assert.equal(netKind(13335, "Cloudflare, Inc."), "dc");
