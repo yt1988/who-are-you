@@ -15,6 +15,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"os"
 	"strings"
 	"sync"
 	"time"
@@ -55,6 +56,18 @@ func main() {
 	}
 
 	h := handler()
+	// the two probe routes take the shell's token when this server has a secret; everything else is unchanged
+	if secret := os.Getenv("MS_AUTH_SECRET"); secret != "" {
+		inner := h
+		guarded := authHandler(secret, inner)
+		h = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.URL.Path == "/fp" || r.URL.Path == "/conn" {
+				guarded.ServeHTTP(w, r)
+				return
+			}
+			inner.ServeHTTP(w, r)
+		})
+	}
 	// HTTP/3 on the same port over UDP (quic.go)
 	go serveQUIC(*addr, tcfg, h)
 	ln, err := net.Listen("tcp", *addr)
