@@ -98,7 +98,7 @@ export async function build({ check = false } = {}) {
   // floor above): a dynamic import cannot survive that target — esbuild lowers it to a require() the browser hasn't got,
   // which took the dialog and the "someone shared this" note down without an error anyone saw (2026-11-15). So the
   // module is reached through one tiny module script, which a browser without modules skips and never parses.
-  const SHARE_V = 10;
+  const SHARE_V = 11;
   const shareBoot = `import*as m from"/assets/share/share.js?v=${SHARE_V}";window.__1msShare=m;window.__1msShareCss="/assets/share/share.css?v=${SHARE_V}";\n`;
   const bootName = `share-boot.${hash(shareBoot)}.js`;
   const js = (await bundle({ entryPoints: [fileURLToPath(new URL("app.js", src))], bundle: true, minify: true, format: "iife",

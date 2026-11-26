@@ -529,7 +529,7 @@ So the page's script (which must parse where modules do not exist at all) no lon
 - The help's questions (`/assets/h.<lang>.<hash>.js`) are a classic script that leaves them on `window.L1MS_HELP`, like
   the strings file beside it, loaded by a `<script src>` when help first opens.
 - 1ms.dog's share dialog is an ES module and stays one, copied verbatim. The build emits one tiny module script,
-  `/assets/share-boot.<hash>.js` (`import*as m from"/assets/share/share.js?v=10";window.__1msShare=m;`), and the page
+  `/assets/share-boot.<hash>.js` (`import*as m from"/assets/share/share.js?v=11";window.__1msShare=m;`), and the page
   loads it by tag. A browser with no module support ignores that tag and never parses the file; there the share button
   copies the plain link instead and says so on the button, and the "someone shared this" note simply doesn't appear.
 
