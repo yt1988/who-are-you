@@ -9,6 +9,8 @@
 {{style}}
 </head>
 <body>
+<!-- painted once while invisible (0 size, still with text) so a tooltip is never the first paint: the LCP. Chromium measured; not every engine. -->
+<div class="tip pre" id="tip" aria-hidden="true">{{a:scr_which}}</div>
 <div class="app">
   <header class="top">
     <a class="brand" href="{{homeHref}}" aria-current="page">

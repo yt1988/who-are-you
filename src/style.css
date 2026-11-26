@@ -553,7 +553,9 @@ button.pa-go { border: 0; background: none; padding: 0; cursor: pointer; }
 .pr.lit + .pr, .pr.lit { border-top-color: transparent; }
 .masked .pr[data-sens] .pa, .masked .bl[data-b="city"], .masked .ckr[data-c="webrtc"] .ck-v { filter: blur(6px); }
 .tip { position: fixed; z-index: 50; white-space: pre-line; max-width: min(360px, calc(100vw - 16px)); overflow-wrap: anywhere; background: var(--fg); color: var(--bg); font: 500 12.5px/1.45 var(--f-ui); padding: 6px 10px; border-radius: 7px; pointer-events: none; opacity: 0; transition: opacity .12s; }
-.tip.on { opacity: 1; }
+.tip.on { opacity: 1; animation: tip-in .12s; }
+@keyframes tip-in { from { opacity: 0; } }
+.tip.pre { left: 0; top: 0; opacity: 1; transform: scale(0); }
 /* the bait for ad blockers: on the page but out of sight */
 #ad-slot { position: absolute; left: -9999px; top: 0; width: 2px; height: 2px; }
 

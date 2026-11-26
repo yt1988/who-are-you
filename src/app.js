@@ -170,16 +170,21 @@ import { exifOf } from "./exif.mjs";
   applyMask();
 
   // the tooltip: blanks, rows and checks that explain themselves on hover (data-why)
-  let tipEl;
+  // the bubble is in the page from the start (a 0-size box with text), so its first text is not the LCP
+  const tipEl = document.getElementById("tip");
+  const hideTip = () => { tipEl.classList.remove("on"); tipEl.setAttribute("aria-hidden", "true"); };
+  addEventListener("scroll", hideTip, { passive: true });
   function showTip(el) {
-    if (!tipEl) { tipEl = document.body.appendChild(Object.assign(document.createElement("div"), { className: "tip" })); addEventListener("scroll", () => tipEl.classList.remove("on"), { passive: true }); }
     tipEl.textContent = el.dataset.why;
+    tipEl.classList.remove("pre");
+    tipEl.removeAttribute("aria-hidden");
     const b = el.getBoundingClientRect(), w = tipEl.offsetWidth;
     tipEl.style.left = Math.max(8, Math.min(innerWidth - w - 8, b.left + b.width / 2 - w / 2)) + "px";
     tipEl.style.top = b.bottom + 6 + "px"; tipEl.classList.add("on");
   }
-  document.addEventListener("mouseover", e => { const el = e.target.closest && e.target.closest("[data-why]"); if (el) showTip(el); else if (tipEl) tipEl.classList.remove("on"); });
+  document.addEventListener("mouseover", e => { const el = e.target.closest && e.target.closest("[data-why]"); if (el) showTip(el); else hideTip(); });
   document.addEventListener("focusin", e => { const el = e.target.closest && e.target.closest("[data-why]"); if (el) showTip(el); });
+  document.addEventListener("focusout", hideTip);
   // a blank points at the rows it came from: hovering it lights them up
   document.addEventListener("mouseover", e => {
     const b = e.target.closest && e.target.closest(".bl[data-b]");
