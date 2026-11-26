@@ -544,7 +544,7 @@ test("the exit's kind, and a virtual machine's, from the names they report", () 
   assert.equal(netKind(2516, "KDDI Corporation"), "home");
   assert.equal(netKind(null, ""), "home");
   // the vendored core VERSION 7: Cloudflare is a proxy either way, and WARP on is the precise reason
-  assert.equal(EGRESS_VERSION, "7");
+  assert.equal(EGRESS_VERSION, "8");
   // deploy-time anchors: the meta parser, and no meta means no measuring points
   const doc = { querySelector: () => ({ getAttribute: () => "cn=https://cn.test;intl=https://intl.test" }) };
   assert.deepEqual(endpoints("ms-anchors", doc), { cn: "https://cn.test", intl: "https://intl.test" });
