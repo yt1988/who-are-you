@@ -74,7 +74,7 @@ import { exifOf } from "./exif.mjs";
   let failed = false;
   const fail = () => { if (!failed) { failed = true; post({ type: "error", text: t("em_blocked") }); } };
   // the icon that ends a link to another tool (the same as the build's EXT)
-  const EXT = '<svg class="ext" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2.5h4.5V7M13.5 2.5 7.5 8.5M12 10v3.5H2.5V4H6"/></svg>';
+  const EXT = '<svg class="ext" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2.5h4.5V7M13.5 2.5 7.5 8.5M12 10v3.5H2.5V4H6"/></svg>';
   const IPQS = META("ipqs"), EGRESS = META("egress"), DNSTEST = META("dns"), ASN = META("asn"), IPV6 = META("ipv6"), UNLOCK = META("unlock");
   // another tool's page in this page's language (every 1ms.dog tool keeps the same language folders)
   const inLang = host => host.replace(/\/$/, "") + ((D.base || D.paths)[LANG] || "/");
@@ -2246,7 +2246,7 @@ import { exifOf } from "./exif.mjs";
     if (h.length < 2) { el.hidden = true; return; }
     const W = 120, H = 26, top = Math.max(1, ...h.map(x => x.n)), x = i => (i * W / (h.length - 1)).toFixed(1), y = v => (H - 3 - v / top * (H - 6)).toFixed(1);
     const pts = h.map((p, i) => x(i) + "," + y(p.n)).join(" ");
-    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(t("runs_v", { n: h.length }))}"><polyline points="${pts}"/>` +
+    el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(t("runs_v", { n: h.length }))}"><polyline points="${pts}"/>` +
       h.map((p, i) => `<circle cx="${x(i)}" cy="${y(p.n)}" r="2.6"><title>${esc(t("hist_pt", { ago: ago(p.at), n: p.n }))}</title></circle>`).join("") + "</svg>";
     el.hidden = false; $("#vMeta").hidden = false;
   }
@@ -2667,7 +2667,7 @@ import { exifOf } from "./exif.mjs";
     gpu: '<rect x="4" y="4" width="8" height="8" rx="1"/><path d="M6.5 1.5V4M9.5 1.5V4M6.5 12v2.5M9.5 12v2.5M1.5 6.5H4M1.5 9.5H4M12 6.5h2.5M12 9.5h2.5"/>',
     langs: '<path d="M2 3.5h7M5.5 2v1.5M3.5 3.5c.5 2.5 2.2 4.4 4.5 5.4M7.5 3.5c-.5 2.6-2.4 4.7-5 5.8M9 14l2.7-6.5L14.5 14M9.9 12h3.7"/>',
   };
-  const ic = (k, cls = "cp-i") => `<span class="${cls}"><svg viewBox="0 0 16 16" aria-hidden="true">${IC[k] || ""}</svg></span>`;
+  const ic = (k, cls = "cp-i") => `<span class="${cls}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true">${IC[k] || ""}</svg></span>`;
   async function crowd() {
     let s = null;
     try { const r = await within(fetch("/api/stats"), 6000, null); s = r && r.ok ? await r.json() : null; } catch (e) {}
