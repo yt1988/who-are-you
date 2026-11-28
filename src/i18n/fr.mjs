@@ -9,6 +9,21 @@ export default {
   h1: "Qui vous êtes, aux yeux des sites",
   story: "{nat}. Ce site (Cloudflare) vous voit à {city}. Vous parlez {lang} ; l’horloge de votre ordinateur suit ce fuseau : {tz}, au format {clock}.\n{wow}\nVous utilisez {device} avec {browser} ; écran {screen}, carte graphique {gpu} : {rig}.\nVous vous connectez via {isp} : {nettype}, {conn}. Le résolveur DNS qui trouve l’adresse des sites pour vous se trouve ici : {dns}. {read}.\nVous préférez {theme}, et {adblock} ; {shield}. {track}. {cross} {adapi} Vos polices donnent un indice : {job}. Quant à votre âge, {age}.\nPour un site, c’est {tier}. {fresh}. Vous avez ouvert cette page {when}, {power}, {prefs}.\nDans la foule, {stand}.",
 
+  // après le portrait, les prochaines étapes (#148 ; pour l’instant en chinois et en anglais seulement)
+  tn_h: "Comment devenir moins reconnaissable", tn_more: "Voir comment c'est lu",
+  tn_l_fix: "Modifiable", tn_l_rare: "Rare", tn_l_common: "Courant",
+  tn_ck_tz: "Votre horloge est réglée sur un fuseau qui ne correspond pas à l'adresse vue par ce site, et un site y voit un proxy ou un VPN. Réglez le fuseau du système sur celui de l'adresse, ou connectez-vous depuis un réseau de ce pays.",
+  tn_ck_dns: "Le résolveur DNS qui répond pour vous se trouve dans un autre pays : les requêtes vous trahissent même quand la page ne le fait pas. Activez le DNS du VPN ou le DNS chiffré (DNS over HTTPS) pour que les requêtes sortent au même endroit que votre trafic.",
+  tn_ck_lang: "La langue du navigateur renvoie à un autre pays que votre adresse. Alignez la langue du navigateur, celle du système et les paramètres régionaux sur l'adresse : c'est l'une des premières choses qu'un site recoupe.",
+  tn_ck_webrtc: "WebRTC donne une autre adresse en plus de celle vue par la page. Désactivez-le, ou utilisez un navigateur ou une extension qui le garde dans le VPN.",
+  tn_ck_conn: "L'ouverture TCP/TLS et le user agent se contredisent, ce qu'un site lit comme un navigateur falsifié. Laissez le navigateur envoyer son propre user agent au lieu d'un outil qui le réécrit.",
+  tn_ck_dc: "Cette adresse appartient à un centre de données, pas à une connexion domestique, et les sites le voient. Une connexion résidentielle ou mobile est la vraie solution.",
+  tn_ck_fp: "Votre empreinte reste la même d'une visite à l'autre : un site peut vous reconnaître sans cookie. Un navigateur qui la randomise (Brave, ou Firefox en protection stricte) change ceci et le reste ensemble.",
+  tn_rare: "Seules {n} des {m} vérifications de ce site partagent cette valeur, l'une des choses qui vous rendent facile à repérer. {step}",
+  tn_step_fp: "Cette valeur vient à la fois du navigateur, des polices et de la carte graphique : changer un seul réglage aide rarement. Utilisez un navigateur qui les randomise, ou retirez les polices et extensions inutiles.",
+  tn_common: "{pct} des vérifications de ce site partagent cette valeur : ce n'est pas elle qui vous fait ressortir. La changer vous rendrait surtout plus rare : laissez-la.",
+  tn_none: "Rien dans vos lectures n'est rare et aucune vérification n'en contredit une autre. L'empreinte est la seule chose à relire après une mise à jour du navigateur.",
+
   lang_label: "Langue", faq_h: "Aide", th_system: "Thème : système", th_light: "Thème : clair", th_dark: "Thème : sombre",
   a_theme: "Thème", a_close: "Fermer", a_prev: "Précédent", a_next: "Suivant",
   h_checks: "Test de camouflage", checking: "Lecture…", hide: "Masquer la position", show: "Afficher la position", rerun: "Relancer",

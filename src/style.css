@@ -283,6 +283,24 @@ html.shared .un-go, html[data-who-embed] .un-go { display: none; }
 .rar-l li.all { border-top: 1px solid var(--line); padding-top: 6px; } .rar-l li.all > span:first-child { color: var(--fg); font-weight: 700; } .rar-l li.all i { opacity: 1; }
 .rar-n { margin: 8px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
 html.shared .rar-d, html[data-who-embed] .rar-d { display: none !important; }
+/* the next steps after the portrait: folded to one row, so what the checks fill in later never moves the page */
+.tune { margin: -6px 0 14px; font-size: 13px; }
+.tune summary { display: flex; align-items: center; gap: 8px; min-height: 24px; padding: 2px 0; margin: -2px 0; cursor: pointer; font-weight: 600; color: var(--ink); }
+.tune summary::after { content: "▾"; margin-left: auto; font-size: 10px; color: var(--muted); }
+.tune[open] summary::after { content: "▴"; }
+.tune-c { margin-left: auto; color: var(--muted); font-weight: 500; font-variant-numeric: tabular-nums; }
+.tune-l { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
+.tune-i { padding: 9px 12px 7px; border: 1px solid var(--line); border-radius: 8px; background: var(--soft); }
+.tune-i .skl { width: 70%; }
+.tune-h { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.tune-h b { font-size: 13px; }
+.tune-tag { flex: none; padding: 0 6px; border-radius: 999px; font-size: 11px; font-weight: 600; line-height: 18px; color: var(--muted); background: var(--panel); border: 1px solid var(--line); }
+.tune-tag.fix { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 40%, var(--line)); }
+.tune-tag.rare { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 40%, var(--line)); }
+.tune-tag.common { color: var(--t1); border-color: color-mix(in srgb, var(--t1) 40%, var(--line)); }
+.tune-i p { margin: 3px 0 4px; color: var(--muted); line-height: 1.6; }
+.tune-i a { display: inline-flex; align-items: center; gap: 4px; min-height: 24px; color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+html.shared .tune, html[data-who-embed] .tune { display: none !important; }
 .idc-u { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink); margin-top: 3px; line-height: 1.5; }
 /* on a phone the line under the ID ("N others share it") comes at the end of the run: its two lines are kept from the
    first paint, out of sight until filled, so the card doesn't grow then. Where it won't come (counting off, Global

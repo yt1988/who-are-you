@@ -10,6 +10,21 @@ export default {
   // the portrait: each {blank} is filled from the sniffers, each one exactly once
   story: "{nat}, and this site (Cloudflare) sees you in {city}. You speak {lang}, and your clock is set to {tz}, in {clock} format.\n{wow}\nYou're on {device}, using {browser}, with a {screen} screen and {gpu} graphics: {rig}.\nYou get online through {isp}, {nettype}, {conn}; the DNS resolver that looks up sites for you is in {dns}. {read}.\nYou prefer {theme}, and {adblock}; {shield}. {track}. {cross} {adapi} Your fonts drop a hint: {job}. As for your age, {age}.\nTo a site, this is {tier}. {fresh}. You opened this page {when}, {power}, {prefs}.\nIn a crowd, {stand}.",
 
+  // after the portrait, the next steps (1ms-shell#148; only zh-CN and en show them for now)
+  tn_h: "How to be less distinctive", tn_more: "See how this is read",
+  tn_l_fix: "Fix", tn_l_rare: "Rare", tn_l_common: "Common",
+  tn_ck_tz: "Your clock is set to a zone that doesn't match the address this site sees, and a site reads that as a proxy or a VPN. Set the system time zone to where the address really is, or connect through a network in that country.",
+  tn_ck_dns: "The DNS resolver answering for you is in another country, so lookups give you away even when the page itself doesn't. Turn on the VPN's DNS or encrypted DNS (DNS over HTTPS) so lookups leave the same way your traffic does.",
+  tn_ck_lang: "Your browser language points to a different country than your address. Make the browser language, system language and locale match where the address is: that pairing is one of the first things a site checks.",
+  tn_ck_webrtc: "WebRTC is handing out another address beside the one the page sees. Turn it off, or use a browser or extension that keeps it inside the VPN.",
+  tn_ck_conn: "The TCP/TLS opening and the user agent disagree, which is what a site reads as a spoofed browser. Let the browser send its own user agent instead of a tool that rewrites it.",
+  tn_ck_dc: "This address belongs to a data center, not a home connection, and sites can tell. A residential or mobile connection is the real fix.",
+  tn_ck_fp: "Your fingerprint stays the same between visits, so a site can recognize you without a cookie. A browser that randomizes fingerprints (Brave, or Firefox with strict protection) changes this and the rest together.",
+  tn_rare: "Only {n} of {m} checks here share it, one of the things that pick you out. {step}",
+  tn_step_fp: "This value comes from the browser, the fonts and the graphics card together, so changing one setting rarely helps: use a browser that randomizes them, or remove fonts and extensions you don't need.",
+  tn_common: "{pct} of the checks here share it, so it is not what makes you stand out. Changing it would mostly make you rarer: leave it alone.",
+  tn_none: "Nothing in your readings is rare and no check contradicts another. The fingerprint is the one thing worth reading again after a browser update.",
+
   lang_label: "Language", faq_h: "Help", th_system: "Theme: system", th_light: "Theme: light", th_dark: "Theme: dark",
   a_theme: "Theme", a_close: "Close", a_prev: "Previous", a_next: "Next",
   h_checks: "Disguise check", checking: "Reading…", hide: "Blur location", show: "Show location", rerun: "Run again",

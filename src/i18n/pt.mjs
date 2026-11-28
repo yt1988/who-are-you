@@ -9,6 +9,21 @@ export default {
   h1: "Quem os sites acham que você é",
   story: "{nat} e este site (Cloudflare) vê você em {city}. Você fala {lang}; seu sistema usa o fuso {tz} e o relógio de {clock}.\n{wow}\nVocê está usando {device}, com {browser}, tela de {screen} e placa de vídeo {gpu}: {rig}.\nVocê se conecta à internet via {isp}, {nettype}, {conn}; o resolvedor DNS que procura os sites para você fica em {dns}. {read}.\nVocê prefere {theme} e {adblock}; {shield}. {track}. {cross} {adapi} Suas fontes dão uma pista: {job}. Quanto à sua idade, {age}.\nPara um site, isto é {tier}. {fresh}. Você abriu esta página {when}, {power}, {prefs}.\nNo meio da multidão, {stand}.",
 
+  // depois do retrato, os próximos passos (#148; por enquanto só em chinês e inglês)
+  tn_h: "Como ficar menos distinto", tn_more: "Ver como isso é lido",
+  tn_l_fix: "Dá para mudar", tn_l_rare: "Raro", tn_l_common: "Comum",
+  tn_ck_tz: "Seu relógio está num fuso que não bate com o endereço que este site vê, e um site lê isso como proxy ou VPN. Ajuste o fuso do sistema para onde o endereço está, ou conecte-se por uma rede desse país.",
+  tn_ck_dns: "O resolvedor DNS que responde por você está em outro país, então as consultas entregam você mesmo quando a página não entrega. Ative o DNS da VPN ou DNS criptografado (DNS over HTTPS) para as consultas saírem pelo mesmo caminho do tráfego.",
+  tn_ck_lang: "O idioma do navegador aponta para um país diferente do seu endereço. Faça o idioma do navegador, o do sistema e o locale coincidirem com o endereço: é uma das primeiras coisas que um site compara.",
+  tn_ck_webrtc: "O WebRTC está entregando outro endereço além do que a página vê. Desligue-o, ou use um navegador ou extensão que o mantenha dentro da VPN.",
+  tn_ck_conn: "A abertura TCP/TLS e o user agent não concordam, e um site lê isso como navegador falsificado. Deixe o navegador enviar o próprio user agent em vez de usar uma ferramenta que o reescreve.",
+  tn_ck_dc: "Este endereço pertence a um data center, não a uma conexão residencial, e os sites percebem. Uma conexão residencial ou móvel é a solução real.",
+  tn_ck_fp: "Sua impressão digital não muda entre visitas, então um site pode reconhecer você sem cookie. Um navegador que a randomiza (Brave, ou Firefox com proteção estrita) muda isto e o resto junto.",
+  tn_rare: "Só {n} de {m} verificações aqui compartilham esse valor, uma das coisas que tornam você fácil de destacar. {step}",
+  tn_step_fp: "Esse valor vem do navegador, das fontes e da placa de vídeo juntos, então mudar um ajuste raramente ajuda: use um navegador que os randomize ou remova fontes e extensões que não precisa.",
+  tn_common: "{pct} das verificações aqui compartilham esse valor, então não é o que faz você se destacar. Mudá-lo só tornaria você mais raro: deixe como está.",
+  tn_none: "Nada nas suas leituras é raro e nenhuma verificação contradiz outra. A impressão digital é a única coisa que vale reler depois de atualizar o navegador.",
+
   lang_label: "Idioma", faq_h: "Ajuda", th_system: "Tema: do sistema", th_light: "Tema: claro", th_dark: "Tema: escuro",
   a_theme: "Tema", a_close: "Fechar", a_prev: "Anterior", a_next: "Próximo",
   h_checks: "Teste de disfarce", checking: "Lendo…", hide: "Esconder localização", show: "Mostrar localização", rerun: "Testar de novo",

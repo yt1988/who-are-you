@@ -2543,7 +2543,7 @@ import { exifOf } from "./exif.mjs";
     const b = e.target.closest("[data-sc]");
     if (!b || b.dataset.sc === scene) return;
     scene = b.dataset.sc; store.set(K.scene, scene);
-    if (R.ck) { paintChecks(R.ck, R.srv && R.srv.cf && R.srv.cf.country, true); todo(); }
+    if (R.ck) { paintChecks(R.ck, R.srv && R.srv.cf && R.srv.cf.country, true); todo(); tune(); }
     paintScene();
   };
   const WEIGHT = { bot: 9, webrtc: 9, dns: 8, tz: 8, tamper: 7, fpb: 7, conn: 7, ua: 6, rtt: 6, split: 5, dc: 5, via: 4, lang: 4, syslang: 3, fp: 2 };
@@ -2564,6 +2564,57 @@ import { exifOf } from "./exif.mjs";
     tip.hidden = false; fix.setAttribute("aria-expanded", "true");
     r.scrollIntoView({ block: "center", behavior: "smooth" });
   };
+  /* ---------- what to change next ---------- */
+  // Three next steps at most, from what actually stands out: the contradiction a site reads first, the rarest of the
+  // fingerprint's own values, and the commonest one (so nobody changes what isn't picking them out). Each links to the
+  // page that shows how it is read. The block is folded in the HTML, so filling it after the checks moves nothing.
+  const TUNE_PAGE = { tz: "timezone-check", dns: "dns-leak", lang: "language-check", webrtc: "webrtc-leak",
+    conn: "anti-detect-browser", dc: "proxy-check", fp: "fingerprint", fontfp: "fingerprint",
+    canvas: "canvas-fingerprint", webgl: "canvas-fingerprint", audio: "canvas-fingerprint" };
+  const TUNE_CKS = ["tz", "dns", "lang", "webrtc", "conn", "dc", "fp"], TUNE_PARTS = ["fontfp", "canvas", "webgl", "audio"];
+  let tuneSeen = false;
+  // (the shell's counter, on 1ms.dog only: a self-hosted copy sends nothing anywhere)
+  function tuneEv(e) {
+    const m = document.querySelector('meta[name="shortener"]');
+    if (!m || !/^https:\/\//.test(m.content)) return;
+    try { navigator.sendBeacon("/_ms/ev", new Blob([JSON.stringify({ e, g: LANG })], { type: "text/plain" })); } catch (x) {}
+  }
+  function tune() {
+    const box = $("#tune"), list = $("#tuneL");
+    if (!box || !list || EMBED || document.documentElement.classList.contains("shared") || !R || !R.ck) return;
+    const lv = id => R.ck[id] && R.ck[id][0], items = [];
+    const href = p => (D.paths[LANG] || "/") + p + "/";
+    const fixes = TUNE_CKS.filter(id => counted(id) && (lv(id) === "bad" || lv(id) === "warn"))
+      .sort((a, b) => (lv(a) === "bad" ? 0 : 1) - (lv(b) === "bad" ? 0 : 1) || (WEIGHT[b] || 0) - (WEIGHT[a] || 0));
+    const fix = id => ({ k: id, tag: "fix", label: t("tn_l_fix"), title: t("c_" + id), body: t("tn_ck_" + id), href: href(TUNE_PAGE[id]) });
+    if (fixes.length) items.push(fix(fixes[0]));
+    const u = R.uniq;
+    if (u && u.total >= MIN_TOTAL) {
+      const share = k => (u.n[k] || 0) / u.total, has = k => (u.n[k] || 0) > 0;
+      const rare = TUNE_PARTS.filter(has).sort((a, b) => u.n[a] - u.n[b])[0];
+      if (rare && share(rare) < 0.02)
+        items.push({ k: "rare", tag: "rare", label: t("tn_l_rare"), title: rowName(rare),
+          body: t("tn_rare", { m: u.total.toLocaleString(LANG), n: u.n[rare].toLocaleString(LANG), step: t("tn_step_fp") }), href: href(TUNE_PAGE[rare]) });
+      const common = TUNE_PARTS.filter(k => share(k) >= 0.02).sort((a, b) => share(b) - share(a))[0];
+      if (common)
+        items.push({ k: "common", tag: "common", label: t("tn_l_common"), title: rowName(common),
+          body: t("tn_common", { pct: Math.max(1, Math.round(100 * share(common))) + "%" }), href: href(TUNE_PAGE[common]) });
+    }
+    // one contradiction, then what is rare and what is common; other contradictions only fill a place the counts leave
+    for (const id of fixes.slice(1)) { if (items.length >= 3) break; items.push(fix(id)); }
+    if (!items.length) items.push({ k: "none", title: "", body: t("tn_none"), href: href("fingerprint") });
+    list.innerHTML = items.map(x => `<li class="tune-i" data-tn="${esc(x.k)}">` +
+      (x.title ? `<div class="tune-h">${x.tag ? `<span class="tune-tag ${x.tag}">${esc(x.label)}</span>` : ""}<b>${esc(x.title)}</b></div>` : "") +
+      `<p>${esc(x.body)}</p>` +
+      (x.href ? `<a href="${esc(x.href)}" data-tn-go="${esc(x.k)}">${esc(t("tn_more"))} <span aria-hidden="true">→</span></a>` : "") + `</li>`).join("");
+  }
+  if ($("#tune")) {
+    $("#tune").addEventListener("toggle", e => { if (e.target.open && !tuneSeen) { tuneSeen = true; tuneEv("tn_open"); } });
+    $("#tuneL").addEventListener("click", e => {
+      const a = e.target.closest("a[data-tn-go]");
+      if (a) tuneEv("tn_go_" + a.dataset.tnGo);
+    });
+  }
   // Phones: the verdict (count, grade, share) right under the title, the portrait from its first paragraph, the
   // sniffer groups folded to their headings but the first; a wider window puts everything back
   const PHONE = matchMedia("(max-width: 720px)"), meter = $(".meter"), meterHome = meter.parentNode, meterNext = meter.nextElementSibling;
@@ -2589,7 +2640,7 @@ import { exifOf } from "./exif.mjs";
     $("#tlOff").textContent = t(optedOut() ? "tl_back" : "tl_off");
     $("#tally").classList.toggle("off", optedOut());
   }
-  $("#tlOff").onclick = () => { store.set(K.optout, optedOut() ? "0" : "1"); paintOptout(); if (optedOut()) document.documentElement.setAttribute("data-nouniq", ""); else document.documentElement.removeAttribute("data-nouniq"); if (optedOut()) { $("#fpUniq").hidden = true; $$(".rar").forEach(e => e.remove()); R.uniq = null; blank("stand", esc(t("st_off"))); } };
+  $("#tlOff").onclick = () => { store.set(K.optout, optedOut() ? "0" : "1"); paintOptout(); if (optedOut()) document.documentElement.setAttribute("data-nouniq", ""); else document.documentElement.removeAttribute("data-nouniq"); if (optedOut()) { $("#fpUniq").hidden = true; $$(".rar").forEach(e => e.remove()); R.uniq = null; blank("stand", esc(t("st_off"))); tune(); } };
   $("#tlMore").onclick = () => openHelp(typeof D.store === "number" ? D.store : 0);
   paintOptout();
   function traitValues() {
@@ -2627,6 +2678,7 @@ import { exifOf } from "./exif.mjs";
   function paintUniq() {
     const u = R.uniq;
     $$(".rar").forEach(e => e.remove());
+    tune();
     if (!u) return;
     const f = $("#fpUniq");
     f.hidden = false; f.classList.remove("wait");
@@ -3124,7 +3176,7 @@ import { exifOf } from "./exif.mjs";
     if (NEED) { focusFix(); R.end = true; $("#rerun").disabled = false; if ($("#demo")) demo(); return; }
     readings(portrait(), R.ck);
     paintTarget(); osTips(); todo(); focusFix();
-    R.end = true;
+    R.end = true; tune();
     syncReportEntries(); syncCheckReports();
     adProfile();
     if (!EMBED) { compare(); history(); seen(); versus(); }

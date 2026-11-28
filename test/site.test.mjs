@@ -27,9 +27,9 @@ test("every language page keeps the shell contract", async () => {
     // fetched when help is opened, which is what let the French FAQ be written out in full again)
     assert.ok(h.length < 100000, lang + ": page is " + h.length + " characters");
     const st = (h.match(/<style>([\s\S]*?)<\/style>/) || [])[1];
-    // 13,000 since 2026-11-12: the shared base.css now carries the site's type and radius tokens (docs/design.md §2, §3),
-    // about 0.7 KB of them in the first screen, where they have to be to keep it from moving
-    assert.ok(st && st.length < 13000, lang + ": the first screen's styles are " + (st || "").length + " characters");
+    // 13,500 since 2026-11-28: the next-steps block after the portrait (its folded row and its three items), kept in the
+    // first screen, where filling it late must not move anything
+    assert.ok(st && st.length < 13500, lang + ": the first screen's styles are " + (st || "").length + " characters");
     assert.ok(!/--css:/.test(st), lang + ": the sign that the whole stylesheet has come stays in the file");
     assert.match(h, /<link rel="stylesheet" href="\/assets\/app\.\w+\.css">\s*<script type="application\/json" id="data">/, lang + ": the whole stylesheet linked at the end, before the scripts");
     assert.equal((h.match(/<script>/g) || []).length, 1, lang + ": the only inline script is the pre-paint one");

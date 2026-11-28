@@ -753,3 +753,23 @@ proxies the pages and writes the four `ms-*` metas (and the CSP origins) itself;
 injection, ASSETS binding or `run_worker_first`. Without the meta the probe rows say "no measuring point configured",
 the connection cards are hidden, the anchors are not fetched, and the rest of the portrait is unchanged. The smoke
 test covers both the no-meta fallback (every language page) and a test-injected meta.
+
+## 2026-11-28 — the next steps after the portrait (#148)
+
+After the last sentence of the portrait (「放在人群里」/ "In a crowd"), a folded block says how to be less
+distinctive: at most three items — one contradiction a site reads first (time zone, DNS, language, WebRTC, connection
+fingerprint, data center, stable fingerprint), the rarest of the fingerprint's own values (font list, canvas, WebGL,
+audio), and the commonest of them (so nobody changes what is not picking them out). Each links to its topic page. The
+rarest and commonest use the same counts and 2% line as the per-row badges (`src/traits.mjs`); when the count is short
+of 1,000 or the visitor is not counted, only the contradictions show.
+
+The block is a `<details>` in the HTML, so it keeps one row of height from the first paint and filling it after the
+checks (or when `/api/seen` answers) moves nothing. It is built only for zh-CN and en while the experiment runs; the
+strings exist in all ten languages so the other eight are one condition away in `scripts/build.mjs`. Expanding it and
+a link click send one `/_ms/ev` beacon each (`tn_open`, `tn_go_<id>`), only where the shell announces a counter, as the
+share dialog does; a self-hosted copy sends nothing.
+
+Tests: `npm test` (49), `npm run smoke:quick` (the block exists and is filled in zh-CN/en, waits in the other eight,
+links are local, and the two beacons fire in a test-injected shell page), `npm run touch -- en` and a phone scan of the
+block's controls (24×24). The first screen's inline styles moved from 13,000 to 13,500 characters, all of it the folded
+block's rules.

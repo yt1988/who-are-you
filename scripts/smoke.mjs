@@ -25,8 +25,15 @@ const ME = { ip: "203.0.113.7", v: 4, ptr: null, h: { "user-agent": "smoke", "ac
   cf: { country: "JP", city: "Tokyo", region: "Tokyo", latitude: "35.69", longitude: "139.69", timezone: "Asia/Tokyo", asn: 2516, asOrganization: "KDDI Corporation",
     colo: "NRT", httpProtocol: "HTTP/2", tlsVersion: "TLSv1.3", tlsCipher: "AEAD-AES128-GCM-SHA256", clientTcpRtt: 12 } };
 
+// the shell's event counter, stood in for by the test server: what the next-steps block sends (1ms-shell#148)
+const events = [];
 const handle = async (req, res) => {
   const path = decodeURIComponent(new URL(req.url, "http://x").pathname);
+  if (path === "/_ms/ev") {
+    let b = ""; req.on("data", c => b += c);
+    req.on("end", () => { try { events.push(JSON.parse(b)); } catch (e) {} res.writeHead(204); res.end(); });
+    return;
+  }
   if (path === "/api/stats") { const d = new Date().toISOString().slice(0, 10); res.writeHead(200, { "content-type": "application/json" }); return res.end(JSON.stringify({ total: 5000, days: { [d]: { tz: { ok: 600, bad: 400 }, split: { ok: 500, warn: 500 }, dns: { ok: 800, bad: 200 } } }, top: { os: [["Windows 11", 2000]], tz: [["Asia/Shanghai", 1500]] } })); }
   if (path === "/api/me") { res.writeHead(200, { "content-type": "application/json" }); return res.end(JSON.stringify({ ...ME, at: Date.now() })); }
   // a shared portrait: the Worker serves its language's page (here without the preview tags it adds)
@@ -46,6 +53,9 @@ const handle = async (req, res) => {
     // a test page can also opt into a page token; normal pages and self-hosted copies keep no meta and no header
     if ((path.endsWith("/") || extname(path) === ".html") && q.has("auth"))
       body = Buffer.from(String(body).replace("</head>", '<meta name="ms-auth" content="v1.test"></head>'));
+    // and opt into the shell's event counter: the next-steps block only beacons when the shell announces one
+    if ((path.endsWith("/") || extname(path) === ".html") && q.has("events"))
+      body = Buffer.from(String(body).replace("</head>", '<meta name="shortener" content="https://s.test/"></head>'));
     res.writeHead(200, { "content-type": TYPES[extname(path)] || (path.endsWith("/") ? TYPES[".html"] : "application/octet-stream") }); res.end(body);
   } catch (e) { res.writeHead(404); res.end(); }
 };
@@ -208,6 +218,27 @@ console.log("probe auth: token header and one retry");
   await page.close();
 }
 
+// The next steps (#148): folded until asked for, filled after the checks, and one count each for the expansion and a
+// link click — and nothing at all when the shell announces no counter (the self-hosted copy).
+console.log("next steps: expand and click counted");
+{
+  events.length = 0;
+  const { page, errors } = await open(`${base}/?lang=en&events=test`);
+  await page.waitForFunction(() => !document.querySelector("#rerun").disabled, { timeout: 30000 }).catch(() => fail("next steps", "the run never finished"));
+  // (a link that navigated would take the page down before the beacon is seen here)
+  await page.evaluate(() => { const a = document.querySelector("#tuneL a"); if (a) a.addEventListener("click", e => e.preventDefault()); });
+  await page.click("#tune summary");
+  await new Promise(r => setTimeout(r, 150));
+  await page.click("#tuneL a");
+  await new Promise(r => setTimeout(r, 300));
+  const got = events.filter(x => /^tn_/.test(x.e));
+  if (!got.some(x => x.e === "tn_open")) fail("next steps", "expanding was not counted: " + JSON.stringify(got));
+  if (!got.some(x => /^tn_go_/.test(x.e))) fail("next steps", "the link click was not counted: " + JSON.stringify(got));
+  if (got.some(x => x.g !== "en")) fail("next steps", "an event went out with another language: " + JSON.stringify(got));
+  for (const e of errors) fail("next steps", "script error: " + e);
+  await page.close();
+}
+
 // Intro fields settle independently of a deliberately slow, unrelated sniffer.
 // Voices must still block nationality; returnVisit must run only once per completed measurement.
 console.log("progressive intro");
@@ -290,6 +321,10 @@ await pool(LANGS, N, async ([lang, slug], base) => {
     num: document.querySelector("#mNum").textContent, fp: document.querySelector("#fpId").textContent, ret: document.querySelector("#fpRet").textContent,
     firstHidden: document.querySelector("#p2first").hidden,
     probe2Hidden: document.querySelector("#probe2").hidden,
+    // the next-steps block after the portrait: opened here, so its items must already be filled
+    tune: (() => { const d = document.querySelector("#tune"); if (!d) return null; d.open = true;
+      return { h: d.querySelector("summary").textContent.trim(), n: d.querySelectorAll(".tune-i").length,
+        links: [...d.querySelectorAll("a[data-tn-go]")].map(a => a.getAttribute("href")), text: d.textContent }; })(),
   }));
   for (const e of errors) fail(lang, "script error: " + e);
   if (r.rows.length !== SNIFFERS.length) fail(lang, `${r.rows.length} rows, expected ${SNIFFERS.length}`);
@@ -302,6 +337,15 @@ await pool(LANGS, N, async ([lang, slug], base) => {
   if (!/^\d+$/.test(r.num)) fail(lang, `count "${r.num}"`);
   if (!r.fp.trim() || !r.ret.trim()) fail(lang, "ID card not filled");
   if (!r.firstHidden || !r.probe2Hidden) fail(lang, "without anchors the connection cards should be hidden");
+  // the next steps (#148) are on trial in Chinese and English only, and must be filled before the run ends
+  if (lang === "en" || lang === "zh-CN") {
+    if (!r.tune || !r.tune.h) fail(lang, "the next-steps block is missing");
+    else {
+      if (!r.tune.n || r.tune.n > 3) fail(lang, `the next-steps block has ${r.tune.n} items`);
+      if (/\{\w+\}|undefined|null|NaN/.test(r.tune.text)) fail(lang, "the next-steps block has a leftover: " + r.tune.text.match(/.{0,20}(\{\w+\}|undefined|null|NaN).{0,20}/)[0]);
+      for (const h of r.tune.links) if (!/^\/(?:[\w-]+\/)+$/.test(h)) fail(lang, "a next-step link goes to " + h);
+    }
+  } else if (r.tune) fail(lang, "the next-steps block should wait for the other languages");
 
   if (lang === "zh-CN") {
     // share (1ms.dog's share dialog), then open the link as someone else would

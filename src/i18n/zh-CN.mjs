@@ -9,6 +9,21 @@ export default {
   h1: "网站眼里的你",
   story: "{nat}，本站（Cloudflare）看到你在{city}。你说{lang}，电脑的时区是{tz}，时钟用{clock}。\n{wow}\n你用的是{device}，浏览器是{browser}，屏幕{screen}，显卡是{gpu}：{rig}。\n你通过{isp}上网，{nettype}，{conn}；帮你把网址换成 IP 地址的 DNS 解析器在{dns}。{read}。\n你喜欢{theme}，{adblock}，{shield}。{track}。{cross}{adapi}装的字体透露了一点：{job}。至于年龄，{age}。\n在网站眼里，这是{tier}。{fresh}。你在{when}打开了这个页面，{power}，{prefs}。\n放在人群里，{stand}。",
 
+  // 画像之后：下一步（#148，目前只有中文和英文显示）
+  tn_h: "怎么让自己没那么独特", tn_more: "看它是怎么读出来的",
+  tn_l_fix: "可以改", tn_l_rare: "少见", tn_l_common: "常见",
+  tn_ck_tz: "你的系统时区和本站看到的 IP 不在一个地方，网站会据此判断你在用代理或 VPN。把系统时区改成 IP 所在地，或从那个国家的网络连过来。",
+  tn_ck_dns: "替你做解析的 DNS 在另一个国家：即使网页本身不露馅，查询也会暴露你。打开 VPN 自带的 DNS 或加密 DNS（DNS over HTTPS），让查询和流量从同一个地方出去。",
+  tn_ck_lang: "浏览器语言指向的国家和 IP 不一致。把浏览器语言、系统语言和区域设置改成 IP 所在地；这是网站最先对照的几项之一。",
+  tn_ck_webrtc: "WebRTC 又交出了本站没看到的另一个地址。关掉它，或用能把它关在 VPN 里的浏览器或扩展。",
+  tn_ck_conn: "TCP/TLS 开头和 User-Agent 对不上，网站会把这当成伪装过的浏览器。别用改写 User-Agent 的工具，让浏览器发自己的。",
+  tn_ck_dc: "这个 IP 属于机房而不是家庭宽带，网站看得出来。真正的办法是换成家庭或移动网络。",
+  tn_ck_fp: "你的指纹在两次访问之间不变，网站不用 Cookie 也能认出你。用会随机化指纹的浏览器（Brave，或开启严格保护的 Firefox）能连同其他项一起改变。",
+  tn_rare: "本站 {m} 次检测里，只有 {n} 次和它相同，这是让你容易被挑出来的原因之一。{step}",
+  tn_step_fp: "这个值由浏览器、字体和显卡一起决定，单独改一项通常没用：用会随机化这些值的浏览器，或删掉用不到的字体和扩展。",
+  tn_common: "本站 {pct} 的检测和它相同，它不是让你显眼的原因。改它多半只会让你更少见，不用动。",
+  tn_none: "你的读数里没有哪一项特别少见，检查之间也没有矛盾。唯一值得在浏览器更新后再看一次的是指纹。",
+
   lang_label: "语言", faq_h: "常见问题", th_system: "主题：跟随系统", th_light: "主题：浅色", th_dark: "主题：深色",
   a_theme: "主题", a_close: "关闭", a_prev: "上一条", a_next: "下一条",
   h_checks: "伪装检测", checking: "正在读取…", hide: "模糊位置", show: "显示位置", rerun: "重新检测",

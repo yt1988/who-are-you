@@ -234,6 +234,14 @@ export async function build({ check = false } = {}) {
       </div>
     </section>${demo}`;
       const heroTitle = page ? `<h2 class="h1">${esc(base.h1)}</h2>` : `<h1>${esc(T("h1"))}</h1>`;
+      // The next steps after the portrait are on trial (1ms-shell#148): only Chinese and English show them
+      // at first, while the strings exist in every language. Folded, the block keeps one row of height; what fills it
+      // arrives after the checks, so a late answer never moves the page.
+      const tunable = !page && (lang === "zh-CN" || lang === "en");
+      const tune = !tunable ? "" : `<details class="tune" id="tune">
+          <summary><span>${esc(T("tn_h"))}</span></summary>
+          <ol class="tune-l" id="tuneL"><li class="tune-i"><i class="skl"></i></li><li class="tune-i"><i class="skl"></i></li></ol>
+        </details>`;
       // the other pages of this tool, in this language: the topic pages, and the main page from a topic page
       const topics = pageList.filter(p => p !== page).map(p => `<a href="${path(slug, p)}">${esc(p ? TEXT[p][lang].h1 : base.h1)}</a>`).join("");
       // (the help's own markup is built in the page from the language's help file: nothing of it in the HTML)
@@ -249,7 +257,7 @@ export async function build({ check = false } = {}) {
         .replace("{{lang}}", lang).replace("{{pathsAttr}}", esc(JSON.stringify(paths))).replace("{{rootAttr}}", slug ? "" : " data-root")
         .replace("{{prepaint}}", PREPAINT).replace("{{head}}", head).replace("{{ext}}", EXT).replace("{{js}}", jsName).replace("{{strings}}", sName)
         .split("{{homeHref}}").join(path(slug)).replace("{{statsHref}}", path(slug, "stats")).replace("{{langOpts}}", langOpts).replace("{{focus}}", focus).replace("{{mainAttr}}", page ? ` class="topic${PAGES[page].stats ? " stats" : ""}"` : "").replace("{{heroTitle}}", heroTitle)
-        .replace("{{story}}", storyHtml(T("story"), lang)).replace("{{checks}}", checks).replace("{{todoSk}}", TODO_SK).replace("{{iaTxt}}", esc(T("ia_txt")).replace("{app}", '<b class="ia-n"></b>')).replace("{{segs}}", CHECKS.map(c => `<i data-c="${c}"></i>`).join(""))
+        .replace("{{story}}", storyHtml(T("story"), lang)).replace("{{tune}}", tune).replace("{{checks}}", checks).replace("{{todoSk}}", TODO_SK).replace("{{iaTxt}}", esc(T("ia_txt")).replace("{app}", '<b class="ia-n"></b>')).replace("{{segs}}", CHECKS.map(c => `<i data-c="${c}"></i>`).join(""))
         .replace("{{eyebrow}}", esc(T("eyebrow").replace("{n}", SNIFFERS.length))).replace("{{groups}}", groups).replace("{{topics}}", topics)
         .replace("{{helpNav}}", helpNav).replace("{{helpC}}", helpC).replace("{{data}}", JSON.stringify(data).replace(/</g, "\\u003c"));
       // The main page sets its first screen's share of the stylesheet inside the page (the top bar and the portrait, up to

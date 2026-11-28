@@ -9,6 +9,21 @@ export default {
   h1: "Für wen Websites dich halten",
   story: "{nat}. Diese Website (Cloudflare) sieht dich in {city}. Du sprichst {lang}; Zeitzone deines Computers: {tz}, die Uhr im {clock}-Format.\n{wow}\nDu nutzt {device} mit {browser}; Bildschirm {screen}, Grafik {gpu}: {rig}.\nIns Netz gehst du über {isp}: {nettype}, {conn}. Der DNS-Resolver, der für dich die Adressen von Websites nachschlägt, steht hier: {dns}. {read}.\nDu magst {theme}, und {adblock}; {shield}. {track}. {cross} {adapi} Deine Schriften verraten: {job}. Zu deinem Alter: {age}.\nFür eine Website ist das {tier}. {fresh}. Du hast diese Seite {when} geöffnet, {power}, {prefs}.\nIn der Menge: {stand}.",
 
+  // nach dem Porträt, die nächsten Schritte (#148; vorerst nur auf Chinesisch und Englisch)
+  tn_h: "So wirst du weniger unterscheidbar", tn_more: "So wird der Wert gelesen",
+  tn_l_fix: "Änderbar", tn_l_rare: "Selten", tn_l_common: "Häufig",
+  tn_ck_tz: "Deine Uhr steht auf einer Zeitzone, die nicht zu der Adresse passt, die diese Seite sieht, und eine Website liest das als Proxy oder VPN. Stelle die Systemzeitzone auf den Ort der Adresse oder verbinde dich über ein Netz in diesem Land.",
+  tn_ck_dns: "Der DNS-Resolver, der für dich antwortet, steht in einem anderen Land: Abfragen verraten dich, auch wenn die Seite selbst es nicht tut. Schalte das DNS des VPN oder verschlüsseltes DNS (DNS over HTTPS) ein, damit Abfragen denselben Weg nehmen wie dein Verkehr.",
+  tn_ck_lang: "Deine Browsersprache zeigt auf ein anderes Land als deine Adresse. Bringe Browsersprache, Systemsprache und Gebietsschema mit der Adresse in Einklang: Das ist eines der Ersten, was eine Website abgleicht.",
+  tn_ck_webrtc: "WebRTC gibt neben der Adresse, die die Seite sieht, noch eine andere heraus. Schalte es ab oder nutze einen Browser bzw. eine Erweiterung, die es im VPN hält.",
+  tn_ck_conn: "TCP/TLS-Beginn und User-Agent widersprechen sich, was eine Website als gefälschten Browser liest. Lass den Browser seinen eigenen User-Agent senden, statt ein Tool ihn umschreiben zu lassen.",
+  tn_ck_dc: "Diese Adresse gehört zu einem Rechenzentrum, nicht zu einem Heimanschluss, und Websites erkennen das. Ein Wohn- oder Mobilanschluss ist die eigentliche Lösung.",
+  tn_ck_fp: "Dein Fingerabdruck bleibt zwischen Besuchen gleich, eine Website erkennt dich also ohne Cookie. Ein Browser, der ihn randomisiert (Brave oder Firefox mit strengem Schutz), ändert dies und das Übrige zusammen.",
+  tn_rare: "Nur {n} von {m} Prüfungen hier teilen diesen Wert – eines der Dinge, die dich leicht herausgreifbar machen. {step}",
+  tn_step_fp: "Dieser Wert entsteht aus Browser, Schriften und Grafikkarte zusammen; eine einzelne Einstellung zu ändern hilft selten. Nutze einen Browser, der sie randomisiert, oder entferne Schriften und Erweiterungen, die du nicht brauchst.",
+  tn_common: "{pct} der Prüfungen hier teilen diesen Wert, er lässt dich also nicht herausstechen. Ihn zu ändern macht dich eher seltener: lass ihn.",
+  tn_none: "Nichts in deinen Messwerten ist selten, und keine Prüfung widerspricht einer anderen. Der Fingerabdruck ist das Einzige, was nach einem Browser-Update einen zweiten Blick wert ist.",
+
   lang_label: "Sprache", faq_h: "Hilfe", th_system: "Design: System", th_light: "Design: hell", th_dark: "Design: dunkel",
   a_theme: "Design", a_close: "Schließen", a_prev: "Zurück", a_next: "Weiter",
   h_checks: "Tarnungs-Check", checking: "Lese aus…", hide: "Ort verbergen", show: "Ort zeigen", rerun: "Neu prüfen",

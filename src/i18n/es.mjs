@@ -9,6 +9,21 @@ export default {
   h1: "Quién creen las webs que eres",
   story: "{nat}, y este sitio (Cloudflare) te ve en {city}. Hablas {lang}; tu sistema usa la zona horaria {tz} y el formato de {clock}.\n{wow}\nUsas {device}, con {browser}, una pantalla de {screen} y gráfica {gpu}: {rig}.\nTe conectas a internet con {isp}, {nettype}, {conn}; el resolvedor DNS que busca las webs por ti está en {dns}. {read}.\nPrefieres {theme} y {adblock}; {shield}. {track}. {cross} {adapi} Tus fuentes dan una pista: {job}. En cuanto a tu edad, {age}.\nPara una web, esto es {tier}. {fresh}. Abriste esta página {when}, {power}, {prefs}.\nEntre mucha gente, {stand}.",
 
+  // tras el retrato, los siguientes pasos (#148; por ahora solo en chino e inglés)
+  tn_h: "Cómo pasar más desapercibido", tn_more: "Ver cómo se lee",
+  tn_l_fix: "Se puede cambiar", tn_l_rare: "Raro", tn_l_common: "Común",
+  tn_ck_tz: "Tu reloj está en una zona que no coincide con la dirección que ve este sitio, y un sitio lo lee como proxy o VPN. Pon la zona horaria del sistema donde está la dirección, o conéctate desde una red de ese país.",
+  tn_ck_dns: "El resolutor DNS que responde por ti está en otro país, así que las consultas te delatan aunque la página no lo haga. Activa el DNS de la VPN o el DNS cifrado (DNS sobre HTTPS) para que las consultas salgan por donde sale tu tráfico.",
+  tn_ck_lang: "El idioma del navegador apunta a un país distinto del de tu dirección. Haz que el idioma del navegador, el del sistema y la configuración regional coincidan con la dirección: es una de las primeras cosas que comprueba un sitio.",
+  tn_ck_webrtc: "WebRTC está entregando otra dirección además de la que ve la página. Desactívalo o usa un navegador o extensión que lo mantenga dentro de la VPN.",
+  tn_ck_conn: "El inicio TCP/TLS y el user agent no concuerdan, y un sitio lo lee como un navegador falseado. Deja que el navegador envíe su propio user agent en vez de usar una herramienta que lo reescribe.",
+  tn_ck_dc: "Esta dirección pertenece a un centro de datos, no a una conexión doméstica, y los sitios lo notan. La solución real es una conexión residencial o móvil.",
+  tn_ck_fp: "Tu huella no cambia entre visitas, así que un sitio puede reconocerte sin cookies. Un navegador que aleatoriza la huella (Brave, o Firefox con protección estricta) cambia esto y el resto a la vez.",
+  tn_rare: "Solo {n} de {m} comprobaciones de este sitio comparten ese valor, una de las cosas que te hacen fácil de distinguir. {step}",
+  tn_step_fp: "Este valor sale del navegador, las fuentes y la tarjeta gráfica a la vez, así que cambiar un ajuste rara vez sirve: usa un navegador que los aleatorice o quita las fuentes y extensiones que no necesites.",
+  tn_common: "{pct} de las comprobaciones de este sitio comparten ese valor, así que no es lo que te hace destacar. Cambiarlo solo te haría más raro: déjalo.",
+  tn_none: "Nada en tus lecturas es raro y ninguna comprobación contradice a otra. La huella es lo único que vale la pena releer tras actualizar el navegador.",
+
   lang_label: "Idioma", faq_h: "Ayuda", th_system: "Tema: el del sistema", th_light: "Tema: claro", th_dark: "Tema: oscuro",
   a_theme: "Tema", a_close: "Cerrar", a_prev: "Anterior", a_next: "Siguiente",
   h_checks: "Test de disfraz", checking: "Leyendo…", hide: "Ocultar ubicación", show: "Mostrar ubicación", rerun: "Repetir",
